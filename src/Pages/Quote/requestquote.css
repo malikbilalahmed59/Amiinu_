@@ -1,0 +1,148 @@
+.fcl-shipment {
+  margin-bottom: 5px;
+  color: rgb(255, 255, 255);
+  /* font-family: Roboto-Regular, sans-serif; */
+  font-size: 28px;
+}
+.fromLabel{
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  color: rgb(116, 117, 140);
+  font-family: 'Roboto', sans-serif;
+
+}
+.first-box {
+  /* background: red; */
+}
+.first-boxitem {
+  background: hotpink;
+  margin: 0rem 0px;
+  border-radius: 0.313rem;
+  box-shadow: rgba(4, 36, 106, 0.3) 0px 2px 4px 0px;
+  background-color: rgb(255, 255, 255);
+  padding: 0.25rem;
+  border: 1px solid rgb(230, 233, 240);
+}
+.from {
+  color: #000;
+  margin-bottom: 0.313rem;
+  text-transform: uppercase;
+}
+.to {
+  margin-bottom: 0.313rem;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  color: rgb(116, 117, 140);
+  font-family: 'Roboto', sans-serif;
+}
+.departure-date {
+  margin-bottom: 0.313rem;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  color: rgb(116, 117, 140);
+  font-family: 'Roboto', sans-serif;
+}
+.incoterm {
+  margin-bottom: 0.313rem;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  color: rgb(116, 117, 140);
+  font-family: 'Roboto', sans-serif;
+}
+.click-details {
+  font-size: 9px !important;
+  font-weight: 400;
+  line-height: normal;
+  color: #0062FF;
+  font-family: 'Roboto', sans-serif;
+}
+.pickup-services{
+  color: #575757;
+  font-size: 13px;
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+  text-transform: initial;
+}
+.delivery-services{
+  text-transform: initial;
+  color: #575757;
+  font-size: 13px;
+  font-weight: 400;
+  font-family: 'Roboto', sans-serif;
+}
+.cargo {
+  /* letter-spacing: 0px;
+  color: rgb(23, 23, 37);
+  font-size: 1rem;
+  font-weight: bold; */
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: normal;
+  color: rgb(23, 23, 37);
+}
+.commidity-description {
+  margin: 1.25rem 0px;
+  border-radius: 0.313rem;
+  background-color: rgb(255, 255, 255);
+  padding: 1.25rem;
+}
+.container-1 {
+  letter-spacing: 0px;
+  color: rgb(23, 23, 37);
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.first-checkbox {
+  display: flex;
+}
+.second-checkbox {
+  display: flex;
+}
+.first-checkbox .input-field {
+  padding-left: 10px;
+}
+.second-checkbox .input-field {
+  padding-left: 4px !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .first-checkbox {
+    display: flex;
+    flex-direction: column;
+  }
+  .second-checkbox {
+    display: flex;
+    flex-direction: column;
+  }
+  .first-checkbox .input-field {
+    padding-left: 0px;
+  }
+  .second-checkbox .input-field {
+    padding-left: 0px;
+  }
+  .incoterm-item {
+    margin-top: 20px;
+  }
+  .cargo {
+    padding-right: 10px;
+  }
+  .radio-section {
+    display: flex;
+    flex-direction: column;
+  }
+  .stack-section {
+    display: flex;
+    flex-direction: column;
+  }
+ 
+  
+}

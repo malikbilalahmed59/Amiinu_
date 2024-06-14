@@ -1,0 +1,63 @@
+body {
+  background-color: #f4f6fc;
+}
+
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* outline: 1px solid hotpink; */
+}
+
+.rs-picker-toggle .rs-picker-toggle-placeholder {
+  color: #8e8e93;
+  color: var(--rs-text-secondary);
+  text-transform: initial;
+}
+.rs-navbar-default {
+  background-color: #e001ff !important;
+  color: white;
+}
+
+.bg-content {
+  background: url("https://my.cevalogistics.com/img/shipment-quote.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.req-banner {
+  background: url("https://t4.ftcdn.net/jpg/05/81/21/53/360_F_581215305_nRb9B75TuSy91QPOY8UfZGuTDYJhdGoY.jpg");
+  height: 24vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner-heading {
+  padding-bottom: 5.5%;
+  font-size: 24px;
+}
+
+.filter-bar {
+  margin-top: -3%;
+  border-radius: 11px;
+}
+
+/* Rsuite override */
+.rs-form-vertical .rs-form-group .rs-input-group {
+  width: 100%;
+}
+
+/*  ------------ Start Quote Page ------------ */
+.rs-panel {
+  background-color: #f1f5ff;
+}
+
+@media only screen and (max-width: 600px) {
+  .bg-content {
+    background-image: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}

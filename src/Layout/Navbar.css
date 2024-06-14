@@ -1,0 +1,44 @@
+/* Navbar.css */
+.avatar-form{
+    position: relative;
+}
+  .dropdown-contentss {
+    position: absolute;
+    top: 40px;
+    right: -70px;   
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    width: 200px;
+  }
+
+  .dropdown-contentss p {
+    margin: 0;
+    padding: 8px ;
+    cursor: pointer;
+    padding-left: 10px;
+  }
+
+  .dropdown-contentss p:hover {
+    background-color: #f1f1f1;
+
+  }
+
+  @media only screen and (max-width: 600px) {
+    .avatar-form{
+        position: relative;
+    }
+      .dropdown-contentss {
+        position: absolute;
+        top: 40px;
+        left: 0px;
+
+
+
+      }
+
+
+
+
+  }

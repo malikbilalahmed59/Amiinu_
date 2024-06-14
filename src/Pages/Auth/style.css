@@ -1,0 +1,23 @@
+.auth-wrapper {
+    background-image: url('../../assets/bg.jpg');
+    background-size: cover;
+    /* background-position: right; */
+    background-repeat: no-repeat;
+    /* background-color: #053354; */
+}
+
+.auth-wrapper .rs-form-group input,
+.auth-wrapper .rs-picker-select div {
+    border-radius: 0%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.auth-wrapper .rs-picker-select div {
+    background-color: white !important;
+}
+
+.auth-wrapper .rs-picker-select div span {
+    color: black;
+}

@@ -1,0 +1,94 @@
+.quote-card {
+  /* background: red; */
+}
+.grid-item {
+  /* background-color: green; */
+}
+.griditem-second {
+  /* background-color: aquamarine; */
+}
+.parent-bottom {
+  background-color: #F1F5FF !important;
+}
+.bottom-grid {
+  background-color: #F1F5FF;
+  /* background: rgb(241, 245, 255); */
+  padding: 1.5rem 1rem;
+
+  border-radius: 8px;
+}
+.method {
+  margin-right: auto;
+  width: auto;
+  color: rgb(4, 36, 106);
+  /* font-family: "Open Sans", sans-serif; */
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.griditem-last {
+  /* background-color: blueviolet; */
+  display: flex;
+  flex-direction: column;
+}
+.quote-request {
+  color: white;
+  margin-top: 5rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.u-shipping {
+  margin-bottom: 20px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  /* font-family: "Open Sans", sans-serif; */
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.import {
+  text-transform: uppercase;
+  color: rgb(5, 5, 5);
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.813rem;
+}
+.getguote-btn{
+  padding-top: 60px;
+  padding-left: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+
+ .small-card{
+  /* background-color: black; */
+ }
+  .getguote-btn{
+    /* padding-top: 10px; */
+    padding-left: 20px;
+  }
+.parent-bottom{
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+}
+.small-card{
+  margin-bottom: 10px;
+}
+.u-shipping{
+  color: black;
+}
+.test{
+  /* background-color: black; */
+}
+.quote-request{
+  color: black;
+}
+}
+@media only screen and (max-width: 450px) {
+
+
+   .getguote-btn{
+     padding-top: 10px !important;
+     padding-left: 20px;
+   }
+
+ }

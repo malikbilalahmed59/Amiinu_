@@ -1,0 +1,36 @@
+.firstBoxs {
+  height: 100%;
+  object-fit: cover;
+  padding-block: 20px;
+}
+.lastCard {
+  padding-block: 30px;
+}
+.panel{
+  box-shadow: 0px 0px 3.248px 0px rgba(114, 6, 6, 0.15) !important;
+  /* border: 1px solid red; */
+}
+
+@media only screen and (max-width: 1600px) {
+  .lastCard {
+    padding-block: 40px;
+  }
+
+}
+
+@media only screen and (max-width: 600px) {
+  .stack-text {
+    text-align: center;
+  }
+  .panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cardbottom-text {
+    text-align: center;
+  }
+  .lastCard {
+    margin-bottom: 10px;
+  }
+}
