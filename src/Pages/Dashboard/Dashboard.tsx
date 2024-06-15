@@ -1,7 +1,6 @@
-import { FlexboxGrid, Panel, Stack, Text, Col, Button } from "rsuite";
-import { PiHandArrowDownLight } from "react-icons/pi";
-import { PiDiamondsFourLight } from "react-icons/pi";
 import { FcInfo } from "react-icons/fc";
+import { PiDiamondsFourLight, PiHandArrowDownLight } from "react-icons/pi";
+import { Button, Col, FlexboxGrid, Panel, Stack, Text } from "rsuite";
 import "./Dashboard.css";
 const Dashboard = () => {
   const options = [
