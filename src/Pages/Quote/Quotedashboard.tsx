@@ -7,7 +7,7 @@ import { SlPlane } from "react-icons/sl";
 import { TiMessages } from "react-icons/ti";
 import "./quotedashboard.css";
 import { useRequestList } from "../../Hooks/useRequestList";
-import { Loader } from "rsuite";
+import { Dropdown, Loader } from "rsuite";
 
 const QuoteDashboard = () => {
   const { data, isLoading } = useRequestList();
@@ -55,16 +55,16 @@ const QuoteDashboard = () => {
                 <LuShip /> LCL
               </div>
 
-              <div className="firstfilter-card">
+              {/* <div className="firstfilter-card">
                 <IoFilterOutline />
                 Filter
-              </div>
+              </div> */}
             </div>
           </div>
           {isLoading && <Loader></Loader>}
           {!isLoading && data && data.length === 0 && <p>No Requests.</p>}
-          {data?.map((item) => (
-            <div className="bottom-cards mb-3" key={item.id}>
+          {[1,2,3,4,5]?.map((item) => (
+            <div className="bottom-cards mb-3" key={item}>
               <div className="quoteref-card">
                 <div className="ref-top">
                   <div className="top-left">
@@ -82,7 +82,7 @@ const QuoteDashboard = () => {
                   <div className="top-middle">
                     <div className="top-middleleft">
                       <div className="china">
-                        <span className="china-text">Cargo Ready Date</span>
+                        <span className="china-quote">Cargo Ready Date</span>
                       </div>
                       <div className="musafa">
                         <span className="china-text">19 May 2024</span>
@@ -90,7 +90,7 @@ const QuoteDashboard = () => {
                     </div>
                     <div className="top-middlemiddle">
                       <div className="china">
-                        <span className="cargo">CHINA, TEXAS (USZHO)</span>
+                        <span className="china-cargo">CHINA, TEXAS (USZHO)</span>
                       </div>
                       <div className="musafa">
                         <span className="cargo-date">MUSAFA (AEFMZ)</span>
@@ -98,7 +98,7 @@ const QuoteDashboard = () => {
                     </div>
                     <div className="top-middlemiddle">
                       <div className="china">
-                        <span className="cargo">To Be Booked Before</span>
+                        <span className="cargo-quote">To Be Booked Before</span>
                       </div>
                       <div className="musafa">
                         <span className="cargo-date">2 Jun 2024</span>
@@ -110,7 +110,7 @@ const QuoteDashboard = () => {
                     <span className="budget">20354 USD</span>
                   </div>
                 </div>
-                <hr className="hr-line" />
+                {/* <hr className="hr-line" /> */}
                 <div className="ref-bootom">
                   <div className="bottom-left">
                     <div className="topleft-left">
@@ -126,8 +126,19 @@ const QuoteDashboard = () => {
                         >
                           Cargo details
                         </span>{" "}
-                        <FaRegEye color="#315CD6    " size={"15px"} />
-                      </div>
+                        {/* <FaRegEye color="#315CD6    " size={"15px"} /> */}
+                        <Dropdown 
+      title={<FaRegEye color="#315CD6" size="15px" />} 
+      className="custom-dropdown"
+    >
+      <Dropdown.Item>New File</Dropdown.Item>
+   
+      <Dropdown.Item>Export PDF</Dropdown.Item>
+      <Dropdown.Item>Export HTML</Dropdown.Item>
+      <Dropdown.Item>Settings</Dropdown.Item>
+      <Dropdown.Item>About</Dropdown.Item>
+    </Dropdown>
+      </div>
                     </div>
                     <div className="topleft-left">
                       <div>
@@ -161,7 +172,7 @@ const QuoteDashboard = () => {
                         Other Action
                       </button>
                       <ul
-                        className="dropdown-menu"
+                        className="dropdown-menu "
                         aria-labelledby="dropdownMenuButton1"
                       >
                         <li>
