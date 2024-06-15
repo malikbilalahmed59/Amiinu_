@@ -9,7 +9,6 @@ import {
   DatePicker,
   FlexboxGrid,
   Form,
-  SelectPicker,
   Uploader,
 } from "rsuite";
 import CargoForm from "../../Components/CargoForm";
@@ -18,14 +17,14 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import { FileType } from "rsuite/esm/Uploader";
 import CustomSelectPicker from "../../Components/SelectPicker";
-import { currencyChoices, servicesLevel } from "../../data/data";
+import { currencyChoices, incotermList, servicesLevel } from "../../data/data";
 import { axiosInstance } from "../../services/api-client";
 import { AirCargo } from "../../services/types";
 import FormControl from "./FormControl";
 import NavBar from "./NavBar";
 import "./AirQuote.scss";
 
-const ServiceLevel = () => {
+const AirQuote = () => {
   const [showDeliveryAddress, setShowDeliveryAddress] = useState(false);
   const [insureType, setInsureType] = useState("");
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
@@ -277,7 +276,6 @@ const ServiceLevel = () => {
       customer_reference: customer_reference || null,
     };
   };
-  console.log("incoterm", incoterm);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
@@ -419,49 +417,24 @@ const ServiceLevel = () => {
                     lg={4}
                     className="incoterm-item"
                   >
-                    <Form.Group controlId="incoterm">
-                      <Form.ControlLabel className="incoterm">
-                        INCOTERM*{" "}
-                        <a href="#" className="click-details">
-                          Click for details
-                        </a>
-                      </Form.ControlLabel>
-                      <SelectPicker
-                        data={[
-                          ["EXW", "EXW - Ex Works"],
-                          ["FCA", "FCA - Free Carrier"],
-                          ["FOB", "FOB - Free On Board"],
-                          ["CPT", "CPT - Carriage Paid To"],
-                          ["CFR", "CFR - Cost and Freight"],
-                          ["CIF", "CIF - Cost, Insurance and Freight"],
-                          ["CIP", "CIP - Carriage and Insurance Paid To"],
-                          ["DAP", "DAP - Delivered At Place"],
-                          ["DDP", "DDP - Delivered Duty Paid"],
-                        ].map(([value, label]) => ({ label, value }))}
-                        searchable
-                        // {...register("incoterm")}
-                        name="incoterm"
-                        // error={errors.incoterm?.message}
-                        className="w-100"
-                        placeholder="Search by incoterm"
-                        value={incoterm}
-                        onChange={(value: any) => setincoterm(value)}
-                      />
-                      {/* {formErrors?.incoterm && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.incoterm}
-                    </Form.HelpText>
-                  )} */}
-                    </Form.Group>
+                    <CustomSelectPicker
+                      label={
+                        <>
+                          INCOTERM*{" "}
+                          <a href="#" className="click-details">
+                            Click for details
+                          </a>
+                        </>
+                      }
+                      data={incotermList}
+                      placeholder="Search by incoterm"
+                      value={incoterm}
+                      name="incoterm"
+                      onChange={(value: any) => setincoterm(value)}
+                    />
                   </FlexboxGrid.Item>
                 </FlexboxGrid>
               </FlexboxGrid.Item>
-
-              {/* <div className="col-md-3 mt-2">
-                <Form.Group controlId="to">
-                  <Checkbox>Label</Checkbox>
-                </Form.Group>
-              </div> */}
             </FlexboxGrid>
             <div className="container">
               <div className="row flex-row ">
@@ -493,7 +466,6 @@ const ServiceLevel = () => {
                         </div>
                       </div>
                     </div>
-                    {/* </RadioTile> */}
                   </div>
                 ))}
               </div>
@@ -501,7 +473,7 @@ const ServiceLevel = () => {
           </div>
           <div className="container">
             <div className="row mt-4">
-              <div className="col-md-8">
+              <div className="col-md-12">
                 <div className="top-section">
                   <div className="leftTop">
                     <span>Cargo</span>
@@ -593,7 +565,7 @@ const ServiceLevel = () => {
                   ))}
                   <Button
                     onClick={handleAddCargo}
-                    appearance="primary"
+                    appearance="ghost"
                     style={{ margin: "20px 0px" }}
                   >
                     Add Cargo
@@ -656,8 +628,6 @@ const ServiceLevel = () => {
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
                                 >
-                                  {/* Amount  */}
-                                  {/* {currencyChoices} */}
                                   {(amount == ""
                                     ? "Amount"
                                     : amount + " " + currency
@@ -769,88 +739,8 @@ const ServiceLevel = () => {
             <Form.Group className="mt-3">
               <ButtonToolbar>
                 <Button
-                  // onClick={() => {
-                  //   if (insureType == "insureWithValue") {
-                  //     if (!insureAgree) {
-                  //       toast.info(
-                  //         "You need to accept the insurance Terms & Conditions."
-                  //       );
-
-                  //       const formData = {
-                  //         Type: "ServiceLabel",
-                  //         Insure_Type: insureType,
-                  //         Insure_Agree: insureAgree ,
-                  //         From_Location: from_location || "",
-                  //         To_Location: to_location || "",
-                  //         Select_Date: selectdate || "",
-                  //         delivery: delivery || "",
-                  //         pickup: pickup || "",
-                  //         Incoterm: incoterm || "",
-                  //         Commodity_Description: comiditydiscription || "",
-                  //         Quantity: quantity || "",
-                  //         Packages: packages || "",
-                  //         Weight: weight || "",
-                  //         volumetric_weight: v_weight || "",
-                  //         total_weight: total_weight || "",
-                  //         total_volume: total_volume || "",
-                  //         Length_CM: lcm || "",
-                  //         Width_CM: wcm || "",
-                  //         Height_CM: hcm || "",
-                  //         amount: amount || "",
-                  //         currency: currency || "",
-                  //         HS_Code: code_character || "",
-                  //         Customer_Reference: customer_reference || "",
-                  //         Comment: comment || "",
-                  //         File_List: fileList.length > 0 ? fileList.map(file => file.name) : "",
-                  //         Subdivision: subdivision || "",
-                  //         Temperature_Min: temperature_min || "",
-                  //         Temperature_Max: temperature_max || "",
-                  //         Service_Type: serviceType || "",
-                  //         Measurement_Unit: selected || "",
-                  //         Temperature_Unit: celsiusstate || "",
-                  //         Show_Delivery_Address: showDeliveryAddress || "",
-                  //         Show_Pickup_Address: showPickupAddress || "",
-                  //         Dangerous_Goods_Details: {
-                  //             UN_Number: dangerous_good_details.un_number || "",
-                  //             Proper_Shipping_Name: dangerous_good_details.proper_shipping_name || "",
-                  //             Class_Division: dangerous_good_details.class_division || "",
-                  //             Subdivision: dangerous_good_details.subdivision || "",
-                  //             Packaging_Group: dangerous_good_details.packaging_group || "",
-                  //             Packaging_Instructions: dangerous_good_details.packaging_instructions || "",
-                  //             Quantity: dangerous_good_details.quantity || "",
-                  //             Total_Net_Quantity: dangerous_good_details.total_net_quantity || "",
-                  //             Type_Of_Packing: dangerous_good_details.type_of_packing || "",
-                  //             Authorization: dangerous_good_details.authorization || ""
-                  //         }
-
-                  //       }
-
-                  //       console.log("Form Data:", formData);
-
-                  //       axios.post('http://localhost:3000/api/submit', formData)
-                  //       .then(response => {
-                  //         console.log('Server response:', response.data);
-                  //       })
-                  //       .catch(error => {
-                  //         console.error('Error sending data:', error);
-                  //       });
-
-                  //     }
-                  //   }
-
-                  // }}
                   onClick={(e) => handleSubmit(e)}
-                  // type="submit"
-                  // type={
-                  //   insureType == "insureWithValue"
-                  //     ? insureAgree
-                  //       ? "submit"
-                  //       : "button"
-                  //     : "submit"
-                  // }
-
-                  appearance="primary"
-                  color="red"
+                  appearance="ghost"
                   style={{ width: "100px", marginBottom: "20px" }}
                 >
                   Submit
@@ -864,4 +754,4 @@ const ServiceLevel = () => {
   );
 };
 
-export default ServiceLevel;
+export default AirQuote;

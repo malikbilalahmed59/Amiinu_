@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Form, SelectPicker } from "rsuite";
 
 interface ISelectPicker {
@@ -6,11 +7,11 @@ interface ISelectPicker {
 }
 interface Props {
   value: string;
-  name: string;
+  name?: string;
   placeholder?: string;
   focus?: boolean;
   onChange: (v: string) => void;
-  label?: string;
+  label?: string | ReactNode;
   isLoading?: boolean;
   data: ISelectPicker[];
   error?: string;
@@ -18,7 +19,7 @@ interface Props {
 
 const CustomSelectPicker = ({
   value,
-  name,
+  name = "",
   data,
   onChange,
   label,

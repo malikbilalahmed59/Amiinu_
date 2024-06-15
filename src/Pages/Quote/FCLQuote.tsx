@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Button,
   ButtonGroup,
@@ -12,23 +10,20 @@ import {
   FlexboxGrid,
   Form,
   Heading,
-  SelectPicker,
   Text,
 } from "rsuite";
-import { z } from "zod";
 import { useLocations } from "../../Hooks/useLocations";
 import { Cargo } from "../../services/types";
-import NavBar from "./NavBar";
 import "./FCLQuote.css";
-import schema from "./schema";
+import NavBar from "./NavBar";
 
-import { axiosInstance } from "../../services/api-client";
-import ContainerForm from "../../Components/ContainerForm";
-import { container_details } from "../../services/types";
 import moment from "moment";
 import { toast } from "react-toastify";
-
-type FormData = z.infer<typeof schema>;
+import ContainerForm from "../../Components/ContainerForm";
+import CustomSelectPicker from "../../Components/SelectPicker";
+import { incotermList } from "../../data/data";
+import { axiosInstance } from "../../services/api-client";
+import { container_details } from "../../services/types";
 
 const FCLQuote = () => {
   const { isLoading } = useLocations();
@@ -139,10 +134,6 @@ const FCLQuote = () => {
     });
   };
 
-  const {
-    register,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema), mode: "onChange" });
   const [formErrors] = useState<Cargo>();
   const [location, setLocation] = useState([]);
 
@@ -266,9 +257,6 @@ const FCLQuote = () => {
       toast.success("Unable to Submit");
     }
   };
-  console.log("errors", errors);
-  console.log("fromData", formData);
-  console.log("FormErrors", formErrors);
 
   const [selected, setSelected] = useState<string>("KG/CM");
   const [celsiusstate, setcelsiusstate] = useState<string>("CELSIUS");
@@ -329,28 +317,15 @@ const FCLQuote = () => {
                 className="from "
               >
                 {/* Form Input */}
-                <Form.Group controlId="from">
-                  <Form.ControlLabel className="fromLabel">
-                    FROM
-                  </Form.ControlLabel>
-                  <SelectPicker
-                    data={transformedLocations}
-                    loading={isLoading}
-                    searchable
-                    {...register("from")}
-                    name="from"
-                    className="w-100"
-                    placeholder="Search by Location"
-                    value={formData.from}
-                    onChange={(value: any) => handleCargoChange("from", value)}
-                  />
-
-                  {formErrors?.from && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.from}
-                    </Form.HelpText>
-                  )}
-                </Form.Group>
+                <CustomSelectPicker
+                  label="FROM"
+                  data={transformedLocations}
+                  isLoading={isLoading}
+                  name="from"
+                  placeholder="Search by Location"
+                  value={formData.from}
+                  onChange={(value: any) => handleCargoChange("from", value)}
+                />
                 <div className="second-checkbox">
                   <Checkbox
                     onChange={(_, checked) =>
@@ -384,25 +359,15 @@ const FCLQuote = () => {
               </FlexboxGrid.Item>
 
               <FlexboxGrid.Item as={Col} xs={24} sm={12} md={12} lg={8}>
-                <Form.Group controlId="to">
-                  <Form.ControlLabel className="to">TO</Form.ControlLabel>
-                  <SelectPicker
-                    data={transformedLocations}
-                    loading={isLoading}
-                    searchable
-                    {...register("to")}
-                    name="to"
-                    className="w-100"
-                    placeholder="Search by Location"
-                    value={formData.to}
-                    onChange={(value: any) => handleCargoChange("to", value)}
-                  />
-                  {formErrors?.to && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.to}
-                    </Form.HelpText>
-                  )}
-                </Form.Group>
+                <CustomSelectPicker
+                  label="TO"
+                  data={transformedLocations}
+                  isLoading={isLoading}
+                  name="to"
+                  placeholder="Search by Location"
+                  value={formData.to}
+                  onChange={(value: any) => handleCargoChange("to", value)}
+                />
                 <div className="first-checkbox">
                   <Checkbox
                     className="delivery-services"
@@ -441,7 +406,6 @@ const FCLQuote = () => {
                   </Form.ControlLabel>
                   <DatePicker
                     oneTap
-                    {...register("departureDate")}
                     name="departureDate"
                     className="w-100"
                     disabledDate={disablePastDates}
@@ -450,11 +414,6 @@ const FCLQuote = () => {
                       handleCargoChange("departureDate", value)
                     }
                   />
-                  {/* {formErrors?.departureDate && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.departureDate}
-                    </Form.HelpText>
-                  )} */}
                 </Form.Group>
               </FlexboxGrid.Item>
 
@@ -466,52 +425,34 @@ const FCLQuote = () => {
                 lg={4}
                 className="incoterm-item"
               >
-                <Form.Group controlId="incoterm">
-                  <Form.ControlLabel className="incoterm">
-                    INCOTERM*{" "}
-                    <a href="#" className="click-details">
-                      Click for details
-                    </a>
-                  </Form.ControlLabel>
-                  <SelectPicker
-                    data={[
-                      ["EXW", "EXW - Ex Works"],
-                      ["FCA", "FCA - Free Carrier"],
-                      ["FOB", "FOB - Free On Board"],
-                      ["CPT", "CPT - Carriage Paid To"],
-                      ["CFR", "CFR - Cost and Freight"],
-                      ["CIF", "CIF - Cost, Insurance and Freight"],
-                      ["CIP", "CIP - Carriage and Insurance Paid To"],
-                      ["DAP", "DAP - Delivered At Place"],
-                      ["DDP", "DDP - Delivered Duty Paid"],
-                    ].map(([value, label]) => ({ label, value }))}
-                    searchable
-                    {...register("incoterm")}
-                    name="incoterm"
-                    className="w-100"
-                    placeholder="Search by incoterm"
-                    value={formData.incoterm}
-                    onChange={(value: any) =>
-                      handleCargoChange("incoterm", value)
-                    }
-                  />
-                  {formErrors?.incoterm && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.incoterm}
-                    </Form.HelpText>
-                  )}
-                </Form.Group>
+                <CustomSelectPicker
+                  label={
+                    <>
+                      INCOTERM*{" "}
+                      <a href="#" className="click-details">
+                        Click for details
+                      </a>
+                    </>
+                  }
+                  name="incoterm"
+                  data={incotermList}
+                  placeholder="Search by incoterm"
+                  value={formData.incoterm}
+                  onChange={(value: any) =>
+                    handleCargoChange("incoterm", value)
+                  }
+                />
               </FlexboxGrid.Item>
             </FlexboxGrid>
           </FlexboxGrid.Item>
         </FlexboxGrid>
 
         {/* cargo section here  */}
-        <FlexboxGrid justify="center" align="bottom" className="cargoLastdiv">
-          <FlexboxGrid.Item colspan={18} className="pb-5 lastDiv-item">
-            <FlexboxGrid>
-              <FlexboxGrid.Item colspan={24}>
-                <FlexboxGrid>
+        <div className="cargoLastdiv container">
+          <div className="pb-5 lastDiv-item row">
+            <>
+              <div className="col-md-12">
+                <>
                   <FlexboxGrid.Item
                     colspan={24}
                     className="d-flex py-4"
@@ -604,6 +545,7 @@ const FCLQuote = () => {
                       ))}
                       <Button
                         onClick={handleAddContainer}
+                        appearance="ghost"
                         style={{ margin: "20px 0px" }}
                       >
                         Add Container
@@ -631,27 +573,17 @@ const FCLQuote = () => {
                             )
                           }
                         />
-                        {/* {formErrors?.departureDate && (
-                          <Form.HelpText className="text-danger">
-                            {formErrors?.departureDate}
-                          </Form.HelpText>
-                        )} */}
                       </FlexboxGrid.Item>
-                      <Button
-                        // disabled={!isValid}
-                        appearance="primary"
-                        type="submit"
-                        className="mt-3"
-                      >
+                      <Button appearance="ghost" type="submit" className="mt-3">
                         Submit
                       </Button>
                     </div>
                   </div>
-                </FlexboxGrid>
-              </FlexboxGrid.Item>
-            </FlexboxGrid>
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
+                </>
+              </div>
+            </>
+          </div>
+        </div>
       </form>
     </>
   );

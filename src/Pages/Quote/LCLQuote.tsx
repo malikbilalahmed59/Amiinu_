@@ -22,8 +22,8 @@ import { useLocations } from "../../Hooks/useLocations";
 import { axiosInstance } from "../../services/api-client";
 import { AirCargo } from "../../services/types";
 import FormControl from "./FormControl";
-import NavBar from "./NavBar";
 import "./LCLQuote.scss";
+import NavBar from "./NavBar";
 
 const LCLQuote = () => {
   const [departureDate, setDepartureDate] = useState<Date | null>(null);

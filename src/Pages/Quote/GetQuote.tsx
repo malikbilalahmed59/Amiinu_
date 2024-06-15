@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import "./getquote.css";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { LiaShipSolid } from "react-icons/lia";
@@ -129,7 +129,7 @@ const GetQuote = () => {
                 className="text-center getguote-btn"
               >
                 <Button
-                  appearance="primary"
+                  appearance="ghost"
                   onClick={() => {
                     if (mode == "AIR") {
                       navigate(
