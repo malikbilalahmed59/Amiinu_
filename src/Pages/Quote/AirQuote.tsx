@@ -1,31 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useState, useEffect } from "react";
-import CargoForm from "../../Components/CargoForm";
+import { useEffect, useState } from "react";
 import {
-
-  Col,
   Button,
   ButtonGroup,
   ButtonToolbar,
   Checkbox,
+  Col,
+  DatePicker,
   FlexboxGrid,
   Form,
-  Uploader,
   SelectPicker,
-  DatePicker,
+  Uploader,
 } from "rsuite";
+import CargoForm from "../../Components/CargoForm";
 
+import moment from "moment";
 import { toast } from "react-toastify";
 import { FileType } from "rsuite/esm/Uploader";
-import { servicesLevel } from "../../data/data";
+import CustomSelectPicker from "../../Components/SelectPicker";
+import { currencyChoices, servicesLevel } from "../../data/data";
+import { axiosInstance } from "../../services/api-client";
+import { AirCargo } from "../../services/types";
 import FormControl from "./FormControl";
 import NavBar from "./NavBar";
-import { serviceModel } from "./schema";
-import "./servicelevel.scss";
-import { currencyChoices } from "../../data/data";
-import { AirCargo } from "../../services/types";
-import { axiosInstance } from "../../services/api-client";
-import moment from "moment";
+import "./AirQuote.scss";
 
 const ServiceLevel = () => {
   const [showDeliveryAddress, setShowDeliveryAddress] = useState(false);
@@ -47,7 +45,6 @@ const ServiceLevel = () => {
   const [selected, setSelected] = useState<string>("KG/CM");
   const [celsiusstate, setcelsiusstate] = useState<string>("CELSIUS");
   const [showPickupAddress, setShowPickupAddress] = useState(false);
-
 
   const handleCheckboxChange2 = (value: any, checked2: any) => {
     console.log(value);
@@ -168,11 +165,11 @@ const ServiceLevel = () => {
   };
 
   const handleCargoDelete = (id: number | string) => {
-    setCargo(prevList => {
-      const updatedList = prevList.filter(cargo => cargo.id !== id);
+    setCargo((prevList) => {
+      const updatedList = prevList.filter((cargo) => cargo.id !== id);
       return updatedList.map((cargo, index) => ({
         ...cargo,
-        id: index + 1, 
+        id: index + 1,
       }));
     });
   };
@@ -289,19 +286,18 @@ const ServiceLevel = () => {
       console.log("apiData", apiData);
       const response = await axiosInstance.post("quote/shipments/", apiData);
       console.log("response", response);
-      toast.success("Successfully Submitted")
+      toast.success("Successfully Submitted");
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Unable to submit")
+      toast.error("Unable to submit");
     }
   };
 
-  console.log(departureDate);
   return (
     <>
       <NavBar />
       <div className="container-fluid pabel">
-        <Form model={serviceModel} fluid onSubmit={handleSubmit}>
+        <Form fluid onSubmit={handleSubmit}>
           <FlexboxGrid className="req-banner" justify="center" align="bottom">
             <FlexboxGrid.Item
               colspan={22}
@@ -327,34 +323,16 @@ const ServiceLevel = () => {
                     className="from"
                   >
                     {/* Form Input */}
-                    <Form.Group controlId="from">
-                      {/* <Form.ControlLabel className="departure-date">From</Form.ControlLabel>
-                  <FormControl
-                     name="from_location"
-                    placeholder="Search by Location"
-                    value={from_location}
-                    onChange={(e: any) => {
-                      setFromLocation(e);
-                    
-                    }}
-                    style={{textTransform:"initial"}}
-                   
-                  /> */}
-                      <Form.ControlLabel className="fromLabel">
-                        FROM
-                      </Form.ControlLabel>
-                      <SelectPicker
-                        data={transformedLocations}
-                        searchable
-                        name="from"
-                        className="w-100"
-                        placeholder="Search by Location"
-                        value={from_location}
-                        onChange={(e: any) => {
-                          setFromLocation(e);
-                        }}
-                      />
-                    </Form.Group>
+                    <CustomSelectPicker
+                      label="FROM"
+                      name="from"
+                      data={transformedLocations}
+                      placeholder="Search by Location"
+                      value={from_location}
+                      onChange={(e: any) => {
+                        setFromLocation(e);
+                      }}
+                    />
                     <div className="second-checkbox">
                       <Checkbox
                         onChange={handleCheckboxChange2}
@@ -367,38 +345,29 @@ const ServiceLevel = () => {
                         <div className="input-field">
                           <FormControl
                             type="text"
-                          name="Pickup Address"
+                            name="Pickup Address"
                             placeholder="Enter Pickup Address"
                             value={pickup}
                             onChange={(e: any) => {
                               setPickup(e);
                             }}
                           />
-                          {/* {formErrors?.pickupAddress && (
-                        <small className="text-danger">
-                          {formErrors?.pickupAddress}
-                        </small>
-                      )} */}
                         </div>
                       )}
                     </div>
                   </FlexboxGrid.Item>
 
                   <FlexboxGrid.Item as={Col} xs={24} sm={12} md={12} lg={8}>
-                    <Form.Group controlId="to">
-                      <Form.ControlLabel className="to">TO</Form.ControlLabel>
-                      <SelectPicker
-                        data={transformedLocations}
-                        searchable
-                        name="to"
-                        className="w-100"
-                        placeholder="Search by Location"
-                        value={to_location}
-                        onChange={(e: any) => {
-                          setToLocation(e);
-                        }}
-                      />
-                    </Form.Group>
+                    <CustomSelectPicker
+                      data={transformedLocations}
+                      name="to"
+                      placeholder="Search by Location"
+                      value={to_location}
+                      onChange={(e: any) => {
+                        setToLocation(e);
+                      }}
+                      label="TO"
+                    />
                     <div className="first-checkbox">
                       <Checkbox
                         className="delivery-services"
@@ -420,17 +389,7 @@ const ServiceLevel = () => {
                             onChange={(e: any) => {
                               setDelivery(e);
                             }}
-
-                            // value={formData.deliveryAddress}
-                            // onChange={(e) =>
-                            //   handleCargoChange("deliveryAddress", e.target.value)
-                            // }
                           />
-                          {/* {formErrors?.deliveryAddress && (
-                        <small className="text-danger">
-                          {formErrors?.deliveryAddress}
-                        </small>
-                      )} */}
                         </div>
                       )}
                     </div>
@@ -443,19 +402,12 @@ const ServiceLevel = () => {
                       </Form.ControlLabel>
                       <DatePicker
                         oneTap
-                        // {...register("departureDate")}
-                        // error={errors.departureDate?.message}
                         name="departureDate"
                         className="w-100"
                         disabledDate={disablePastDates}
                         value={departureDate}
                         onChange={(value: any) => setDepartureDate(value)}
                       />
-                      {/* {formErrors?.departureDate && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.departureDate}
-                    </Form.HelpText>
-                  )} */}
                     </Form.Group>
                   </FlexboxGrid.Item>
 
@@ -523,7 +475,6 @@ const ServiceLevel = () => {
                     }}
                   >
                     <div
-                
                       style={{
                         cursor: "pointer",
                         border:
@@ -630,10 +581,10 @@ const ServiceLevel = () => {
                 </div>
 
                 <div>
-                  {cargo.map((c,i) => (
+                  {cargo.map((c, i) => (
                     <CargoForm
-                    errors={{}}
-                    index={i}
+                      errors={{}}
+                      index={i}
                       key={c.id}
                       cargoState={c}
                       handleCargoChange={handleCargoChange}

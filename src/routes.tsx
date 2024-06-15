@@ -7,10 +7,10 @@ import Layout from "./Layout/Layout";
 import Login from "./Pages/Auth/Login";
 import Register from "./Pages/Auth/Register";
 import GetQuote from "./Pages/Quote/GetQuote";
-import RequstQuote from "./Pages/Quote/RequstQuote";
+import RequstQuote from "./Pages/Quote/FCLQuote";
 import QuoteDashboard from "./Pages/Quote/Quotedashboard";
-import ServiceLevel from "./Pages/Quote/ServiceLevel";
-import Lcl from "./Pages/Quote/Lcl";
+import ServiceLevel from "./Pages/Quote/AirQuote";
+import Lcl from "./Pages/Quote/LCLQuote";
 
 export interface Route {
   index?: boolean;

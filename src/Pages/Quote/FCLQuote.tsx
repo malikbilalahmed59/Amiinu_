@@ -19,7 +19,7 @@ import { z } from "zod";
 import { useLocations } from "../../Hooks/useLocations";
 import { Cargo } from "../../services/types";
 import NavBar from "./NavBar";
-import "./requestquote.css";
+import "./FCLQuote.css";
 import schema from "./schema";
 
 import { axiosInstance } from "../../services/api-client";
@@ -30,7 +30,7 @@ import { toast } from "react-toastify";
 
 type FormData = z.infer<typeof schema>;
 
-const RequstQuote = () => {
+const FCLQuote = () => {
   const { isLoading } = useLocations();
 
   const [formData, setFormData] = useState<Cargo>({
@@ -123,11 +123,15 @@ const RequstQuote = () => {
 
   const handleContainerDelete = (id: number | string) => {
     setFormData((prevFormData) => {
-      const updatedContainers = prevFormData.container.filter((container) => container.id !== id);
-      const updatedContainersWithIds = updatedContainers.map((container, index) => ({
-        ...container,
-        id: index + 1, // Reassign IDs to be sequential starting from 1
-      }));
+      const updatedContainers = prevFormData.container.filter(
+        (container) => container.id !== id
+      );
+      const updatedContainersWithIds = updatedContainers.map(
+        (container, index) => ({
+          ...container,
+          id: index + 1, // Reassign IDs to be sequential starting from 1
+        })
+      );
       return {
         ...prevFormData,
         container: updatedContainersWithIds,
@@ -255,11 +259,11 @@ const RequstQuote = () => {
       console.log("apiData", apiData);
 
       const response = await axiosInstance.post("quote/shipments/", apiData);
-      toast.success("Successfully Submitted")
+      toast.success("Successfully Submitted");
       console.log("response", response);
     } catch (error) {
       console.log(error);
-      toast.success("Unable to Submit")
+      toast.success("Unable to Submit");
     }
   };
   console.log("errors", errors);
@@ -338,9 +342,7 @@ const RequstQuote = () => {
                     className="w-100"
                     placeholder="Search by Location"
                     value={formData.from}
-                    onChange={(value: any) =>
-                      handleCargoChange("from", value)
-                    }
+                    onChange={(value: any) => handleCargoChange("from", value)}
                   />
 
                   {formErrors?.from && (
@@ -440,7 +442,6 @@ const RequstQuote = () => {
                   <DatePicker
                     oneTap
                     {...register("departureDate")}
-               
                     name="departureDate"
                     className="w-100"
                     disabledDate={disablePastDates}
@@ -656,4 +657,4 @@ const RequstQuote = () => {
   );
 };
 
-export default RequstQuote;
+export default FCLQuote;

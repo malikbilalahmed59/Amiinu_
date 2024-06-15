@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   ButtonToolbar,
+  Checkbox,
   Col,
   DatePicker,
   FlexboxGrid,
@@ -14,17 +15,17 @@ import LclCargoForm from "../../Components/LclCargoForm";
 
 import moment from "moment";
 import { toast } from "react-toastify";
+import CustomSelectPicker from "../../Components/SelectPicker";
+import { incotermList } from "../../data/data";
+import disablePastDates from "../../helpers/disablePastDates";
 import { useLocations } from "../../Hooks/useLocations";
 import { axiosInstance } from "../../services/api-client";
 import { AirCargo } from "../../services/types";
 import FormControl from "./FormControl";
 import NavBar from "./NavBar";
-import { serviceModel } from "./schema";
-import "./servicelevel.scss";
-import disablePastDates from "../../helpers/disablePastDates";
-import { incotermList } from "../../data/data";
+import "./LCLQuote.scss";
 
-const Lcl = () => {
+const LCLQuote = () => {
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
   const [from_location, setFromLocation] = useState("");
   const [to_location, setToLocation] = useState("");
@@ -315,12 +316,26 @@ const Lcl = () => {
       toast.error("Fields are required.");
     }
   };
-
+  const [pickup, setPickup] = useState("");
+  const [showPickupAddress, setShowPickupAddress] = useState(false);
+  const [showDeliveryAddress, setShowDeliveryAddress] = useState(false);
+  const [delivery, setDelivery] = useState("");
+  const handleCheckboxChange2 = (value: any, checked2: any) => {
+    console.log(value);
+    setShowPickupAddress(checked2);
+  };
+  const handleCheckboxChange = (
+    value: any,
+    checked: boolean | ((prevState: boolean) => boolean)
+  ) => {
+    console.log(value);
+    setShowDeliveryAddress(checked);
+  };
   return (
     <>
       <NavBar />
       <div className="container-fluid pabel">
-        <Form model={serviceModel} fluid onSubmit={handleSubmit}>
+        <Form fluid onSubmit={handleSubmit}>
           <FlexboxGrid className="req-banner" justify="center">
             <FlexboxGrid.Item colspan={22} className="test"></FlexboxGrid.Item>
           </FlexboxGrid>
@@ -342,28 +357,41 @@ const Lcl = () => {
                     lg={8}
                     className="from"
                   >
-                    <Form.Group controlId="from">
-                      <Form.ControlLabel className="fromLabel">
-                        FROM
-                      </Form.ControlLabel>
-                      <SelectPicker
-                        loading={locationListLoading}
-                        data={transformedLocations || []}
-                        searchable
-                        name="from"
-                        className="w-100"
-                        placeholder="Search by Location"
-                        value={from_location}
-                        onChange={(e: any) => {
-                          setFromLocation(e);
-                        }}
-                      />
-                      {errors.from_location && (
-                        <Form.HelpText className="text-danger">
-                          {errors.from_location}
-                        </Form.HelpText>
+                    <CustomSelectPicker
+                      label="FROM"
+                      isLoading={locationListLoading}
+                      data={transformedLocations || []}
+                      name="from"
+                      placeholder="Search by Location"
+                      value={from_location}
+                      onChange={(e: any) => {
+                        setFromLocation(e);
+                      }}
+                      error={errors.from_location}
+                    />
+
+                    <div className="second-checkbox">
+                      <Checkbox
+                        onChange={handleCheckboxChange2}
+                        className="pickup-services"
+                      >
+                        Pickup Service
+                      </Checkbox>
+
+                      {showPickupAddress && (
+                        <div className="input-field">
+                          <FormControl
+                            type="text"
+                            name="Pickup Address"
+                            placeholder="Enter Pickup Address"
+                            value={pickup}
+                            onChange={(e: any) => {
+                              setPickup(e);
+                            }}
+                          />
+                        </div>
                       )}
-                    </Form.Group>
+                    </div>
                   </FlexboxGrid.Item>
 
                   <FlexboxGrid.Item as={Col} xs={24} sm={12} md={12} lg={8}>
@@ -387,6 +415,31 @@ const Lcl = () => {
                         </Form.HelpText>
                       )}
                     </Form.Group>
+                    <div className="first-checkbox">
+                      <Checkbox
+                        className="delivery-services"
+                        checked={showDeliveryAddress}
+                        onChange={(value, checked) =>
+                          handleCheckboxChange(value, checked)
+                        }
+                      >
+                        Delivery Service
+                      </Checkbox>
+
+                      {showDeliveryAddress && (
+                        <div className="" style={{ marginLeft: "10px" }}>
+                          <FormControl
+                            type="text"
+                            name="Delivery Address"
+                            placeholder="Enter Delivery Address"
+                            value={delivery}
+                            onChange={(e: any) => {
+                              setDelivery(e);
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </FlexboxGrid.Item>
 
                   <FlexboxGrid.Item as={Col} xs={24} sm={12} md={12} lg={4}>
@@ -581,7 +634,7 @@ const Lcl = () => {
               <ButtonToolbar>
                 <Button
                   onClick={(e) => handleSubmit(e)}
-                  appearance="primary"
+                  appearance="ghost"
                   block
                   style={{ width: "100px", marginBottom: "20px" }}
                 >
@@ -596,4 +649,4 @@ const Lcl = () => {
   );
 };
 
-export default Lcl;
+export default LCLQuote;
