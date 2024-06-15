@@ -630,8 +630,10 @@ const ServiceLevel = () => {
                 </div>
 
                 <div>
-                  {cargo.map((c) => (
+                  {cargo.map((c,i) => (
                     <CargoForm
+                    errors={{}}
+                    index={i}
                       key={c.id}
                       cargoState={c}
                       handleCargoChange={handleCargoChange}
