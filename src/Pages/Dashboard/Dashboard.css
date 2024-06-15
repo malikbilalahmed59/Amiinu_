@@ -5,15 +5,121 @@
 }
 .lastCard {
   padding-block: 30px;
+  background: white;
+  border-radius: 10px;
+  height: 330px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
-.panel{
+.indexTitle{
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Open Sans", sans-serif;  
+color: 050505;
+}
+.indexSubtitle{
+  padding-top: 0px;
+  font-size: 14px;
+  font-family: "Open Sans", sans-serif;  
+  color: 050505;
+}
+.indexSublabel{
+  border-radius: 50px;
+  width: 160px;
+  height: 36px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Open Sans", sans-serif;  
+  cursor: pointer;
+}
+.indexSublabel:hover{
+  background-color: #04246a !important;
+}
+
+
+/* .panel{
   box-shadow: 0px 0px 3.248px 0px rgba(114, 6, 6, 0.15) !important;
-  /* border: 1px solid red; */
+
+} */
+ .panelCardbg{
+  background: white !important;
+ }
+ .parentCard-milestone{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  padding-left: 10px;
+  padding-right: 10px;
+  gap: 10px;
+ }
+ .panelSmall-card{
+  /* background: palevioletred; */
+ }
+ .panelsm-card{
+  cursor: pointer;
+  background: #f1f5ff !important;
+  /* background: pink !important; */
+  padding: 18px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+height: 100px;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.panelsm-card:hover{
+  transform: translateY(1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+.cardbottom-text{
+  color: #021d49;
+  font-size: 32px;
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif ;
+}
+.tracktop-card{
+  display: flex;
+  align-items: center;
+}
+.tractText{
+  font-size: 10px;
+  font-family: "Open Sans", sans-serif ;
+  color: #021d4f;
 }
 
 @media only screen and (max-width: 1600px) {
   .lastCard {
     padding-block: 40px;
+  
+  }
+
+}
+@media only screen and (max-width: 1000px) {
+  .parentCard-milestone{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+   }
+   .lastCard {
+    padding-block: 40px;
+    height: 454px;
+  }
+
+}
+@media only screen and (max-width: 750px) {
+  .parentCard-milestone{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+   }
+   .lastCard {
+    padding-block: 40px;
+    height: 300px;
   }
 
 }
@@ -33,4 +139,17 @@
   .lastCard {
     margin-bottom: 10px;
   }
+  .parentCard-milestone{
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    padding-left: 10px;
+    padding-right: 10px;
+    gap: 10px;
+   }
+   .panelsm-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+   }
 }
