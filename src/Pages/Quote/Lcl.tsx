@@ -1,25 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useState, useEffect } from "react";
-import LclCargoForm from "../../Components/LclCargoForm";
+import { useState } from "react";
 import {
-  Col,
   Button,
   ButtonGroup,
   ButtonToolbar,
+  Col,
+  DatePicker,
   FlexboxGrid,
   Form,
   SelectPicker,
-  DatePicker,
 } from "rsuite";
+import LclCargoForm from "../../Components/LclCargoForm";
 
+import moment from "moment";
 import { toast } from "react-toastify";
+import { useLocations } from "../../Hooks/useLocations";
+import { axiosInstance } from "../../services/api-client";
+import { AirCargo } from "../../services/types";
 import FormControl from "./FormControl";
 import NavBar from "./NavBar";
 import { serviceModel } from "./schema";
 import "./servicelevel.scss";
-import { AirCargo } from "../../services/types";
-import { axiosInstance } from "../../services/api-client";
-import moment from "moment";
+import disablePastDates from "../../helpers/disablePastDates";
+import { incotermList } from "../../data/data";
 
 const Lcl = () => {
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
@@ -29,10 +32,8 @@ const Lcl = () => {
   const [customer_reference, setcustomer_reference] = useState("");
   const [serviceType] = useState<any>(null);
 
-  const [location, setLocation] = useState([]);
   const [selected, setSelected] = useState<string>("KG/CM");
   const [celsiusstate, setcelsiusstate] = useState<string>("CELSIUS");
-
 
   const searchParams = new URLSearchParams(window.location.search);
   const method = searchParams.get("method");
@@ -73,7 +74,7 @@ const Lcl = () => {
   ];
 
   const [cargo, setCargo] = useState<any[]>(initialAirCargo);
-  console.log("cargo", cargo);
+
   const handleCargoChange = (id: number, name: string, value: any) => {
     const updatedCargos = cargo.map((c) => {
       if (c.id === id) {
@@ -142,43 +143,25 @@ const Lcl = () => {
   };
 
   const handleCargoDelete = (id: number | string) => {
-    setCargo(prevList => {
-      const updatedList = prevList.filter(cargo => cargo.id !== id);
+    setCargo((prevList) => {
+      const updatedList = prevList.filter((cargo) => cargo.id !== id);
       return updatedList.map((cargo, index) => ({
         ...cargo,
-        id: index + 1, 
+        id: index + 1,
       }));
     });
   };
 
-  console.log("cargo", cargo);
+  const { data: locationList, isLoading: locationListLoading } = useLocations();
 
-  useEffect(() => {
-    const fetchLocation = async () => {
-      try {
-        const response = await axiosInstance.get("/quote/locations/");
-        console.log("location", response);
-        setLocation(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchLocation();
-  }, []);
-
-  const transformedLocations = location.map((loc: any) => ({
-    label: loc?.name + "," + loc.port_type + "," + loc.country,
-    value: loc?.id,
-  }));
-
-  const disablePastDates = (date: any) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date < today;
-  };
+  const transformedLocations =
+    !locationListLoading &&
+    (locationList || []).map((loc: any) => ({
+      label: loc?.name + "," + loc.port_type + "," + loc.country,
+      value: loc?.id,
+    }));
 
   const transformToApiData = () => {
-    
     return {
       type: method,
       transport_mode: mode,
@@ -191,7 +174,7 @@ const Lcl = () => {
       pickup_service: false,
       delivery_service: false,
       pickup_address: null,
-      delivery_address:null,
+      delivery_address: null,
       cargo: cargo.map((container) => ({
         description: container.comiditydiscription || null,
         container_type: "40ST",
@@ -230,7 +213,7 @@ const Lcl = () => {
           : {},
         reefer: false,
         reefer_details: {},
-    })),
+      })),
       service_level:
         serviceType === "air-value"
           ? 1
@@ -239,39 +222,107 @@ const Lcl = () => {
           : serviceType === "air-now"
           ? 3
           : null,
-      insurance_needed:  null,
-      insurance_value:  null,
-      insurance_currency:  null,
-      notes:  null,
+      insurance_needed: null,
+      insurance_value: null,
+      insurance_currency: null,
+      notes: null,
       customer_reference: customer_reference || null,
     };
   };
 
+  const [errors, setErrors] = useState<any>({});
+
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!from_location) newErrors.from_location = "From location is required.";
+    if (!to_location) newErrors.to_location = "To location is required.";
+    if (!departureDate) newErrors.departureDate = "Departure date is required.";
+    if (!incoterm) newErrors.incoterm = "Incoterm is required.";
+    if (!customer_reference)
+      newErrors.customer_reference = "Customer reference is required.";
+
+    cargo.forEach((c, index) => {
+      if (!c.comiditydiscription)
+        newErrors[`cargo_${index}_comiditydiscription`] =
+          "Commodity description is required.";
+      if (!c.quantity)
+        newErrors[`cargo_${index}_quantity`] = "Quantity is required.";
+      if (!c.packages)
+        newErrors[`cargo_${index}_packages`] = "Package type is required.";
+      if (!c.weight) newErrors[`cargo_${index}_weight`] = "Weight is required.";
+      if (!c.lcm) newErrors[`cargo_${index}_lcm`] = "Length (L) is required.";
+      if (!c.wcm) newErrors[`cargo_${index}_wcm`] = "Width (W) is required.";
+      if (!c.hcm) newErrors[`cargo_${index}_hcm`] = "Height (H) is required.";
+      if (!c.code_character)
+        newErrors[`cargo_${index}_code_character`] = "HS code is required.";
+
+      if (c.dangerous_good) {
+        if (!c.dangerous_good_details.un_number)
+          newErrors[`cargo_${index}_un_number`] =
+            "UN Number is required for dangerous goods.";
+        if (!c.dangerous_good_details.proper_shipping_name)
+          newErrors[`cargo_${index}_proper_shipping_name`] =
+            "Proper shipping name is required for dangerous goods.";
+        if (!c.dangerous_good_details.class_division)
+          newErrors[`cargo_${index}_class_division`] =
+            "Class/Division is required for dangerous goods.";
+        if (!c.dangerous_good_details.subdivision)
+          newErrors[`cargo_${index}_subdivision`] =
+            "Subdivision is required for dangerous goods.";
+        if (!c.dangerous_good_details.packaging_group)
+          newErrors[`cargo_${index}_packaging_group`] =
+            "Packaging group is required for dangerous goods.";
+        if (!c.dangerous_good_details.packaging_instructions)
+          newErrors[`cargo_${index}_packaging_instructions`] =
+            "Packaging instructions are required for dangerous goods.";
+        if (!c.dangerous_good_details.DangeriousQuantity)
+          newErrors[`cargo_${index}_DangeriousQuantity`] =
+            "Quantity is required for dangerous goods.";
+        if (!c.dangerous_good_details.total_net_quantity)
+          newErrors[`cargo_${index}_total_net_quantity`] =
+            "Total net quantity is required for dangerous goods.";
+        if (!c.dangerous_good_details.type_of_packing)
+          newErrors[`cargo_${index}_type_of_packing`] =
+            "Type of packing is required for dangerous goods.";
+        if (!c.dangerous_good_details.authorization)
+          newErrors[`cargo_${index}_authorization`] =
+            "Authorization is required for dangerous goods.";
+      }
+    });
+
+    setErrors(newErrors);
+    return newErrors;
+  };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      console.log(errors);
+      return;
+    }
+    setErrors({});
     try {
       const apiData = transformToApiData();
       console.log("apiData", apiData);
       const response = await axiosInstance.post("quote/shipments/", apiData);
       console.log("response", response);
-      toast.success("Successfully Submitted")
+      toast.success("Successfully Submitted");
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Unable to submit")
+      toast.error("Fields are required.");
     }
   };
 
-  console.log(departureDate);
   return (
     <>
       <NavBar />
       <div className="container-fluid pabel">
         <Form model={serviceModel} fluid onSubmit={handleSubmit}>
-          <FlexboxGrid className="req-banner" justify="center" >
-            <FlexboxGrid.Item
-              colspan={22}
-              className="test"
-            ></FlexboxGrid.Item>
+          <FlexboxGrid className="req-banner" justify="center">
+            <FlexboxGrid.Item colspan={22} className="test"></FlexboxGrid.Item>
           </FlexboxGrid>
           <div className="conatiner ">
             <FlexboxGrid justify="center" className="filter-bar first-box">
@@ -292,12 +343,12 @@ const Lcl = () => {
                     className="from"
                   >
                     <Form.Group controlId="from">
-                
                       <Form.ControlLabel className="fromLabel">
                         FROM
                       </Form.ControlLabel>
                       <SelectPicker
-                        data={transformedLocations}
+                        loading={locationListLoading}
+                        data={transformedLocations || []}
                         searchable
                         name="from"
                         className="w-100"
@@ -307,15 +358,20 @@ const Lcl = () => {
                           setFromLocation(e);
                         }}
                       />
+                      {errors.from_location && (
+                        <Form.HelpText className="text-danger">
+                          {errors.from_location}
+                        </Form.HelpText>
+                      )}
                     </Form.Group>
-                  
                   </FlexboxGrid.Item>
 
                   <FlexboxGrid.Item as={Col} xs={24} sm={12} md={12} lg={8}>
                     <Form.Group controlId="to">
                       <Form.ControlLabel className="to">TO</Form.ControlLabel>
                       <SelectPicker
-                        data={transformedLocations}
+                        loading={locationListLoading}
+                        data={transformedLocations || []}
                         searchable
                         name="to"
                         className="w-100"
@@ -325,8 +381,12 @@ const Lcl = () => {
                           setToLocation(e);
                         }}
                       />
+                      {errors.to_location && (
+                        <Form.HelpText className="text-danger">
+                          {errors.to_location}
+                        </Form.HelpText>
+                      )}
                     </Form.Group>
-                  
                   </FlexboxGrid.Item>
 
                   <FlexboxGrid.Item as={Col} xs={24} sm={12} md={12} lg={4}>
@@ -336,19 +396,17 @@ const Lcl = () => {
                       </Form.ControlLabel>
                       <DatePicker
                         oneTap
-                        // {...register("departureDate")}
-                        // error={errors.departureDate?.message}
                         name="departureDate"
                         className="w-100"
                         disabledDate={disablePastDates}
                         value={departureDate}
-                        onChange={(value:any) => setDepartureDate(value)}
+                        onChange={(value: any) => setDepartureDate(value)}
                       />
-                      {/* {formErrors?.departureDate && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.departureDate}
-                    </Form.HelpText>
-                  )} */}
+                      {errors.departureDate && (
+                        <Form.HelpText className="text-danger">
+                          {errors.departureDate}
+                        </Form.HelpText>
+                      )}
                     </Form.Group>
                   </FlexboxGrid.Item>
 
@@ -368,47 +426,29 @@ const Lcl = () => {
                         </a>
                       </Form.ControlLabel>
                       <SelectPicker
-                        data={[
-                          ["EXW", "EXW - Ex Works"],
-                          ["FCA", "FCA - Free Carrier"],
-                          ["FOB", "FOB - Free On Board"],
-                          ["CPT", "CPT - Carriage Paid To"],
-                          ["CFR", "CFR - Cost and Freight"],
-                          ["CIF", "CIF - Cost, Insurance and Freight"],
-                          ["CIP", "CIP - Carriage and Insurance Paid To"],
-                          ["DAP", "DAP - Delivered At Place"],
-                          ["DDP", "DDP - Delivered Duty Paid"],
-                        ].map(([value, label]) => ({ label, value }))}
+                        data={incotermList}
                         searchable
-                        // {...register("incoterm")}
                         name="incoterm"
-                        // error={errors.incoterm?.message}
                         className="w-100"
                         placeholder="Search by incoterm"
                         value={incoterm}
                         onChange={(value: any) => setincoterm(value)}
                       />
-                      {/* {formErrors?.incoterm && (
-                    <Form.HelpText className="text-danger">
-                      {formErrors?.incoterm}
-                    </Form.HelpText>
-                  )} */}
+
+                      {errors.incoterm && (
+                        <Form.HelpText className="text-danger">
+                          {errors.incoterm}
+                        </Form.HelpText>
+                      )}
                     </Form.Group>
                   </FlexboxGrid.Item>
                 </FlexboxGrid>
               </FlexboxGrid.Item>
-
-              {/* <div className="col-md-3 mt-2">
-                <Form.Group controlId="to">
-                  <Checkbox>Label</Checkbox>
-                </Form.Group>
-              </div> */}
             </FlexboxGrid>
-           
           </div>
           <div className="container ">
             <div className="row mt-4">
-              <div className="col-md-8">
+              <div className="col-md-12">
                 <div className="top-section">
                   <div className="leftTop ">
                     <span>Cargo</span>
@@ -488,9 +528,11 @@ const Lcl = () => {
                 </div>
 
                 <div>
-                  {cargo.map((c) => (
+                  {cargo.map((c, i) => (
                     <LclCargoForm
+                      index={i}
                       key={c.id}
+                      errors={errors}
                       cargoState={c}
                       handleCargoChange={handleCargoChange}
                       handleCargoDelete={handleCargoDelete}
@@ -498,7 +540,7 @@ const Lcl = () => {
                   ))}
                   <Button
                     onClick={handleAddCargo}
-                    appearance="primary"
+                    appearance="ghost"
                     style={{ margin: "20px 0px" }}
                   >
                     Add Cargo
@@ -506,7 +548,7 @@ const Lcl = () => {
                 </div>
 
                 <div className="row mt-3 tt">
-                  <div className="col-md-8">
+                  <div className="col-md-12">
                     <div className="reference">
                       <div className="refer-title">
                         <span>References</span>
@@ -521,13 +563,13 @@ const Lcl = () => {
                             onChange={(e: any) => {
                               setcustomer_reference(e);
                             }}
+                            error={errors.customer_reference}
                           />
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-             
               </div>
             </div>
           </div>
@@ -538,12 +580,9 @@ const Lcl = () => {
             <Form.Group className="mt-3">
               <ButtonToolbar>
                 <Button
-                
                   onClick={(e) => handleSubmit(e)}
-                
-
                   appearance="primary"
-                  color="red"
+                  block
                   style={{ width: "100px", marginBottom: "20px" }}
                 >
                   Submit

@@ -8,10 +8,12 @@ import { TiMessages } from "react-icons/ti";
 import "./quotedashboard.css";
 import { useRequestList } from "../../Hooks/useRequestList";
 import { Loader } from "rsuite";
+import { useNavigate } from "react-router-dom";
+import { Routes } from "../../constant";
 
 const QuoteDashboard = () => {
   const { data, isLoading } = useRequestList();
-
+  const navigate = useNavigate();
   return (
     <>
       <div className="main">
@@ -36,7 +38,12 @@ const QuoteDashboard = () => {
               </div>
               <div className="right-section">
                 <button className="quote-report">Quote Report</button>
-                <button className="quote-report">New quote </button>
+                <button
+                  className="quote-report"
+                  onClick={() => navigate(`../${Routes.GET_QUOTE}`)}
+                >
+                  New quote{" "}
+                </button>
               </div>
             </div>
           </div>

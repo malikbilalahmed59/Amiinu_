@@ -13,6 +13,7 @@ interface Props {
   label?: string;
   isLoading?: boolean;
   data: ISelectPicker[];
+  error?: string;
 }
 
 const CustomSelectPicker = ({
@@ -22,6 +23,7 @@ const CustomSelectPicker = ({
   onChange,
   label,
   isLoading = false,
+  error,
 }: Props) => {
   return (
     <Form.Group>
@@ -36,6 +38,7 @@ const CustomSelectPicker = ({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onChange={(e) => onChange(e as any)}
       />
+      {error && <Form.HelpText className="text-danger">{error}</Form.HelpText>}
     </Form.Group>
   );
 };

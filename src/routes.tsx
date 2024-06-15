@@ -52,11 +52,6 @@ export const routes: Route[] = [
     element: <ServiceLevel />,
     name: "Service Level",
   },
-  {
-    path: Routes.Lcl,
-    element: <Lcl />,
-    name: "lcl",
-  },
 ];
 const router = createBrowserRouter([
   {
@@ -71,6 +66,12 @@ const router = createBrowserRouter([
     path: Routes.REGISTER,
     element: SigUpElement,
   },
+  isToken()
+    ? {
+        path: "app/" + Routes.Lcl,
+        element: <Lcl />,
+      }
+    : {},
   isToken()
     ? {
         path: "app/" + Routes.REQ_QUOTE,
