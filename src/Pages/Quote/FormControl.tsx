@@ -8,6 +8,7 @@ interface Props {
   focus?: boolean;
   onChange: (v: string) => void;
   label?: string;
+  error?: string;
 }
 
 export function FormControl({
@@ -18,6 +19,7 @@ export function FormControl({
   name,
   type = "text",
   label,
+  error,
 }: Props) {
   return (
     <Form.Group>
@@ -45,6 +47,7 @@ export function FormControl({
           onChange={(e) => onChange(e)}
         />
       )}
+      {error && <Form.HelpText className="text-danger">{error}</Form.HelpText>}
     </Form.Group>
   );
 }

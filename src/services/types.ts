@@ -1,5 +1,3 @@
-
-
 interface dangerous_good_details {
   un_number: number | null;
   proper_shipping_name: string;
@@ -7,14 +5,14 @@ interface dangerous_good_details {
   subdivision: string;
   packaging_group: string;
   packaging_instructions: string;
-  DangeriousQuantity:number | null;
+  DangeriousQuantity: number | null;
   total_net_quantity: number | null;
   type_of_packing: string;
   authorization: string;
 }
 
 interface reefer_details {
-  temperature: number | null ;
+  temperature: number | null;
   ventilation: number | null;
   humidity: number | null;
 }
@@ -46,18 +44,15 @@ export interface Cargo {
   showDeliveryAddress: boolean;
 
   customer_reference: string;
-
 }
-
 
 interface Temperature_details {
   min: string;
   max: string;
 }
 
-
 export interface AirCargo {
-  id: number
+  id: number;
   comiditydiscription: string;
   quantity: string;
   packages: string;
@@ -66,16 +61,22 @@ export interface AirCargo {
   wcm: string;
   hcm: string;
   code_character: string;
-  v_weight:string;
-  tempearture: boolean,
-  dangerous_good: boolean,
-  temperature_details: Temperature_details ;
-  dangerous_good_details: dangerous_good_details ;
+  v_weight: string;
+  tempearture: boolean;
+  dangerous_good: boolean;
+  temperature_details: Temperature_details;
+  dangerous_good_details: dangerous_good_details;
   non_stackable: boolean | null;
 }
 
 export interface CargoFormProps {
   cargoState: AirCargo;
-  handleCargoChange: (id: number, name: string, value: string | number | boolean | Date) => void;
+  handleCargoChange: (
+    id: number,
+    name: string,
+    value: string | number | boolean | Date
+  ) => void;
   handleCargoDelete: (id: number | string) => void;
+  errors: any;
+  index: number;
 }

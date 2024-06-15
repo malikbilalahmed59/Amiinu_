@@ -18,11 +18,12 @@ import { FaFireAlt } from "react-icons/fa";
 import { divisionList } from "../data/data";
 import { FaTrashAlt } from "react-icons/fa";
 
-
 const LclCargoForm: React.FC<CargoFormProps> = ({
   cargoState,
   handleCargoChange,
-  handleCargoDelete
+  handleCargoDelete,
+  index,
+  errors,
 }) => {
   const handleChange = (name: string, value: any) => {
     handleCargoChange(cargoState.id, name, value);
@@ -32,13 +33,13 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
       <div className="bottom-section my-3">
         <div className="d-flex align-items-center justify-content-between bottom-title">
           <span>Cargo # {cargoState.id}</span>
-          { cargoState.id !== 1 &&(
-          <FaTrashAlt 
-          size={20}
-          onClick={()=> handleCargoDelete(cargoState.id)}
-            style={{ cursor: 'pointer', marginLeft: '10px', color: 'blue' }} 
-          />
-)        }
+          {cargoState.id !== 1 && (
+            <FaTrashAlt
+              size={20}
+              onClick={() => handleCargoDelete(cargoState.id)}
+              style={{ cursor: "pointer", marginLeft: "10px", color: "blue" }}
+            />
+          )}
         </div>
         <div className="commidity-div mt-3">
           <FormControl
@@ -49,10 +50,11 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
             onChange={(e: any) => {
               handleChange("comiditydiscription", e);
             }}
+            error={errors[`cargo_${index}_comiditydiscription`]}
           />
         </div>
         <div className="commidity-div mt-3">
-          <div className="row testtt">
+          <div className="row testtt align-items-center">
             <div className="col-md-3">
               <FormControl
                 label="Quantity"
@@ -63,6 +65,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                 onChange={(e: any) => {
                   handleChange("quantity", e);
                 }}
+                error={errors[`cargo_${index}_quantity`]}
               />
             </div>
             <div className="col-md-2">
@@ -75,42 +78,46 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                 onChange={(e: any) => {
                   handleChange("packages", e);
                 }}
+                error={errors[`cargo_${index}_packages`]}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 pt-3">
               <CgMathPlus size={"18px"} style={{ rotate: "45deg" }} />
             </div>
             <div className="col-md-2">
               <FormControl
-                label="   W (KG)"
+                label="W (KG)"
                 name="weight"
                 placeholder=""
                 value={cargoState.weight}
                 onChange={(e: any) => {
                   handleChange("weight", e);
                 }}
+                error={errors[`cargo_${index}_weight`]}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 pt-3">
               <RiEqualFill size={"18px"} />
             </div>
             <div className="col-md-3">
-  <FormControl
-    label="TOTAL"
-    name="total quantity"
-    placeholder="Total"
-    value={
-      cargoState.weight && cargoState.quantity
-        ? (parseInt(cargoState.weight) * parseInt(cargoState.quantity)).toString()
-        : ""
-    }
-    onChange={() => {
-      
-    }}
-  />
-</div>
+              <FormControl
+                label="TOTAL"
+                name="total quantity"
+                placeholder="Total"
+                value={
+                  cargoState.weight && cargoState.quantity
+                    ? (
+                        parseInt(cargoState.weight) *
+                        parseInt(cargoState.quantity)
+                      ).toString()
+                    : ""
+                }
+                error={""}
+                onChange={() => {}}
+              />
+            </div>
           </div>
-          <div className="row secondCalculation">
+          <div className="row secondCalculation align-items-center">
             <div className="col-md-3">
               <FormControl
                 label="L (CM)*"
@@ -120,6 +127,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                 onChange={(e: any) => {
                   handleChange("lcm", e);
                 }}
+                error={errors[`cargo_${index}_lcm`]}
               />
             </div>
             <div className="col-md-2">
@@ -131,9 +139,10 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                 onChange={(e: any) => {
                   handleChange("wcm", e);
                 }}
+                error={errors[`cargo_${index}_wcm`]}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 pt-3">
               <CgMathPlus size={"18px"} style={{ rotate: "45deg" }} />
             </div>
             <div className="col-md-2">
@@ -145,43 +154,32 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                 onChange={(e: any) => {
                   handleChange("hcm", e);
                 }}
+                error={errors[`cargo_${index}_hcm`]}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 pt-3">
               <RiEqualFill size={"18px"} />
             </div>
             <div className="col-md-3">
-              <Form.ControlLabel className="to">TOTAL</Form.ControlLabel>
-
               <FormControl
+                label="TOTAL"
                 name=""
                 placeholder=""
                 value={
                   cargoState.hcm && cargoState.wcm && cargoState.lcm
-                    ? (parseInt(cargoState.hcm) *
-                      parseInt(cargoState.wcm) *
-                      parseInt(cargoState.lcm)).toString()
+                    ? (
+                        parseInt(cargoState.hcm) *
+                        parseInt(cargoState.wcm) *
+                        parseInt(cargoState.lcm)
+                      ).toString()
                     : ""
                 }
-                onChange={()=>{
-
-                }}
+                onChange={() => {}}
               />
             </div>
           </div>
 
           <div className="row mt-2">
-            {/* <div className="col-md-4">
-              <FormControl
-                label="VOLUMETRIC WEIGHT"
-                placeholder=""
-                name="v_weight"
-                value={cargoState.v_weight}
-                onChange={(e: any) => {
-                  handleChange("v_weight", e);
-                }}
-              />
-            </div> */}
             <div className="col-md-8">
               <FormControl
                 label="HS CODE"
@@ -191,22 +189,23 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                 onChange={(e: any) => {
                   handleChange("code_character", e);
                 }}
+                error={errors[`cargo_${index}_code_character`]}
               />
             </div>
           </div>
           <div className="row pt-3">
             <div className="col-md-12">
               <Form.Group>
-              <Form.Group as={Panel} bordered className="p-0 mb-3">
-          <Checkbox
-          checked={cargoState.non_stackable ?? false}
-          onChange={() => {
-            handleChange("non_stackable", !cargoState.non_stackable);
-          }}
-        >
-         Non Stackable
-        </Checkbox>
-      </Form.Group>
+                <Form.Group as={Panel} bordered className="p-0 mb-3">
+                  <Checkbox
+                    checked={cargoState.non_stackable ?? false}
+                    onChange={() => {
+                      handleChange("non_stackable", !cargoState.non_stackable);
+                    }}
+                  >
+                    Non Stackable
+                  </Checkbox>
+                </Form.Group>
                 <Accordion
                   bordered
                   className="mt-2"
@@ -270,6 +269,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                         onChange={(e: any) => {
                           handleChange("dangerous_good_details.un_number", e);
                         }}
+                        error={errors[`cargo_${index}_un_number`]}
                       />
                       <FormControl
                         label="PROPER SHIPPING NAME"
@@ -284,6 +284,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                             e
                           );
                         }}
+                        error={errors[`cargo_${index}_proper_shipping_name`]}
                       />
                       <div className="row">
                         <div className="col-md-6">
@@ -300,6 +301,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                                 e
                               );
                             }}
+                            error={errors[`cargo_${index}_class_division`]}
                             placeholder="Select a class/division"
                           />
                         </div>
@@ -309,6 +311,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                             label="SUBDIVISION"
                             placeholder="Type somethings ...."
                             name="subdivision"
+                            error={errors[`cargo_${index}_subdivision`]}
                             value={
                               cargoState.dangerous_good_details.subdivision
                             }
@@ -342,6 +345,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                                 e
                               );
                             }}
+                            error={errors[`cargo_${index}_packaging_group`]}
                           />
                         </div>
 
@@ -350,6 +354,9 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                             label="PACKAGING INSTRUCTIONS*"
                             placeholder="Type somethings ...."
                             name="packageinstruction"
+                            error={
+                              errors[`cargo_${index}_packaging_instructions`]
+                            }
                             value={
                               cargoState.dangerous_good_details
                                 .packaging_instructions
@@ -366,27 +373,32 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
 
                       <div className="row mt-3">
                         <div className="col-md-6">
-                          <span>QUANTITY</span>
-                          <InputGroup>
-                            <InputGroup.Button>+</InputGroup.Button>
-                            <Input
-                              placeholder=""
-                              name="DangeriousQuantity"
-                              value={
-                                cargoState.dangerous_good_details
-                                  .DangeriousQuantity != null
-                                  ? cargoState.dangerous_good_details.DangeriousQuantity.toString()
-                                  : ""
-                              }
-                              onChange={(e) => {
-                                handleChange(
-                                  "dangerous_good_details.DangeriousQuantity",
-                                  e
-                                );
-                              }}
-                            />
-                            <InputGroup.Button>-</InputGroup.Button>
-                          </InputGroup>
+                          <Form.Group>
+                            <Form.ControlLabel>QUANTITY</Form.ControlLabel>
+                            <InputGroup>
+                              <InputGroup.Button>+</InputGroup.Button>
+                              <Input
+                                placeholder=""
+                                name="DangeriousQuantity"
+                                value={
+                                  cargoState.dangerous_good_details
+                                    .DangeriousQuantity != null
+                                    ? cargoState.dangerous_good_details.DangeriousQuantity.toString()
+                                    : ""
+                                }
+                                onChange={(e) => {
+                                  handleChange(
+                                    "dangerous_good_details.DangeriousQuantity",
+                                    e
+                                  );
+                                }}
+                              />
+                              <InputGroup.Button>-</InputGroup.Button>
+                            </InputGroup>
+                            <Form.HelpText className="text-danger">
+                              {errors[`cargo_${index}_DangeriousQuantity`]}
+                            </Form.HelpText>
+                          </Form.Group>
                         </div>
                         <div className="col-md-6">
                           <FormControl
@@ -400,6 +412,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                                 ? cargoState.dangerous_good_details.total_net_quantity.toString()
                                 : ""
                             }
+                            error={errors[`cargo_${index}_total_net_quantity`]}
                             onChange={(e) => {
                               handleChange(
                                 "dangerous_good_details.total_net_quantity",
@@ -419,6 +432,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                             value={
                               cargoState.dangerous_good_details.type_of_packing
                             }
+                            error={errors[`cargo_${index}_type_of_packing`]}
                             onChange={(e) => {
                               handleChange(
                                 "dangerous_good_details.type_of_packing",
@@ -437,6 +451,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                             value={
                               cargoState.dangerous_good_details.authorization
                             }
+                            error={errors[`cargo_${index}_authorization`]}
                             onChange={(e) => {
                               handleChange(
                                 "dangerous_good_details.authorization",

@@ -19,20 +19,10 @@ const { StringType } = Schema.Types;
 const model = Schema.Model({
   firstName: StringType()
     .isRequired("First name is required.")
-    .minLength(3, "First name must be at least 3 characters long.")
-    .maxLength(8, "First name must be no more than 8 characters long.")
-    .pattern(
-      /^[A-Za-z]+$/,
-      "First name must contain only alphabetic characters."
-    ),
+    .minLength(3, "First name must be at least 3 characters long."),
   lastName: StringType()
     .isRequired("Last name is required.")
-    .minLength(3, "Last name must be at least 3 characters long.")
-    .maxLength(8, "Last name must be no more than 8 characters long.")
-    .pattern(
-      /^[A-Za-z]+$/,
-      "First name must contain only alphabetic characters."
-    ),
+    .minLength(3, "Last name must be at least 3 characters long."),
   email: StringType()
     .isEmail("Please enter a valid email address.")
     .isRequired("Email is required."),
@@ -48,17 +38,12 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const { mutate, isPending } = useRegister();
 
-  // State variable to store the selected option, defaulting to the first option
-
   const handleSubmit = () => {
     if (!firstName) return toast.info("First name is required.");
-    if (!/^[A-Za-z]+$/.test(firstName))
-      return toast.info("First name must contain only alphabetic characters.");
+
     if (firstName.length < 3 || firstName.length > 8)
       return toast.info("First name must be between 3 and 8 characters long.");
     if (!lastName) return toast.info("Last name is required.");
-    if (!/^[A-Za-z]+$/.test(lastName))
-      return toast.info("Last name must contain only alphabetic characters.");
     if (lastName.length < 3 || lastName.length > 8)
       return toast.info("Last name must be between 3 and 8 characters long.");
     if (!email) return toast.info("Email is required.");

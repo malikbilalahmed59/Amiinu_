@@ -11,7 +11,7 @@ import { Dropdown, Loader } from "rsuite";
 
 const QuoteDashboard = () => {
   const { data, isLoading } = useRequestList();
-
+  const navigate = useNavigate();
   return (
     <>
       <div className="main">
@@ -36,7 +36,12 @@ const QuoteDashboard = () => {
               </div>
               <div className="right-section">
                 <button className="quote-report">Quote Report</button>
-                <button className="quote-report">New quote </button>
+                <button
+                  className="quote-report"
+                  onClick={() => navigate(`../${Routes.GET_QUOTE}`)}
+                >
+                  New quote{" "}
+                </button>
               </div>
             </div>
           </div>

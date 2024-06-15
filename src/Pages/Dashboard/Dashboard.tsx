@@ -1,7 +1,6 @@
-import { FlexboxGrid, Panel, Stack, Text, Col, Button } from "rsuite";
-import { PiHandArrowDownLight } from "react-icons/pi";
-import { PiDiamondsFourLight } from "react-icons/pi";
 import { FcInfo } from "react-icons/fc";
+import { PiDiamondsFourLight, PiHandArrowDownLight } from "react-icons/pi";
+import { Button, Col, FlexboxGrid, Panel, Stack, Text } from "rsuite";
 import "./Dashboard.css";
 const Dashboard = () => {
   const options = [
@@ -47,27 +46,12 @@ const Dashboard = () => {
     },
   ];
   return (
-    <FlexboxGrid
-      style={{
-        height: "",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-      className="firstBoxs"
-    >
-      <FlexboxGrid.Item colspan={18}>
-        <FlexboxGrid>
-          <FlexboxGrid.Item
-            className="mb-2"
-            as={Col}
-            xs={22}
-            sm={20}
-            md={16}
-            lg={24}
-            xl={16}
-          >
+    <div className="firstBoxs container">
+      <>
+        <div className="row">
+          <div className="mb-2 col-md-8">
             <Panel bordered>
-              <Stack className="mb-2 ms-2 stack-text" >
+              <Stack className="mb-2 ms-2 stack-text">
                 <Text size="lg" className="me-2 stack-text" weight="bold">
                   Track
                 </Text>
@@ -104,9 +88,9 @@ const Dashboard = () => {
                 ))}
               </FlexboxGrid>
             </Panel>
-          </FlexboxGrid.Item>
+          </div>
           {[1, 2, 3, 4].map(() => (
-            <FlexboxGrid.Item as={Col} xs={22} sm={20} md={4} lg={6} xl={8}>
+            <div className="col-md-4">
               <Panel bordered className="text-center lastCard">
                 <PiDiamondsFourLight color="blue" size={30} />
                 <Text size="lg" className="pt-4 " weight="bold">
@@ -119,11 +103,11 @@ const Dashboard = () => {
                 </Text>
                 <Button appearance="primary">Track</Button>
               </Panel>
-            </FlexboxGrid.Item>
+            </div>
           ))}
-        </FlexboxGrid>
-      </FlexboxGrid.Item>
-    </FlexboxGrid>
+        </div>
+      </>
+    </div>
   );
 };
 

@@ -37,9 +37,13 @@ const CustomNavbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
+              <NavLink
+                className="nav-link active"
+                aria-current="page"
+                to={Routes.DASHBOARD}
+              >
                 Home
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item dropdown">
               <a
@@ -105,8 +109,6 @@ const CustomNavbar = () => {
                 Support
               </a>
             </li>
-
-      
           </ul>
           <form className="d-flex avatar-form">
             <Avatar

@@ -2,9 +2,13 @@ body {
   background-color: #f4f6fc;
 }
 
+:root {
+  --bs-body-font-family: "Open Sans", sans-serif !important
+}
+
 * {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  /* outline: 1px solid hotpink; */
+  font-family: "Open Sans", sans-serif !important
+    /* outline: 1px solid hotpink; */
 }
 
 .rs-picker-toggle .rs-picker-toggle-placeholder {
@@ -12,6 +16,7 @@ body {
   color: var(--rs-text-secondary);
   text-transform: initial;
 }
+
 .rs-navbar-default {
   background-color: #e001ff !important;
   color: white;
