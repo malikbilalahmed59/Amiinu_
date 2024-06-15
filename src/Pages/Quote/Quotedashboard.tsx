@@ -16,7 +16,7 @@ const QuoteDashboard = () => {
   return (
     <>
       <div className="main">
-        <div className="container">
+        <div className="container eses">
           <div className="topsection-main">
             <div className="top-section">
               <div className="left-section">
@@ -167,7 +167,7 @@ const QuoteDashboard = () => {
                   </div>
 
                   <div className="bottom-right">
-                    <div className="dropdown">
+                    {/* <div className="dropdown">
                       <button
                         className="btn btn-secondary dropdown-toggle"
                         type="button"
@@ -197,7 +197,17 @@ const QuoteDashboard = () => {
                           </a>
                         </li>
                       </ul>
-                    </div>
+                    </div> */}
+                      <Dropdown title="Other Actions" className="parent">
+    <Dropdown.Item >
+      Copy Request
+    </Dropdown.Item>
+    <Dropdown.Item  >
+      Contact Us
+    </Dropdown.Item>
+   
+  </Dropdown>
+
                     <button className="copy-request">
                       {" "}
                       <FaRegCopy />
