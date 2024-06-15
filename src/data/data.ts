@@ -150,3 +150,29 @@ export const incotermList = [
   ["DAP", "DAP - Delivered At Place"],
   ["DDP", "DDP - Delivered Duty Paid"],
 ].map(([value, label]) => ({ label, value }));
+export const containerTypeList = [
+  {
+    label: "20' FLAT RACK CNTR(S)",
+    value: "20FR",
+  },
+  {
+    label: "20' OPEN TOP CNTR(S)",
+    value: "20OT",
+  },
+  { label: "20' PLATFORM(S)", value: "20PL" },
+  { label: "20' REEFER(S)", value: "20RE" },
+  {
+    label: "40' HIGH CUBE REEFER(S)",
+    value: "40HR",
+  },
+  {
+    label: "40' FLAT RACK CNTR(S)",
+    value: "40FR",
+  },
+  { label: "40' REEFER(S)", value: "40RE" },
+  {
+    label: "40' OPEN TOP CNTR(S)",
+    value: "40OT",
+  },
+  { label: "40' PLATFORM(S)", value: "40PL" },
+];

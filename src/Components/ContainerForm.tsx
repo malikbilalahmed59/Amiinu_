@@ -17,6 +17,8 @@ import FormControl from "../Pages/Quote/FormControl";
 import { GiFireflake } from "react-icons/gi";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { FaTrashAlt } from "react-icons/fa";
+import { containerTypeList } from "../data/data";
+import CustomSelectPicker from "./SelectPicker";
 
 interface Container {
   id: number;
@@ -39,7 +41,7 @@ interface Container {
   };
   description: string;
   container_type: string;
-  quantity: string ;
+  quantity: string;
   weight_per_unit: string;
   hs_code: string;
   oversize: boolean;
@@ -50,53 +52,58 @@ interface Container {
 
 interface ContainerFormProps {
   containerState: Container;
-  handleContainerChange: (id: number, name: string, value: number | boolean | string) => void;
-  // errors: Partial<Cargo>;
+  handleContainerChange: (
+    id: number,
+    name: string,
+    value: number | boolean | string
+  ) => void;
+  errors: any;
+  index: number;
   handleContainerDelete: (id: number | string) => void;
 }
 
 const ContainerForm: React.FC<ContainerFormProps> = ({
   containerState,
   handleContainerChange,
-  // errors,
+  errors,
+  index,
   handleContainerDelete,
 }) => {
-
-  const [showContainerType, setShowContainerType] = useState(false)
- 
-
+  const [showContainerType, setShowContainerType] = useState(false);
+  console.log(index);
   return (
     <>
       <FlexboxGrid.Item colspan={24} className="p-4 commidity-description">
         <Form fluid className="formCheck">
           <div className="d-flex justify-content-between align-items-start">
-          <Heading level={6} className="container-1">
-            Container # {containerState.id}
-          </Heading>
-          {  containerState.id !== 1 &&(
-          <FaTrashAlt 
-          size={20}
-          onClick={()=> handleContainerDelete(containerState.id)}
-            style={{ cursor: 'pointer', marginLeft: '10px', color: 'blue' }} 
-          />
-)        }
-</div>
+            <Heading level={6} className="container-1">
+              Container # {containerState.id}
+            </Heading>
+            {containerState.id !== 1 && (
+              <FaTrashAlt
+                size={20}
+                onClick={() => handleContainerDelete(containerState.id)}
+                style={{ cursor: "pointer", marginLeft: "10px", color: "blue" }}
+              />
+            )}
+          </div>
           <div className="input-field">
             <input
               type="text"
               className="form-control"
               placeholder="Enter Commodity Description"
               value={containerState.description}
-
-              onChange={(e) => handleContainerChange( containerState.id, "description", e.target.value)}
+              onChange={(e) =>
+                handleContainerChange(
+                  containerState.id,
+                  "description",
+                  e.target.value
+                )
+              }
             />
-            {/* {errors.deliveryAddress && (
-              <small className="text-danger">{errors.deliveryAddress}</small>
-            )} */}
-
-
           </div>
           <Form.Group controlId="type">
+            <Form.ControlLabel>Container Type</Form.ControlLabel>
             <RadioGroup
               value={containerState.container_type}
               onChange={(value) => {
@@ -104,7 +111,11 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                   setShowContainerType(true);
                 } else {
                   setShowContainerType(false);
-                  handleContainerChange( containerState.id, "container_type", value);
+                  handleContainerChange(
+                    containerState.id,
+                    "container_type",
+                    value
+                  );
                 }
               }}
               className="radio-section"
@@ -116,150 +127,95 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
               <Radio value="20ST">20' Standard CNTR(S)</Radio>
               <Radio value="other">Other</Radio>
             </RadioGroup>
-
-            {/* {errors?.container_type && (
-
+            {errors[`container_${index}_container_type`] && (
               <Form.HelpText className="text-danger">
-                {errors?.container_type}
+                {errors[`container${index}_container_type`]}
               </Form.HelpText>
-            )} */}
+            )}
             {showContainerType && (
-              <Form.Group controlId="containerType">
-                <Form.ControlLabel>Container Type</Form.ControlLabel>
-                <SelectPicker
-                  // {...register("container_type")}
-                  data={
-                    [
-                      {
-                        label: "20' FLAT RACK CNTR(S)",
-                        value: "20FR",
-                      },
-                      {
-                        label: "20' OPEN TOP CNTR(S)",
-                        value: "20OT",
-                      },
-                      { label: "20' PLATFORM(S)", value: "20PL" },
-                      { label: "20' REEFER(S)", value: "20RE" },
-                      {
-                        label: "40' HIGH CUBE REEFER(S)",
-                        value: "40HR",
-                      },
-                      {
-                        label: "40' FLAT RACK CNTR(S)",
-                        value: "40FR",
-                      },
-                      { label: "40' REEFER(S)", value: "40RE" },
-                      {
-                        label: "40' OPEN TOP CNTR(S)",
-                        value: "40OT",
-                      },
-                      { label: "40' PLATFORM(S)", value: "40PL" },
-                    ]
-                  }
-                  searchable
-                  className="w-100"
-                  placeholder="Search by Location"
-                  // {...register("container_type")}
-                  name="container_type"
-                  value={containerState.container_type}
-                  onChange={(value: any) =>
-                    handleContainerChange( containerState.id, "container_type", value)
-                  }
-                />
-
-                {/* {errors?.container_type && (
-
-                  <Form.HelpText className="text-danger">
-                    {errors?.container_type}
-                  </Form.HelpText>
-                )} */}
-              </Form.Group>
+              <CustomSelectPicker
+                label="Container Type"
+                data={containerTypeList}
+                placeholder="Select type"
+                name="container_type"
+                // error={errors[`container${index}_container_type`]}
+                value={containerState.container_type}
+                onChange={(value: any) =>
+                  handleContainerChange(
+                    containerState.id,
+                    "container_type",
+                    value
+                  )
+                }
+              />
             )}
           </Form.Group>
           <>
             <div className="row">
               <div className="col-md-6">
-                {" "}
-                <>
-                  <div className="input-field">
-                    <Form.ControlLabel htmlFor="classDivision">
-                      Quantity
-                    </Form.ControlLabel>
-                    <FormControl
-                      type="number"
-                      name="quantity"
-                      placeholder="Enter quantity"
-                      value={containerState.quantity}
-                      onChange={(e) =>
-                        handleContainerChange( containerState.id, "quantity", e)
-                      }
-                    />
-
-                    {/* {errors?.quantity && (
-
-                      <Form.HelpText className="text-danger">
-                        {errors?.quantity}
-                      </Form.HelpText>
-                    )} */}
-                  </div>
-                </>
+                <div className="input-field">
+                  <FormControl
+                    label="Quantity"
+                    type="number"
+                    name="quantity"
+                    placeholder="Enter quantity"
+                    value={containerState.quantity}
+                    error={errors[`container_${index}_quantity`]}
+                    onChange={(e) =>
+                      handleContainerChange(containerState.id, "quantity", e)
+                    }
+                  />
+                </div>
               </div>
               <div className="col-md-6">
                 <>
                   <div className="input-field">
-                    <Form.ControlLabel htmlFor="weightPerUnit">
-                      Weight Per Unit
-                    </Form.ControlLabel>
                     <FormControl
+                      label="Weight Per Unit"
                       type="number"
+                      error={errors[`container_${index}_weight_per_unit`]}
                       name="WeightPerUnit"
                       placeholder="Enter weight per unit"
                       value={containerState.weight_per_unit}
                       onChange={(e) =>
-                        handleContainerChange( containerState.id, "weight_per_unit", e)
+                        handleContainerChange(
+                          containerState.id,
+                          "weight_per_unit",
+                          e
+                        )
                       }
                     />
-
-                    {/* {errors?.weight_per_unit && (
-
-                      <Form.HelpText className="text-danger">
-                        {errors?.weight_per_unit}
-                      </Form.HelpText>
-                    )} */}
                   </div>
                 </>
               </div>
             </div>
           </>
           <div className="input-field">
-            <Form.ControlLabel htmlFor="hsCode" className="mt-2">
-              Hs code
-            </Form.ControlLabel>
-            <input
+            <FormControl
+              label=" Hs code"
               type="text"
-              className="form-control mb-2"
-              id="hsCode"
               name="hs_code"
               placeholder="Enter hs code"
               value={containerState.hs_code}
-
-              onChange={(e) => handleContainerChange( containerState.id, "hs_code", e.target.value)}
+              onChange={(e) =>
+                handleContainerChange(containerState.id, "hs_code", e)
+              }
             />
-            {/* {errors?.hs_code && (
-
-              <Form.HelpText className="text-danger">
-                {errors?.hs_code}
-              </Form.HelpText>
-            )} */}
           </div>
           <Form.Group as={Panel} bordered className="p-0 mb-3">
-          <Checkbox
-          checked={containerState.oversize}
-          onChange={() =>  handleContainerChange( containerState.id, "oversize", !containerState.oversize)}
-        >
-          Oversized
-        </Checkbox>
-      </Form.Group>
+            <Checkbox
+              checked={containerState.oversize}
+              onChange={() =>
+                handleContainerChange(
+                  containerState.id,
+                  "oversize",
+                  !containerState.oversize
+                )
+              }
+            >
+              Oversized
+            </Checkbox>
+          </Form.Group>
 
           <Accordion
             onClick={(e: any) => e.preventDefault()}
@@ -273,7 +229,11 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                   <Checkbox
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleContainerChange( containerState.id, "dangerous_goods", !containerState.dangerous_goods )
+                      handleContainerChange(
+                        containerState.id,
+                        "dangerous_goods",
+                        !containerState.dangerous_goods
+                      );
                     }}
                     checked={containerState.dangerous_goods}
                   ></Checkbox>
@@ -290,7 +250,6 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
               </Message>
 
               <div className="input-field mb-2">
-
                 <FormControl
                   label="UN NUMBER*"
                   type="number"
@@ -298,7 +257,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                   placeholder="Enter UN Number"
                   value={containerState.dangerous_good_details?.un_number ?? ""}
                   onChange={(e) =>
-                    handleContainerChange( containerState.id, 
+                    handleContainerChange(
+                      containerState.id,
                       "dangerous_good_details.un_number",
                       e
                     )
@@ -309,14 +269,14 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                 <FormControl
                   label="PROPER SHIPPING NAME*"
                   type="text"
-                  
                   name="dangerous_good_details"
                   placeholder="Enter Proper Shipping Name"
                   value={
                     containerState.dangerous_good_details?.proper_shipping_name
                   }
                   onChange={(e) =>
-                    handleContainerChange( containerState.id, 
+                    handleContainerChange(
+                      containerState.id,
                       "dangerous_good_details.proper_shipping_name",
                       e
                     )
@@ -385,7 +345,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                       containerState.dangerous_good_details?.class_division
                     }
                     onChange={(value: any) =>
-                      handleContainerChange( containerState.id, 
+                      handleContainerChange(
+                        containerState.id,
                         "dangerous_good_details.class_division",
                         value
                       )
@@ -402,7 +363,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                       placeholder="Enter Subdivision"
                       value={containerState.dangerous_good_details.subdivision}
                       onChange={(e) =>
-                        handleContainerChange( containerState.id, 
+                        handleContainerChange(
+                          containerState.id,
                           "dangerous_good_details.subdivision",
                           e
                         )
@@ -431,9 +393,9 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                     value={
                       containerState.dangerous_good_details?.packaging_group
                     }
-
                     onChange={(value: any) =>
-                      handleContainerChange( containerState.id, 
+                      handleContainerChange(
+                        containerState.id,
                         "dangerous_good_details.packaging_group",
                         value
                       )
@@ -452,7 +414,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           ?.packaging_instructions
                       }
                       onChange={(e) =>
-                        handleContainerChange( containerState.id, 
+                        handleContainerChange(
+                          containerState.id,
                           "dangerous_good_details.packaging_instructions",
                           e
                         )
@@ -476,7 +439,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           ?.DangeriousQuantity ?? ""
                       }
                       onChange={(e) =>
-                        handleContainerChange( containerState.id, 
+                        handleContainerChange(
+                          containerState.id,
                           "dangerous_good_details.DangeriousQuantity",
                           e
                         )
@@ -496,7 +460,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           ?.total_net_quantity ?? ""
                       }
                       onChange={(e) =>
-                        handleContainerChange( containerState.id, 
+                        handleContainerChange(
+                          containerState.id,
                           "dangerous_good_details.total_net_quantity",
                           e
                         )
@@ -518,7 +483,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         containerState.dangerous_good_details?.type_of_packing
                       }
                       onChange={(e) =>
-                        handleContainerChange( containerState.id, 
+                        handleContainerChange(
+                          containerState.id,
                           "dangerous_good_details.type_of_packing",
                           e
                         )
@@ -540,7 +506,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         containerState.dangerous_good_details?.authorization
                       }
                       onChange={(e) =>
-                        handleContainerChange( containerState.id, 
+                        handleContainerChange(
+                          containerState.id,
                           "dangerous_good_details.authorization",
                           e
                         )
@@ -565,7 +532,11 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                     <Checkbox
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleContainerChange( containerState.id, "reefer", !containerState.reefer )
+                        handleContainerChange(
+                          containerState.id,
+                          "reefer",
+                          !containerState.reefer
+                        );
                       }}
                       checked={containerState.reefer}
                     ></Checkbox>
@@ -584,7 +555,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         placeholder="E.g. 1002"
                         value={containerState.reefer_details?.temperature ?? ""}
                         onChange={(e) =>
-                          handleContainerChange( containerState.id, 
+                          handleContainerChange(
+                            containerState.id,
                             "reefer_details.temperature",
                             e
                           )
@@ -606,9 +578,12 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         type="number"
                         name="ventilation"
                         placeholder="E.g. 1002"
-                        value={containerState?.reefer_details?.ventilation ?? ""}
+                        value={
+                          containerState?.reefer_details?.ventilation ?? ""
+                        }
                         onChange={(e) =>
-                          handleContainerChange( containerState.id, 
+                          handleContainerChange(
+                            containerState.id,
                             "reefer_details.ventilation",
                             e
                           )
@@ -632,7 +607,8 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         placeholder="E.g. 1002"
                         value={containerState.reefer_details?.humidity ?? ""}
                         onChange={(e) =>
-                          handleContainerChange( containerState.id, 
+                          handleContainerChange(
+                            containerState.id,
                             "reefer_details.humidity",
                             e
                           )

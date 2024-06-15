@@ -337,12 +337,11 @@ const FCLQuote = () => {
       const apiData = transformToApiData(formData);
       console.log("apiData", apiData);
 
-      const response = await axiosInstance.post("quote/shipments/", apiData);
+      await axiosInstance.post("quote/shipments/", apiData);
       toast.success("Successfully Submitted");
-      console.log("response", response);
     } catch (error) {
       console.log(error);
-      toast.success("Unable to Submit");
+      toast.success("Something went wrong!");
     }
   };
   const [selected, setSelected] = useState<string>("KG/CM");
@@ -402,6 +401,7 @@ const FCLQuote = () => {
                   name="from"
                   placeholder="From"
                   value={formData.from}
+                  error={errors.from}
                   onChange={(value: any) => handleCargoChange("from", value)}
                 />
                 <div className="second-checkbox">
@@ -445,6 +445,7 @@ const FCLQuote = () => {
                   placeholder="Search by Location"
                   value={formData.to}
                   onChange={(value: any) => handleCargoChange("to", value)}
+                  error={errors.to}
                 />
                 <div className="first-checkbox">
                   <Checkbox
@@ -492,6 +493,9 @@ const FCLQuote = () => {
                       handleCargoChange("departureDate", value)
                     }
                   />
+                  {errors.departureDate && (
+                    <Form.HelpText>{errors.departureDate}</Form.HelpText>
+                  )}
                 </Form.Group>
               </FlexboxGrid.Item>
 
@@ -519,6 +523,7 @@ const FCLQuote = () => {
                   onChange={(value: any) =>
                     handleCargoChange("incoterm", value)
                   }
+                  error={errors.incoterm}
                 />
               </FlexboxGrid.Item>
             </FlexboxGrid>
@@ -612,12 +617,13 @@ const FCLQuote = () => {
                   </FlexboxGrid.Item>
                   <div>
                     <div>
-                      {formData?.container?.map((c: any) => (
+                      {formData?.container?.map((c: any, i) => (
                         <ContainerForm
                           key={c.id}
+                          index={i}
                           containerState={c}
                           handleContainerChange={handleContainerChange}
-                          // errors={formErrors }
+                          errors={errors}
                           handleContainerDelete={handleContainerDelete}
                         />
                       ))}
