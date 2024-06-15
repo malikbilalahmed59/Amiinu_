@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -26,8 +26,6 @@ import { axiosInstance } from "../../services/api-client";
 import { container_details } from "../../services/types";
 
 const FCLQuote = () => {
-  const { isLoading } = useLocations();
-
   const [formData, setFormData] = useState<Cargo>({
     container: [
       {
@@ -135,7 +133,6 @@ const FCLQuote = () => {
   };
 
   const [formErrors] = useState<Cargo>();
-  const [location, setLocation] = useState([]);
 
   const searchParams = new URLSearchParams(window.location.search);
   const method = searchParams.get("method");
@@ -174,8 +171,99 @@ const FCLQuote = () => {
     }));
   };
 
+  const validateForm = () => {
+    const newErrors: any = {};
+
+    if (!formData.from) newErrors.from = "From location is required.";
+    if (!formData.to) newErrors.to = "To location is required.";
+    if (!formData.departureDate)
+      newErrors.departureDate = "Departure date is required.";
+    if (!formData.incoterm) newErrors.incoterm = "Incoterm is required.";
+    if (!formData.customer_reference)
+      newErrors.customer_reference = "Customer reference is required.";
+
+    if (formData.showPickupAddress && !formData.pickupAddress) {
+      newErrors.pickupAddress = "Pickup address is required.";
+    }
+
+    if (formData.showDeliveryAddress && !formData.deliveryAddress) {
+      newErrors.deliveryAddress = "Delivery address is required.";
+    }
+
+    formData?.container?.forEach((container, index) => {
+      if (!container.description)
+        newErrors[`container_${index}_description`] =
+          "Description is required.";
+      if (!container.container_type)
+        newErrors[`container_${index}_container_type`] =
+          "Container type is required.";
+      if (!container.quantity)
+        newErrors[`container_${index}_quantity`] = "Quantity is required.";
+      if (!container.weight_per_unit)
+        newErrors[`container_${index}_weight_per_unit`] =
+          "Weight per unit is required.";
+      if (!container.hs_code)
+        newErrors[`container_${index}_hs_code`] = "HS code is required.";
+
+      // if (container.dangerous_goods) {
+      //   if (!container.dangerous_good_details.un_number)
+      //     newErrors[`container_${index}_un_number`] =
+      //       "UN Number is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.proper_shipping_name)
+      //     newErrors[`container_${index}_proper_shipping_name`] =
+      //       "Proper shipping name is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.class_division)
+      //     newErrors[`container_${index}_class_division`] =
+      //       "Class/Division is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.subdivision)
+      //     newErrors[`container_${index}_subdivision`] =
+      //       "Subdivision is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.packaging_group)
+      //     newErrors[`container_${index}_packaging_group`] =
+      //       "Packaging group is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.packaging_instructions)
+      //     newErrors[`container_${index}_packaging_instructions`] =
+      //       "Packaging instructions are required for dangerous goods.";
+      //   if (!container.dangerous_good_details.DangeriousQuantity)
+      //     newErrors[`container_${index}_DangeriousQuantity`] =
+      //       "Quantity is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.total_net_quantity)
+      //     newErrors[`container_${index}_total_net_quantity`] =
+      //       "Total net quantity is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.type_of_packing)
+      //     newErrors[`container_${index}_type_of_packing`] =
+      //       "Type of packing is required for dangerous goods.";
+      //   if (!container.dangerous_good_details.authorization)
+      //     newErrors[`container_${index}_authorization`] =
+      //       "Authorization is required for dangerous goods.";
+      // }
+
+      // if (container.reefer) {
+      //   if (!container.reefer_details.temperature)
+      //     newErrors[`container_${index}_temperature`] =
+      //       "Temperature is required for reefer.";
+      //   if (!container.reefer_details.ventilation)
+      //     newErrors[`container_${index}_ventilation`] =
+      //       "Ventilation is required for reefer.";
+      //   if (!container.reefer_details.humidity)
+      //     newErrors[`container_${index}_humidity`] =
+      //       "Humidity is required for reefer.";
+      // }
+    });
+
+    setErrors(newErrors);
+    return newErrors;
+  };
+  const [errors, setErrors] = useState<any>({});
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      console.log(errors);
+      return;
+    }
+    setErrors({});
     try {
       const transformToApiData = (data: Cargo) => {
         return {
@@ -257,27 +345,17 @@ const FCLQuote = () => {
       toast.success("Unable to Submit");
     }
   };
-
   const [selected, setSelected] = useState<string>("KG/CM");
   const [celsiusstate, setcelsiusstate] = useState<string>("CELSIUS");
 
-  useEffect(() => {
-    const fetchLocation = async () => {
-      try {
-        const response = await axiosInstance.get("/quote/locations/");
-        console.log("location", response);
-        setLocation(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchLocation();
-  }, []);
+  const { data: locationList, isLoading: locationListLoading } = useLocations();
 
-  const transformedLocations = location.map((loc: any) => ({
-    label: loc?.name + "," + loc.port_type + "," + loc.country,
-    value: loc?.id,
-  }));
+  const transformedLocations =
+    !locationListLoading &&
+    (locationList || []).map((loc: any) => ({
+      label: loc?.name + "," + loc.port_type + "," + loc.country,
+      value: loc?.id,
+    }));
 
   const disablePastDates = (date: any) => {
     const today = new Date();
@@ -319,10 +397,10 @@ const FCLQuote = () => {
                 {/* Form Input */}
                 <CustomSelectPicker
                   label="FROM"
-                  data={transformedLocations}
-                  isLoading={isLoading}
+                  data={transformedLocations || []}
+                  isLoading={locationListLoading}
                   name="from"
-                  placeholder="Search by Location"
+                  placeholder="From"
                   value={formData.from}
                   onChange={(value: any) => handleCargoChange("from", value)}
                 />
@@ -361,8 +439,8 @@ const FCLQuote = () => {
               <FlexboxGrid.Item as={Col} xs={24} sm={12} md={12} lg={8}>
                 <CustomSelectPicker
                   label="TO"
-                  data={transformedLocations}
-                  isLoading={isLoading}
+                  data={transformedLocations || []}
+                  isLoading={locationListLoading}
                   name="to"
                   placeholder="Search by Location"
                   value={formData.to}

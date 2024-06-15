@@ -362,7 +362,7 @@ const LCLQuote = () => {
                       isLoading={locationListLoading}
                       data={transformedLocations || []}
                       name="from"
-                      placeholder="Search by Location"
+                      placeholder="From"
                       value={from_location}
                       onChange={(e: any) => {
                         setFromLocation(e);
