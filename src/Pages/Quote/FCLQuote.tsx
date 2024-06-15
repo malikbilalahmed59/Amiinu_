@@ -205,50 +205,50 @@ const FCLQuote = () => {
       if (!container.hs_code)
         newErrors[`container_${index}_hs_code`] = "HS code is required.";
 
-      // if (container.dangerous_goods) {
-      //   if (!container.dangerous_good_details.un_number)
-      //     newErrors[`container_${index}_un_number`] =
-      //       "UN Number is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.proper_shipping_name)
-      //     newErrors[`container_${index}_proper_shipping_name`] =
-      //       "Proper shipping name is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.class_division)
-      //     newErrors[`container_${index}_class_division`] =
-      //       "Class/Division is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.subdivision)
-      //     newErrors[`container_${index}_subdivision`] =
-      //       "Subdivision is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.packaging_group)
-      //     newErrors[`container_${index}_packaging_group`] =
-      //       "Packaging group is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.packaging_instructions)
-      //     newErrors[`container_${index}_packaging_instructions`] =
-      //       "Packaging instructions are required for dangerous goods.";
-      //   if (!container.dangerous_good_details.DangeriousQuantity)
-      //     newErrors[`container_${index}_DangeriousQuantity`] =
-      //       "Quantity is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.total_net_quantity)
-      //     newErrors[`container_${index}_total_net_quantity`] =
-      //       "Total net quantity is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.type_of_packing)
-      //     newErrors[`container_${index}_type_of_packing`] =
-      //       "Type of packing is required for dangerous goods.";
-      //   if (!container.dangerous_good_details.authorization)
-      //     newErrors[`container_${index}_authorization`] =
-      //       "Authorization is required for dangerous goods.";
-      // }
+      if (container?.dangerous_goods) {
+        if (!container?.dangerous_good_details?.un_number)
+          newErrors[`container_${index}_un_number`] =
+            "UN Number is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.proper_shipping_name)
+          newErrors[`container_${index}_proper_shipping_name`] =
+            "Proper shipping name is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.class_division)
+          newErrors[`container_${index}_class_division`] =
+            "Class/Division is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.subdivision)
+          newErrors[`container_${index}_subdivision`] =
+            "Subdivision is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.packaging_group)
+          newErrors[`container_${index}_packaging_group`] =
+            "Packaging group is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.packaging_instructions)
+          newErrors[`container_${index}_packaging_instructions`] =
+            "Packaging instructions are required for dangerous goods.";
+        if (!container?.dangerous_good_details?.DangeriousQuantity)
+          newErrors[`container_${index}_DangeriousQuantity`] =
+            "Quantity is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.total_net_quantity)
+          newErrors[`container_${index}_total_net_quantity`] =
+            "Total net quantity is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.type_of_packing)
+          newErrors[`container_${index}_type_of_packing`] =
+            "Type of packing is required for dangerous goods.";
+        if (!container?.dangerous_good_details?.authorization)
+          newErrors[`container_${index}_authorization`] =
+            "Authorization is required for dangerous goods.";
+      }
 
-      // if (container.reefer) {
-      //   if (!container.reefer_details.temperature)
-      //     newErrors[`container_${index}_temperature`] =
-      //       "Temperature is required for reefer.";
-      //   if (!container.reefer_details.ventilation)
-      //     newErrors[`container_${index}_ventilation`] =
-      //       "Ventilation is required for reefer.";
-      //   if (!container.reefer_details.humidity)
-      //     newErrors[`container_${index}_humidity`] =
-      //       "Humidity is required for reefer.";
-      // }
+      if (container?.reefer) {
+        if (!container?.reefer_details?.temperature)
+          newErrors[`container_${index}_temperature`] =
+            "Temperature is required for reefer.";
+        if (!container?.reefer_details?.ventilation)
+          newErrors[`container_${index}_ventilation`] =
+            "Ventilation is required for reefer.";
+        if (!container?.reefer_details?.humidity)
+          newErrors[`container_${index}_humidity`] =
+            "Humidity is required for reefer.";
+      }
     });
 
     setErrors(newErrors);

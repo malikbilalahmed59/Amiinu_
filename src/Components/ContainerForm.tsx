@@ -9,15 +9,14 @@ import {
   Panel,
   Radio,
   RadioGroup,
-  SelectPicker,
 } from "rsuite";
 
 import FormControl from "../Pages/Quote/FormControl";
 
+import { FaTrashAlt } from "react-icons/fa";
 import { GiFireflake } from "react-icons/gi";
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
-import { FaTrashAlt } from "react-icons/fa";
-import { containerTypeList } from "../data/data";
+import { containerTypeList, divisionList } from "../data/data";
 import CustomSelectPicker from "./SelectPicker";
 
 interface Container {
@@ -88,17 +87,14 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
             )}
           </div>
           <div className="input-field">
-            <input
-              type="text"
-              className="form-control"
+            <FormControl
+              name=""
+              label="Commodity Description"
               placeholder="Enter Commodity Description"
               value={containerState.description}
+              error={errors[`container_${index}_description`]}
               onChange={(e) =>
-                handleContainerChange(
-                  containerState.id,
-                  "description",
-                  e.target.value
-                )
+                handleContainerChange(containerState.id, "description", e)
               }
             />
           </div>
@@ -120,7 +116,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
               }}
               className="radio-section"
               inline
-              defaultValue="40"
+              defaultValue="40ST"
             >
               <Radio value="40ST">40' Standard CNTR(S)</Radio>
               <Radio value="40HC">40' High Cube CNTR(S)</Radio>
@@ -138,7 +134,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                 data={containerTypeList}
                 placeholder="Select type"
                 name="container_type"
-                // error={errors[`container${index}_container_type`]}
+                error={errors[`container${index}_container_type`]}
                 value={containerState.container_type}
                 onChange={(value: any) =>
                   handleContainerChange(
@@ -192,10 +188,11 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
           </>
           <div className="input-field">
             <FormControl
-              label=" Hs code"
+              label="Hs code"
               type="text"
               name="hs_code"
               placeholder="Enter hs code"
+              error={errors[`container_${index}_hs_code`]}
               value={containerState.hs_code}
               onChange={(e) =>
                 handleContainerChange(containerState.id, "hs_code", e)
@@ -236,7 +233,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                       );
                     }}
                     checked={containerState.dangerous_goods}
-                  ></Checkbox>
+                  />
                   <MdOutlineLocalFireDepartment size={20} />
                   <span style={{ marginLeft: "8px" }}>Dangerous Goods</span>
                 </div>
@@ -255,6 +252,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                   type="number"
                   name="un_number"
                   placeholder="Enter UN Number"
+                  error={errors[`container_${index}_un_number`]}
                   value={containerState.dangerous_good_details?.un_number ?? ""}
                   onChange={(e) =>
                     handleContainerChange(
@@ -268,7 +266,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
               <div className="input-field">
                 <FormControl
                   label="PROPER SHIPPING NAME*"
-                  type="text"
+                  error={errors[`container_${index}_proper_shipping_name`]}
                   name="dangerous_good_details"
                   placeholder="Enter Proper Shipping Name"
                   value={
@@ -285,62 +283,12 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
               </div>
               <div className="row mt-2">
                 <div className="col-md-4">
-                  {" "}
-                  <Form.ControlLabel>CLASS/DIVISION</Form.ControlLabel>
-                  <SelectPicker
-                    data={[
-                      { label: "N/A", value: "N/A" },
-                      {
-                        label:
-                          "1.4 Substances and Articles which present no significant hazard",
-                        value: "1.4",
-                      },
-                      {
-                        label: "2.1 Flammable Gases",
-                        value: "2.1",
-                      },
-                      {
-                        label: "2.2 Non-flammable Non-Toxic Gas",
-                        value: "2.2",
-                      },
-                      { label: "3 Flammable Liquids", value: "3" },
-                      {
-                        label: "4.1 Flammable Solids",
-                        value: "4.1",
-                      },
-                      {
-                        label: "4.2 Spontaneous Combustibles",
-                        value: "4.2",
-                      },
-                      {
-                        label: "4.3 Dangerous when wet",
-                        value: "4.3",
-                      },
-                      {
-                        label: "5.1 Oxidizing Agents",
-                        value: "5.1",
-                      },
-                      {
-                        label: "5.2 Organic Peroxides",
-                        value: "5.2",
-                      },
-                      {
-                        label: "6.1 Toxic Substances",
-                        value: "6.1",
-                      },
-                      {
-                        label: "8 Corrosive Substances",
-                        value: "8",
-                      },
-                      {
-                        label: "9 Miscellaneous Dangerous Goods",
-                        value: "9",
-                      },
-                    ]}
-                    searchable
-                    className="w-100"
+                  <CustomSelectPicker
+                    label="CLASS/DIVISION"
+                    data={divisionList}
                     placeholder="Select a class/division"
                     name="class_division"
+                    error={errors[`container_${index}_class_division`]}
                     value={
                       containerState.dangerous_good_details?.class_division
                     }
@@ -354,13 +302,13 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                   />
                 </div>
                 <div className="col-md-8">
-                  {" "}
                   <div className="input-field">
                     <FormControl
                       label="SUBDIVISION*"
                       type="text"
                       name="subdivision"
                       placeholder="Enter Subdivision"
+                      error={errors[`container_${index}_subdivision`]}
                       value={containerState.dangerous_good_details.subdivision}
                       onChange={(e) =>
                         handleContainerChange(
@@ -376,23 +324,20 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
 
               <div className="row mt-2">
                 <div className="col-md-4">
-                  {" "}
-                  <Form.ControlLabel>PACKAGING GROUP</Form.ControlLabel>
-                  <SelectPicker
+                  <CustomSelectPicker
+                    label="PACKAGING GROUP"
                     data={[
                       { label: "N/A", value: "N/A" },
                       { label: "I", value: "I" },
                       { label: "II", value: "II" },
                       { label: "III", value: "III" },
                     ]}
-                    searchable
-                    className="w-100"
                     placeholder="Select a packaging group"
-                    // {...register("packaging_group")}
                     name="packaging_group"
                     value={
                       containerState.dangerous_good_details?.packaging_group
                     }
+                    error={errors[`container_${index}_packaging_group`]}
                     onChange={(value: any) =>
                       handleContainerChange(
                         containerState.id,
@@ -420,6 +365,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           e
                         )
                       }
+                      error={errors[`container_${index}_packaging_group`]}
                     />
                   </div>
                 </div>
@@ -445,6 +391,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           e
                         )
                       }
+                      error={errors[`container_${index}_packaging_group`]}
                     />
                   </div>
                 </div>
@@ -466,6 +413,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           e
                         )
                       }
+                      error={errors[`container_${index}_packaging_group`]}
                     />
                   </div>
                 </div>
@@ -489,6 +437,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           e
                         )
                       }
+                      error={errors[`container_${index}_packaging_group`]}
                     />
                   </div>
                 </div>
@@ -502,6 +451,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                       type="text"
                       name="dangerous_good_details.authorization"
                       placeholder="Enter Authorization"
+                      error={errors[`container_${index}_authorization`]}
                       value={
                         containerState.dangerous_good_details?.authorization
                       }
@@ -553,6 +503,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         type="number"
                         name="temperature"
                         placeholder="E.g. 1002"
+                        error={errors[`container_${index}_temperature`]}
                         value={containerState.reefer_details?.temperature ?? ""}
                         onChange={(e) =>
                           handleContainerChange(
@@ -562,13 +513,6 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           )
                         }
                       />
-
-                      {/* {errors?.temperature && (
-
-                        <span className="text-danger">
-                          {errors?.temperature}
-                        </span>
-                      )} */}
                     </div>
                   </div>
                   <div className="col-md-4">
@@ -581,6 +525,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         value={
                           containerState?.reefer_details?.ventilation ?? ""
                         }
+                        error={errors[`container_${index}_ventilation`]}
                         onChange={(e) =>
                           handleContainerChange(
                             containerState.id,
@@ -589,13 +534,6 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           )
                         }
                       />
-
-                      {/* {errors?.reefer_details?.ventilation && (
-
-                        <span className="text-danger">
-                          {errors?.reefer_details.ventilation}
-                        </span>
-                      )} */}
                     </div>
                   </div>
                   <div className="col-md-4">
@@ -605,6 +543,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                         type="number"
                         name="humidity"
                         placeholder="E.g. 1002"
+                        error={errors[`container_${index}_humidity`]}
                         value={containerState.reefer_details?.humidity ?? ""}
                         onChange={(e) =>
                           handleContainerChange(
@@ -614,13 +553,6 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
                           )
                         }
                       />
-
-                      {/* {errors?.reefer_details?.humidity && (
-
-                        <span className="text-danger">
-                          {errors.reefer_details.humidity}
-                        </span>
-                      )} */}
                     </div>
                   </div>
                 </div>
