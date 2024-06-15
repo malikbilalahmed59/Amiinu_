@@ -82,7 +82,7 @@ const Login = () => {
                 <Button
                   loading={isPending}
                   type="submit"
-                  appearance="primary"
+                  appearance="ghost"
                   block
                 >
                   Sign in

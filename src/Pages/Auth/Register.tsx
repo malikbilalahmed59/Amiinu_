@@ -115,7 +115,7 @@ const Register = () => {
                 type="submit"
                 block
                 loading={isPending}
-                appearance="primary"
+                appearance="ghost"
               >
                 Register
               </Button>
