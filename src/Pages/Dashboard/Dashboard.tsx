@@ -1,57 +1,88 @@
 import { FcInfo } from "react-icons/fc";
 import { PiDiamondsFourLight, PiHandArrowDownLight } from "react-icons/pi";
-import { Button, Col, FlexboxGrid, Panel, Stack, Text } from "rsuite";
+import { Button, Panel, Stack, Text } from "rsuite";
 import "./Dashboard.css";
 const Dashboard = () => {
   const options = [
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "Booking Created.",
     },
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "Booking Confirmation.",
     },
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "In transit from shipper",
     },
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "On Hand At Origin",
     },
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "In transit",
     },
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "On Hand At Destination",
     },
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "Out of Delivery",
     },
     {
       Icon: PiHandArrowDownLight,
-      count: 10,
+      count: 0,
       title: "Delivered",
     },
   ];
+  const listlable = [
+    {
+      Icon: "",
+      title: "Follow your orders",
+      subtitle: "Keep updated on your shipments",
+      label:"#",
+      sublabel:"Track",
+    },
+    {
+      Icon: "",
+      title: "Access your reports",
+      subtitle: "You can Personalize and Export your own reports",
+      label:"#",
+      sublabel:"Report",
+    },
+    {
+      Icon: "",
+      title: "Create a quote",
+      subtitle: "To share it with your suppliers and then confirm the booking",
+      label:"#",
+      sublabel:"New quote",
+    },
+    {
+      Icon: "",
+      title: "Book from scratch",
+      subtitle: "To create a booking in one click on myCeva account",
+      label:"#",
+      sublabel:"New booking",
+    },
+  ]
+
   return (
     <div className="firstBoxs container">
       <>
         <div className="row">
-          <div className="mb-2 col-md-8">
-            <Panel bordered>
-              <Stack className="mb-2 ms-2 stack-text">
+          <div className="mb-2 col-md-8  p-2">
+            <Panel bordered className="panelCardbg">
+              <Stack className="mb-3 mt-2 ms-2 stack-text">
                 <Text size="lg" className="me-2 stack-text" weight="bold">
                   Track
                 </Text>
@@ -59,50 +90,51 @@ const Dashboard = () => {
                   Ongoing shipments by milestone.
                 </Text>
               </Stack>
-              <FlexboxGrid>
+              <div className="parentCard-milestone">
                 {options.map((o, i) => (
-                  <FlexboxGrid.Item
-                    className="mb-3"
+                  <div
+                    className="mb-3 panelSmall-card"
                     key={i}
-                    as={Col}
-                    xs={24}
-                    sm={12}
-                    lg={6}
+                 
                   >
-                    <Panel
-                      bordered
-                      style={{ background: "#F0F4FE" }}
-                      className="panel"
+                    <div
+                    
+                      style={{ background: "white" }}
+                      className="panelsm-card"
                     >
-                      <Stack alignItems="center">
-                        <o.Icon className="me-2" size={22} />
-                        <Text weight="bold" size="sm">
+                      <div className="tracktop-card" >
+                        <div>  <o.Icon className="me-2" size={22} /></div>
+                      <div><span className="tractText" >
                           {o.title}
-                        </Text>
-                      </Stack>
-                      <Text weight="bold" size={25} className="cardbottom-text">
+                        </span></div>
+                    
+                      </div>
+                      <div className="trackbottom-card">
+                      <span   className="cardbottom-text"> 
                         {o.count}
-                      </Text>
-                    </Panel>
-                  </FlexboxGrid.Item>
+                      </span>
+                      </div>
+                      
+                    </div>
+                  </div>
                 ))}
-              </FlexboxGrid>
+              </div>
             </Panel>
           </div>
-          {[1, 2, 3, 4].map(() => (
-            <div className="col-md-4">
-              <Panel bordered className="text-center lastCard">
+          {listlable.map((index) => (
+            <div className="col-md-4 p-2">
+              <div  className="text-center lastCard">
                 <PiDiamondsFourLight color="blue" size={30} />
-                <Text size="lg" className="pt-4 " weight="bold">
-                  Follow your orders
+                <Text size="lg" className="pt-3 indexTitle " weight="bold">
+                 {index.title}
                 </Text>
-                <Text>Keep updated on your shippments</Text>
+                <Text className="indexSubtitle">{index.subtitle}</Text>
 
-                <Text weight="extrabold" className="pt-5">
-                  <FcInfo size={22} className="mb-1" /> Show me how
+                <Text weight="extrabold" className="pt-4">
+                  <FcInfo size={22} className="mb-1" /> {index.label}
                 </Text>
-                <Button appearance="primary">Track</Button>
-              </Panel>
+                <Button appearance="primary" className="bg-primary mt-4 indexSublabel">{index.sublabel}</Button>
+              </div>
             </div>
           ))}
         </div>

@@ -315,9 +315,9 @@
   }
   .filter-card {
     display: flex;
-    flex-direction: column-reverse;
+   
     justify-content: center;
-    align-items: self-end;
+  
     gap: 5px;
     margin-block: 30px;
     overflow-x: auto;
