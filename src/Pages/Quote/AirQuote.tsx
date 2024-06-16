@@ -25,79 +25,82 @@ import NavBar from "./NavBar";
 import "./AirQuote.scss";
 
 const AirQuote = () => {
-  const [showDeliveryAddress, setShowDeliveryAddress] = useState(false);
-  const [insureType, setInsureType] = useState("");
-  const [departureDate, setDepartureDate] = useState<Date | null>(null);
-  const [insureAgree, setInsureAgree] = useState(false);
-  const [from_location, setFromLocation] = useState("");
-  const [to_location, setToLocation] = useState("");
-  const [incoterm, setincoterm] = useState("");
-  const [pickup, setPickup] = useState("");
-  const [delivery, setDelivery] = useState("");
-  const [amount, setamount] = useState("");
-  const [currency, setcurrency] = useState("");
-  const [customer_reference, setcustomer_reference] = useState("");
-  const [comment, setcomment] = useState("");
-  const [fileList, setFileList] = useState<FileType[]>([]);
-  const [serviceType, setServiceType] = useState("");
-  const [location, setLocation] = useState([]);
-  const [selected, setSelected] = useState<string>("KG/CM");
-  const [celsiusstate, setcelsiusstate] = useState<string>("CELSIUS");
-  const [showPickupAddress, setShowPickupAddress] = useState(false);
+  const [formData, setFormData] = useState({
+    showDeliveryAddress: false,
+    insureType: "",
+    departureDate: null,
+    insureAgree: false,
+    from_location: "",
+    to_location: "",
+    incoterm: "",
+    pickup: "",
+    delivery: "",
+    amount: "",
+    currency: "",
+    customer_reference: "",
+    comment: "",
+    fileList: [],
+    serviceType: "",
+    location: [],
+    selected: "KG/CM",
+    celsiusState: "CELSIUS",
+    showPickupAddress: false,
+    cargo: [
+      {
+        id: 1,
+        comiditydiscription: "",
+        quantity: "",
+        packages: "",
+        weight: "",
+        lcm: "",
+        wcm: "",
+        hcm: "",
+        code_character: "",
+        v_weight: "",
+        tempearture: false,
+        dangerous_good: false,
+        non_stackable: false,
+        temperature_details: {
+          min: "",
+          max: "",
+        },
+        dangerous_good_details: {
+          un_number: null,
+          proper_shipping_name: "",
+          class_division: "",
+          subdivision: "",
+          packaging_group: "",
+          packaging_instructions: "",
+          DangeriousQuantity: null,
+          total_net_quantity: null,
+          type_of_packing: "",
+          authorization: "",
+        },
+      },
+    ],
+  });
+
+  const [errors, setErrors] = useState<any>({});
 
   const handleCheckboxChange2 = (value: any, checked2: any) => {
-    console.log(value);
-    setShowPickupAddress(checked2);
+    setFormData((prevState) => ({
+      ...prevState,
+      showPickupAddress: checked2,
+    }));
   };
+
   const handleCheckboxChange = (
     value: any,
     checked: boolean | ((prevState: boolean) => boolean)
   ) => {
-    console.log(value);
-    setShowDeliveryAddress(checked);
+    setFormData((prevState) => ({
+      ...prevState,
+      showDeliveryAddress: checked,
+    }));
   };
-  const searchParams = new URLSearchParams(window.location.search);
-  const method = searchParams.get("method");
-  const mode = searchParams.get("mode");
 
-  const initialAirCargo = (): AirCargo[] => [
-    {
-      id: 1,
-      comiditydiscription: "",
-      quantity: "",
-      packages: "",
-      weight: "",
-      lcm: "",
-      wcm: "",
-      hcm: "",
-      code_character: "",
-      v_weight: "",
-      tempearture: false,
-      dangerous_good: false,
-      non_stackable: false,
-      temperature_details: {
-        min: "",
-        max: "",
-      },
-      dangerous_good_details: {
-        un_number: null,
-        proper_shipping_name: "",
-        class_division: "",
-        subdivision: "",
-        packaging_group: "",
-        packaging_instructions: "",
-        DangeriousQuantity: null,
-        total_net_quantity: null,
-        type_of_packing: "",
-        authorization: "",
-      },
-    },
-  ];
-
-  const [cargo, setCargo] = useState<any[]>(initialAirCargo);
-  console.log("cargo", cargo);
   const handleCargoChange = (id: number, name: string, value: any) => {
-    const updatedCargos = cargo.map((c) => {
+    const updatedCargos = formData.cargo.map((c) => {
       if (c.id === id) {
         const [mainProperty, subProperty] = name.split(".");
 
@@ -119,12 +122,15 @@ const AirQuote = () => {
       return c;
     });
 
-    setCargo(updatedCargos);
+    setFormData((prevState) => ({
+      ...prevState,
+      cargo: updatedCargos,
+    }));
   };
 
   const handleAddCargo = () => {
-    const newId = cargo.length + 1;
-    const initialCargo = initialAirCargo()[0];
+    const newId = formData.cargo.length + 1;
+    const initialCargo = formData.cargo[0];
     const newCargo: AirCargo = {
       id: newId,
       comiditydiscription: initialCargo.comiditydiscription,
@@ -160,27 +166,33 @@ const AirQuote = () => {
         authorization: initialCargo.dangerous_good_details.authorization,
       },
     };
-    setCargo([...cargo, newCargo]);
+    setFormData((prevState) => ({
+      ...prevState,
+      cargo: [...prevState.cargo, newCargo],
+    }));
   };
 
   const handleCargoDelete = (id: number | string) => {
-    setCargo((prevList) => {
-      const updatedList = prevList.filter((cargo) => cargo.id !== id);
-      return updatedList.map((cargo, index) => ({
-        ...cargo,
-        id: index + 1,
-      }));
+    setFormData((prevState) => {
+      const updatedList = prevState.cargo.filter((cargo) => cargo.id !== id);
+      return {
+        ...prevState,
+        cargo: updatedList.map((cargo, index) => ({
+          ...cargo,
+          id: index + 1,
+        })),
+      };
     });
   };
-
-  console.log("cargo", cargo);
 
   useEffect(() => {
     const fetchLocation = async () => {
       try {
         const response = await axiosInstance.get("/quote/locations/");
-        console.log("location", response);
-        setLocation(response.data);
+        setFormData((prevState) => ({
+          ...prevState,
+          location: response.data,
+        }));
       } catch (error) {
         console.log(error);
       }
@@ -188,7 +200,7 @@ const AirQuote = () => {
     fetchLocation();
   }, []);
 
-  const transformedLocations = location.map((loc: any) => ({
+  const transformedLocations = formData.location.map((loc: any) => ({
     label: loc?.name + "," + loc.port_type + "," + loc.country,
     value: loc?.id,
   }));
@@ -199,21 +211,105 @@ const AirQuote = () => {
     return date < today;
   };
 
+  const validateForm = () => {
+    const newErrors: any = {};
+
+    if (!formData.from_location)
+      newErrors.from_location = "From location is required.";
+    if (!formData.to_location)
+      newErrors.to_location = "To location is required.";
+    if (!formData.departureDate)
+      newErrors.departureDate = "Departure date is required.";
+    if (!formData.incoterm) newErrors.incoterm = "Incoterm is required.";
+    if (!formData.customer_reference)
+      newErrors.customer_reference = "Customer reference is required.";
+
+    if (formData.showPickupAddress && !formData.pickup) {
+      newErrors.pickup = "Pickup address is required.";
+    }
+
+    if (formData.showDeliveryAddress && !formData.delivery) {
+      newErrors.delivery = "Delivery address is required.";
+    }
+
+    formData.cargo.forEach((cargo, index) => {
+      if (!cargo.comiditydiscription)
+        newErrors[`cargo_${index}_comiditydiscription`] =
+          "Description is required.";
+      if (!cargo.quantity)
+        newErrors[`cargo_${index}_quantity`] = "Quantity is required.";
+      if (!cargo.packages)
+        newErrors[`cargo_${index}_packages`] = "Packages are required.";
+      if (!cargo.weight)
+        newErrors[`cargo_${index}_weight`] = "Weight is required.";
+      if (!cargo.lcm) newErrors[`cargo_${index}_lcm`] = "Length is required.";
+      if (!cargo.wcm) newErrors[`cargo_${index}_wcm`] = "Width is required.";
+      if (!cargo.hcm) newErrors[`cargo_${index}_hcm`] = "Height is required.";
+      if (!cargo.code_character)
+        newErrors[`cargo_${index}_code_character`] = "HS code is required.";
+
+      if (cargo.dangerous_good) {
+        if (!cargo.dangerous_good_details.un_number)
+          newErrors[`cargo_${index}_un_number`] =
+            "UN Number is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.proper_shipping_name)
+          newErrors[`cargo_${index}_proper_shipping_name`] =
+            "Proper shipping name is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.class_division)
+          newErrors[`cargo_${index}_class_division`] =
+            "Class/Division is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.subdivision)
+          newErrors[`cargo_${index}_subdivision`] =
+            "Subdivision is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.packaging_group)
+          newErrors[`cargo_${index}_packaging_group`] =
+            "Packaging group is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.packaging_instructions)
+          newErrors[`cargo_${index}_packaging_instructions`] =
+            "Packaging instructions are required for dangerous goods.";
+        if (!cargo.dangerous_good_details.DangeriousQuantity)
+          newErrors[`cargo_${index}_DangeriousQuantity`] =
+            "Quantity is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.total_net_quantity)
+          newErrors[`cargo_${index}_total_net_quantity`] =
+            "Total net quantity is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.type_of_packing)
+          newErrors[`cargo_${index}_type_of_packing`] =
+            "Type of packing is required for dangerous goods.";
+        if (!cargo.dangerous_good_details.authorization)
+          newErrors[`cargo_${index}_authorization`] =
+            "Authorization is required for dangerous goods.";
+      }
+
+      if (cargo.tempearture) {
+        if (!cargo.temperature_details.min)
+          newErrors[`cargo_${index}_temperature_min`] =
+            "Min temperature is required.";
+        if (!cargo.temperature_details.max)
+          newErrors[`cargo_${index}_temperature_max`] =
+            "Max temperature is required.";
+      }
+    });
+
+    setErrors(newErrors);
+    return newErrors;
+  };
+
   const transformToApiData = () => {
     return {
-      type: method,
-      transport_mode: mode,
-      from_location: from_location,
-      to_location: to_location,
-      departure_date: departureDate
-        ? moment(departureDate).format("YYYY-MM-DD")
+      type: searchParams.get("method"),
+      transport_mode: searchParams.get("mode"),
+      from_location: formData.from_location,
+      to_location: formData.to_location,
+      departure_date: formData.departureDate
+        ? moment(formData.departureDate).format("YYYY-MM-DD")
         : null,
-      incoterm: incoterm,
-      pickup_service: showPickupAddress,
-      delivery_service: showDeliveryAddress,
-      pickup_address: showPickupAddress ? pickup : null,
-      delivery_address: showDeliveryAddress ? delivery : null,
-      cargo: cargo.map((container) => ({
+      incoterm: formData.incoterm,
+      pickup_service: formData.showPickupAddress,
+      delivery_service: formData.showDeliveryAddress,
+      pickup_address: formData.showPickupAddress ? formData.pickup : null,
+      delivery_address: formData.showDeliveryAddress ? formData.delivery : null,
+      cargo: formData.cargo.map((container) => ({
         description: container.comiditydiscription || null,
         container_type: "40ST",
         item_type: null,
@@ -262,24 +358,31 @@ const AirQuote = () => {
           : {},
       })),
       service_level:
-        serviceType === "air-value"
+        formData.serviceType === "air-value"
           ? 1
-          : serviceType === "air-premium"
+          : formData.serviceType === "air-premium"
           ? 2
-          : serviceType === "air-now"
+          : formData.serviceType === "air-now"
           ? 3
           : null,
-      insurance_needed: insureAgree || null,
-      insurance_value: amount || null,
-      insurance_currency: currency || null,
-      notes: comment || null,
-      customer_reference: customer_reference || null,
+      insurance_needed: formData.insureAgree || null,
+      insurance_value: formData.amount || null,
+      insurance_currency: formData.currency || null,
+      notes: formData.comment || null,
+      customer_reference: formData.customer_reference || null,
     };
   };
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      console.log(errors);
+      return;
+    }
+    setErrors({});
     try {
-      console.log("submit called ");
       const apiData = transformToApiData();
       console.log("apiData", apiData);
       const response = await axiosInstance.post("quote/shipments/", apiData);
@@ -326,29 +429,38 @@ const AirQuote = () => {
                       name="from"
                       data={transformedLocations}
                       placeholder="Search by Location"
-                      value={from_location}
+                      value={formData.from_location}
                       onChange={(e: any) => {
-                        setFromLocation(e);
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          from_location: e,
+                        }));
                       }}
+                      error={errors.from_location}
                     />
                     <div className="second-checkbox">
                       <Checkbox
                         onChange={handleCheckboxChange2}
+                        checked={formData.showPickupAddress}
                         className="pickup-services"
                       >
                         Pickup Service
                       </Checkbox>
 
-                      {showPickupAddress && (
+                      {formData.showPickupAddress && (
                         <div className="input-field">
                           <FormControl
                             type="text"
                             name="Pickup Address"
                             placeholder="Enter Pickup Address"
-                            value={pickup}
+                            value={formData.pickup}
                             onChange={(e: any) => {
-                              setPickup(e);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                pickup: e,
+                              }));
                             }}
+                            error={errors.pickup}
                           />
                         </div>
                       )}
@@ -360,16 +472,20 @@ const AirQuote = () => {
                       data={transformedLocations}
                       name="to"
                       placeholder="Search by Location"
-                      value={to_location}
+                      value={formData.to_location}
                       onChange={(e: any) => {
-                        setToLocation(e);
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          to_location: e,
+                        }));
                       }}
                       label="TO"
+                      error={errors.to_location}
                     />
                     <div className="first-checkbox">
                       <Checkbox
                         className="delivery-services"
-                        checked={showDeliveryAddress}
+                        checked={formData.showDeliveryAddress}
                         onChange={(value, checked) =>
                           handleCheckboxChange(value, checked)
                         }
@@ -377,16 +493,20 @@ const AirQuote = () => {
                         Delivery Service
                       </Checkbox>
 
-                      {showDeliveryAddress && (
+                      {formData.showDeliveryAddress && (
                         <div className="" style={{ marginLeft: "10px" }}>
                           <FormControl
                             type="text"
                             name="Delivery Address"
                             placeholder="Enter Delivery Address"
-                            value={delivery}
+                            value={formData.delivery}
                             onChange={(e: any) => {
-                              setDelivery(e);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                delivery: e,
+                              }));
                             }}
+                            error={errors.delivery}
                           />
                         </div>
                       )}
@@ -403,9 +523,18 @@ const AirQuote = () => {
                         name="departureDate"
                         className="w-100"
                         disabledDate={disablePastDates}
-                        value={departureDate}
-                        onChange={(value: any) => setDepartureDate(value)}
+                        value={formData.departureDate}
+                        onChange={(value: any) =>
+                          setFormData((prevState) => ({
+                            ...prevState,
+                            departureDate: value,
+                          }))
+                        }
+                        error={errors.departureDate}
                       />
+                      {errors.departureDate && (
+                        <Form.HelpText>{errors.departureDate}</Form.HelpText>
+                      )}
                     </Form.Group>
                   </FlexboxGrid.Item>
 
@@ -428,9 +557,15 @@ const AirQuote = () => {
                       }
                       data={incotermList}
                       placeholder="Search by incoterm"
-                      value={incoterm}
+                      value={formData.incoterm}
                       name="incoterm"
-                      onChange={(value: any) => setincoterm(value)}
+                      onChange={(value: any) =>
+                        setFormData((prevState) => ({
+                          ...prevState,
+                          incoterm: value,
+                        }))
+                      }
+                      error={errors.incoterm}
                     />
                   </FlexboxGrid.Item>
                 </FlexboxGrid>
@@ -444,18 +579,21 @@ const AirQuote = () => {
                     className="col-md-4"
                     key={i}
                     onClick={() => {
-                      setServiceType(s.value);
+                      setFormData((prevState) => ({
+                        ...prevState,
+                        serviceType: s.value,
+                      }));
                     }}
                   >
                     <div
                       style={{
                         cursor: "pointer",
                         border:
-                          s.value === serviceType
+                          s.value === formData.serviceType
                             ? "1px solid #0062ff"
                             : "none",
                         borderRadius:
-                          s.value === serviceType ? "0.375rem" : "0px",
+                          s.value === formData.serviceType ? "0.375rem" : "0px",
                       }}
                     >
                       <div className="card p-3">
@@ -483,13 +621,21 @@ const AirQuote = () => {
                       <ButtonGroup>
                         <Button
                           appearance="primary"
-                          onClick={() => setSelected("KG/CM")}
+                          onClick={() =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              selected: "KG/CM",
+                            }))
+                          }
                           style={{
                             padding: "10px 20px",
                             border: "1px solid #04205f",
                             backgroundColor:
-                              selected === "KG/CM" ? "#04205f" : "white",
-                            color: selected === "KG/CM" ? "white" : "black",
+                              formData.selected === "KG/CM"
+                                ? "#04205f"
+                                : "white",
+                            color:
+                              formData.selected === "KG/CM" ? "white" : "black",
                             cursor: "pointer",
                             transition: "background-color 0.3s, color 0.3s",
                           }}
@@ -498,13 +644,21 @@ const AirQuote = () => {
                         </Button>
                         <Button
                           appearance="ghost"
-                          onClick={() => setSelected("LB/IN")}
+                          onClick={() =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              selected: "LB/IN",
+                            }))
+                          }
                           style={{
                             padding: "10px 20px",
                             border: "1px solid #04205f",
                             backgroundColor:
-                              selected === "LB/IN" ? "#04205f" : "white",
-                            color: selected === "LB/IN" ? "white" : "black",
+                              formData.selected === "LB/IN"
+                                ? "#04205f"
+                                : "white",
+                            color:
+                              formData.selected === "LB/IN" ? "white" : "black",
                             cursor: "pointer",
                             transition: "background-color 0.3s, color 0.3s",
                           }}
@@ -515,14 +669,23 @@ const AirQuote = () => {
                       <ButtonGroup>
                         <Button
                           appearance="primary"
-                          onClick={() => setcelsiusstate("CELSIUS")}
+                          onClick={() =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              celsiusState: "CELSIUS",
+                            }))
+                          }
                           style={{
                             padding: "10px 20px",
                             border: "1px solid #04205f",
                             backgroundColor:
-                              celsiusstate === "CELSIUS" ? "#04205f" : "white",
+                              formData.celsiusState === "CELSIUS"
+                                ? "#04205f"
+                                : "white",
                             color:
-                              celsiusstate === "CELSIUS" ? "white" : "black",
+                              formData.celsiusState === "CELSIUS"
+                                ? "white"
+                                : "black",
                             cursor: "pointer",
                             transition: "background-color 0.3s, color 0.3s",
                           }}
@@ -531,16 +694,23 @@ const AirQuote = () => {
                         </Button>
                         <Button
                           appearance="ghost"
-                          onClick={() => setcelsiusstate("FAHRENHEIT")}
+                          onClick={() =>
+                            setFormData((prevState) => ({
+                              ...prevState,
+                              celsiusState: "FAHRENHEIT",
+                            }))
+                          }
                           style={{
                             padding: "10px 20px",
                             border: "1px solid #04205f",
                             backgroundColor:
-                              celsiusstate === "FAHRENHEIT"
+                              formData.celsiusState === "FAHRENHEIT"
                                 ? "#04205f"
                                 : "white",
                             color:
-                              celsiusstate === "FAHRENHEIT" ? "white" : "black",
+                              formData.celsiusState === "FAHRENHEIT"
+                                ? "white"
+                                : "black",
                             cursor: "pointer",
                             transition: "background-color 0.3s, color 0.3s",
                           }}
@@ -553,9 +723,9 @@ const AirQuote = () => {
                 </div>
 
                 <div>
-                  {cargo.map((c, i) => (
+                  {formData.cargo.map((c, i) => (
                     <CargoForm
-                      errors={{}}
+                      errors={errors}
                       index={i}
                       key={c.id}
                       cargoState={c}
@@ -584,10 +754,14 @@ const AirQuote = () => {
                             label="CUSTOMER REF.*"
                             name="customer_reference"
                             placeholder="Type something....."
-                            value={customer_reference}
+                            value={formData.customer_reference}
                             onChange={(e: any) => {
-                              setcustomer_reference(e);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                customer_reference: e,
+                              }));
                             }}
+                            error={errors.customer_reference}
                           />
                         </div>
                       </div>
@@ -606,16 +780,28 @@ const AirQuote = () => {
                           <div className="row">
                             <div className="col-md-4">
                               <Checkbox
-                                checked={insureType === "doNotInsure"}
-                                onClick={() => setInsureType("doNotInsure")}
+                                checked={formData.insureType === "doNotInsure"}
+                                onClick={() =>
+                                  setFormData((prevState) => ({
+                                    ...prevState,
+                                    insureType: "doNotInsure",
+                                  }))
+                                }
                               >
                                 Do not insure goods
                               </Checkbox>
                             </div>
                             <div className="col-md-4">
                               <Checkbox
-                                checked={insureType === "insureWithValue"}
-                                onClick={() => setInsureType("insureWithValue")}
+                                checked={
+                                  formData.insureType === "insureWithValue"
+                                }
+                                onClick={() =>
+                                  setFormData((prevState) => ({
+                                    ...prevState,
+                                    insureType: "insureWithValue",
+                                  }))
+                                }
                               >
                                 Insure goods for a value of
                               </Checkbox>
@@ -628,12 +814,10 @@ const AirQuote = () => {
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
                                 >
-                                  {(amount == ""
+                                  {(formData.amount === ""
                                     ? "Amount"
-                                    : amount + " " + currency
+                                    : formData.amount + " " + formData.currency
                                   ).toString()}
-
-                                  {/* setamount */}
                                 </button>
                                 <ul className="dropdown-menu">
                                   {currencyChoices.map((currency) => {
@@ -642,7 +826,10 @@ const AirQuote = () => {
                                         className="p-2"
                                         style={{ cursor: "pointer" }}
                                         onClick={() =>
-                                          setcurrency(currency.value)
+                                          setFormData((prevState) => ({
+                                            ...prevState,
+                                            currency: currency.value,
+                                          }))
                                         }
                                       >
                                         {currency.value}
@@ -654,20 +841,27 @@ const AirQuote = () => {
                                   type="number"
                                   className="form-control"
                                   aria-label="Text input with dropdown button"
-                                  value={amount}
+                                  value={formData.amount}
                                   onChange={(e: any) => {
-                                    setamount(e.target.value);
+                                    setFormData((prevState) => ({
+                                      ...prevState,
+                                      amount: e.target.value,
+                                    }));
                                   }}
+                                  error={errors.amount}
                                 />
                               </div>
                             </div>
-                            {insureType === "insureWithValue" && (
+                            {formData.insureType === "insureWithValue" && (
                               <div className="col-md-12">
                                 <Checkbox
-                                  value={insureAgree ? "yes" : "no"}
-                                  checked={insureAgree}
+                                  value={formData.insureAgree ? "yes" : "no"}
+                                  checked={formData.insureAgree}
                                   onChange={(e) =>
-                                    setInsureAgree(e == "yes" ? true : false)
+                                    setFormData((prevState) => ({
+                                      ...prevState,
+                                      insureAgree: e === "yes" ? true : false,
+                                    }))
                                   }
                                 >
                                   <p>
@@ -696,25 +890,34 @@ const AirQuote = () => {
                             label="Comments (max. 500 characters)"
                             placeholder=""
                             name="comment"
-                            value={comment}
+                            value={formData.comment}
                             onChange={(e: any) => {
-                              setcomment(e);
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                comment: e,
+                              }));
                             }}
                           />
                         </div>
                       </div>
                       <div className="col-md-4 comment">
                         <div className="comment-div">
-                          {fileList && fileList.length === 0 && (
-                            <>
-                              <span className="">No attached files</span>
-                            </>
-                          )}
+                          {formData.fileList &&
+                            formData.fileList.length === 0 && (
+                              <>
+                                <span className="">No attached files</span>
+                              </>
+                            )}
                           <span className="">Files</span> <br />
                           <Uploader
                             action=""
-                            fileList={fileList}
-                            onChange={(f: FileType[]) => setFileList(f)}
+                            fileList={formData.fileList}
+                            onChange={(f: FileType[]) =>
+                              setFormData((prevState) => ({
+                                ...prevState,
+                                fileList: f,
+                              }))
+                            }
                             autoUpload={false}
                             className="mt-2"
                           >
