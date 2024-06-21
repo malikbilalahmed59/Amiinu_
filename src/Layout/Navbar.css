@@ -1,4 +1,21 @@
 /* Navbar.css */
+.navbar-main{
+  background-color: #04246a !important;
+  
+}
+.nav-link{
+  color: white !important;
+}
+.navbar-toggler{
+  border: none;
+}
+
+.navbar-toggler:focus {
+  text-decoration: none;
+  border: 1px solid white;
+  box-shadow: none;
+
+}
 .avatar-form{
     position: relative;
 }

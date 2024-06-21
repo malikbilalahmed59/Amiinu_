@@ -25,9 +25,16 @@
 }
 
 .from {
-  color: #000;
+  /* color: #000;
+  margin-bottom: 0.313rem;
+  text-transform: uppercase; */
   margin-bottom: 0.313rem;
   text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: normal;
+  color: rgb(116, 117, 140);
+  font-family: 'Roboto', sans-serif;
 }
 
 .to {

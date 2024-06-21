@@ -6,6 +6,7 @@ import { Routes } from "../constant";
 import logo from "./../assets/logo.svg";
 import "./Navbar.css";
 import { TokenKey, ShipmentId } from "../constant";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 const CustomNavbar = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -32,7 +33,7 @@ const CustomNavbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <RxHamburgerMenu color="white" />
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
