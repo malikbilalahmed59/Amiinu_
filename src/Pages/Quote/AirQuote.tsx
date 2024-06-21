@@ -20,12 +20,12 @@ import CustomSelectPicker from "../../Components/SelectPicker";
 import { currencyChoices, incotermList, servicesLevel } from "../../data/data";
 import { axiosInstance } from "../../services/api-client";
 import { AirCargo } from "../../services/types";
+import "./AirQuote.scss";
 import FormControl from "./FormControl";
 import NavBar from "./NavBar";
-import "./AirQuote.scss";
 
 const AirQuote = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     showDeliveryAddress: false,
     insureType: "",
     departureDate: null,
@@ -82,25 +82,25 @@ const AirQuote = () => {
 
   const [errors, setErrors] = useState<any>({});
 
-  const handleCheckboxChange2 = (value: any, checked2: any) => {
-    setFormData((prevState) => ({
+  const handleCheckboxChange2 = (_value: any, checked2: any) => {
+    setFormData((prevState: any) => ({
       ...prevState,
       showPickupAddress: checked2,
     }));
   };
 
   const handleCheckboxChange = (
-    value: any,
+    _value: any,
     checked: boolean | ((prevState: boolean) => boolean)
   ) => {
-    setFormData((prevState) => ({
+    setFormData((prevState: any) => ({
       ...prevState,
       showDeliveryAddress: checked,
     }));
   };
 
   const handleCargoChange = (id: number, name: string, value: any) => {
-    const updatedCargos = formData.cargo.map((c) => {
+    const updatedCargos = formData.cargo.map((c: { [x: string]: any; id: number; }) => {
       if (c.id === id) {
         const [mainProperty, subProperty] = name.split(".");
 
@@ -122,7 +122,7 @@ const AirQuote = () => {
       return c;
     });
 
-    setFormData((prevState) => ({
+    setFormData((prevState: any) => ({
       ...prevState,
       cargo: updatedCargos,
     }));
@@ -166,18 +166,18 @@ const AirQuote = () => {
         authorization: initialCargo.dangerous_good_details.authorization,
       },
     };
-    setFormData((prevState) => ({
+    setFormData((prevState: { cargo: any; }) => ({
       ...prevState,
       cargo: [...prevState.cargo, newCargo],
     }));
   };
 
   const handleCargoDelete = (id: number | string) => {
-    setFormData((prevState) => {
-      const updatedList = prevState.cargo.filter((cargo) => cargo.id !== id);
+    setFormData((prevState: { cargo: any[]; }) => {
+      const updatedList = prevState.cargo.filter((cargo: { id: string | number; }) => cargo.id !== id);
       return {
         ...prevState,
-        cargo: updatedList.map((cargo, index) => ({
+        cargo: updatedList.map((cargo: any, index: number) => ({
           ...cargo,
           id: index + 1,
         })),
@@ -189,7 +189,7 @@ const AirQuote = () => {
     const fetchLocation = async () => {
       try {
         const response = await axiosInstance.get("/quote/locations/");
-        setFormData((prevState) => ({
+        setFormData((prevState: any) => ({
           ...prevState,
           location: response.data,
         }));
@@ -232,7 +232,7 @@ const AirQuote = () => {
       newErrors.delivery = "Delivery address is required.";
     }
 
-    formData.cargo.forEach((cargo, index) => {
+    formData.cargo.forEach((cargo: { comiditydiscription: any; quantity: any; packages: any; weight: any; lcm: any; wcm: any; hcm: any; code_character: any; dangerous_good: any; dangerous_good_details: { un_number: any; proper_shipping_name: any; class_division: any; subdivision: any; packaging_group: any; packaging_instructions: any; DangeriousQuantity: any; total_net_quantity: any; type_of_packing: any; authorization: any; }; tempearture: any; temperature_details: { min: any; max: any; }; }, index: any) => {
       if (!cargo.comiditydiscription)
         newErrors[`cargo_${index}_comiditydiscription`] =
           "Description is required.";
@@ -294,7 +294,7 @@ const AirQuote = () => {
     setErrors(newErrors);
     return newErrors;
   };
-
+  const searchParams = new URLSearchParams(window.location.search);
   const transformToApiData = () => {
     return {
       type: searchParams.get("method"),
@@ -309,7 +309,7 @@ const AirQuote = () => {
       delivery_service: formData.showDeliveryAddress,
       pickup_address: formData.showPickupAddress ? formData.pickup : null,
       delivery_address: formData.showDeliveryAddress ? formData.delivery : null,
-      cargo: formData.cargo.map((container) => ({
+      cargo: formData.cargo.map((container: { comiditydiscription: any; quantity: any; weight: any; lcm: any; hcm: any; code_character: any; dangerous_good: any; dangerous_good_details: { un_number: any; proper_shipping_name: any; class_division: any; subdivision: any; packaging_group: any; packaging_instructions: any; DangeriousQuantity: any; total_net_quantity: any; type_of_packing: any; authorization: any; }; tempearture: any; temperature_details: { max: any; min: any; }; }) => ({
         description: container.comiditydiscription || null,
         container_type: "40ST",
         item_type: null,
@@ -431,7 +431,7 @@ const AirQuote = () => {
                       placeholder="Search by Location"
                       value={formData.from_location}
                       onChange={(e: any) => {
-                        setFormData((prevState) => ({
+                        setFormData((prevState: any) => ({
                           ...prevState,
                           from_location: e,
                         }));
@@ -455,7 +455,7 @@ const AirQuote = () => {
                             placeholder="Enter Pickup Address"
                             value={formData.pickup}
                             onChange={(e: any) => {
-                              setFormData((prevState) => ({
+                              setFormData((prevState: any) => ({
                                 ...prevState,
                                 pickup: e,
                               }));
@@ -474,7 +474,7 @@ const AirQuote = () => {
                       placeholder="Search by Location"
                       value={formData.to_location}
                       onChange={(e: any) => {
-                        setFormData((prevState) => ({
+                        setFormData((prevState: any) => ({
                           ...prevState,
                           to_location: e,
                         }));
@@ -501,7 +501,7 @@ const AirQuote = () => {
                             placeholder="Enter Delivery Address"
                             value={formData.delivery}
                             onChange={(e: any) => {
-                              setFormData((prevState) => ({
+                              setFormData((prevState: any) => ({
                                 ...prevState,
                                 delivery: e,
                               }));
@@ -525,12 +525,11 @@ const AirQuote = () => {
                         disabledDate={disablePastDates}
                         value={formData.departureDate}
                         onChange={(value: any) =>
-                          setFormData((prevState) => ({
+                          setFormData((prevState: any) => ({
                             ...prevState,
                             departureDate: value,
                           }))
-                        }
-                        error={errors.departureDate}
+                        } 
                       />
                       {errors.departureDate && (
                         <Form.HelpText className="text-danger">{errors.departureDate}</Form.HelpText>
@@ -560,7 +559,7 @@ const AirQuote = () => {
                       value={formData.incoterm}
                       name="incoterm"
                       onChange={(value: any) =>
-                        setFormData((prevState) => ({
+                        setFormData((prevState: any) => ({
                           ...prevState,
                           incoterm: value,
                         }))
@@ -579,7 +578,7 @@ const AirQuote = () => {
                     className="col-md-4"
                     key={i}
                     onClick={() => {
-                      setFormData((prevState) => ({
+                      setFormData((prevState: any) => ({
                         ...prevState,
                         serviceType: s.value,
                       }));
@@ -622,7 +621,7 @@ const AirQuote = () => {
                         <Button
                           appearance="primary"
                           onClick={() =>
-                            setFormData((prevState) => ({
+                            setFormData((prevState: any) => ({
                               ...prevState,
                               selected: "KG/CM",
                             }))
@@ -645,7 +644,7 @@ const AirQuote = () => {
                         <Button
                           appearance="ghost"
                           onClick={() =>
-                            setFormData((prevState) => ({
+                            setFormData((prevState: any) => ({
                               ...prevState,
                               selected: "LB/IN",
                             }))
@@ -670,7 +669,7 @@ const AirQuote = () => {
                         <Button
                           appearance="primary"
                           onClick={() =>
-                            setFormData((prevState) => ({
+                            setFormData((prevState: any) => ({
                               ...prevState,
                               celsiusState: "CELSIUS",
                             }))
@@ -695,7 +694,7 @@ const AirQuote = () => {
                         <Button
                           appearance="ghost"
                           onClick={() =>
-                            setFormData((prevState) => ({
+                            setFormData((prevState: any) => ({
                               ...prevState,
                               celsiusState: "FAHRENHEIT",
                             }))
@@ -723,7 +722,7 @@ const AirQuote = () => {
                 </div>
 
                 <div>
-                  {formData.cargo.map((c, i) => (
+                  {formData.cargo.map((c: AirCargo, i: number) => (
                     <CargoForm
                       errors={errors}
                       index={i}
@@ -756,7 +755,7 @@ const AirQuote = () => {
                             placeholder="Type something....."
                             value={formData.customer_reference}
                             onChange={(e: any) => {
-                              setFormData((prevState) => ({
+                              setFormData((prevState: any) => ({
                                 ...prevState,
                                 customer_reference: e,
                               }));
@@ -782,7 +781,7 @@ const AirQuote = () => {
                               <Checkbox
                                 checked={formData.insureType === "doNotInsure"}
                                 onClick={() =>
-                                  setFormData((prevState) => ({
+                                  setFormData((prevState: any) => ({
                                     ...prevState,
                                     insureType: "doNotInsure",
                                   }))
@@ -797,7 +796,7 @@ const AirQuote = () => {
                                   formData.insureType === "insureWithValue"
                                 }
                                 onClick={() =>
-                                  setFormData((prevState) => ({
+                                  setFormData((prevState: any) => ({
                                     ...prevState,
                                     insureType: "insureWithValue",
                                   }))
@@ -826,7 +825,7 @@ const AirQuote = () => {
                                         className="p-2"
                                         style={{ cursor: "pointer" }}
                                         onClick={() =>
-                                          setFormData((prevState) => ({
+                                          setFormData((prevState: any) => ({
                                             ...prevState,
                                             currency: currency.value,
                                           }))
@@ -843,12 +842,11 @@ const AirQuote = () => {
                                   aria-label="Text input with dropdown button"
                                   value={formData.amount}
                                   onChange={(e: any) => {
-                                    setFormData((prevState) => ({
+                                    setFormData((prevState: any) => ({
                                       ...prevState,
                                       amount: e.target.value,
                                     }));
-                                  }}
-                                  error={errors.amount}
+                                  }} 
                                 />
                               </div>
                             </div>
@@ -858,7 +856,7 @@ const AirQuote = () => {
                                   value={formData.insureAgree ? "yes" : "no"}
                                   checked={formData.insureAgree}
                                   onChange={(e) =>
-                                    setFormData((prevState) => ({
+                                    setFormData((prevState: any) => ({
                                       ...prevState,
                                       insureAgree: e === "yes" ? true : false,
                                     }))
@@ -892,7 +890,7 @@ const AirQuote = () => {
                             name="comment"
                             value={formData.comment}
                             onChange={(e: any) => {
-                              setFormData((prevState) => ({
+                              setFormData((prevState: any) => ({
                                 ...prevState,
                                 comment: e,
                               }));
@@ -913,7 +911,7 @@ const AirQuote = () => {
                             action=""
                             fileList={formData.fileList}
                             onChange={(f: FileType[]) =>
-                              setFormData((prevState) => ({
+                              setFormData((prevState: any) => ({
                                 ...prevState,
                                 fileList: f,
                               }))
