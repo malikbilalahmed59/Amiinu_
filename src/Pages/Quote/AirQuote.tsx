@@ -533,7 +533,7 @@ const AirQuote = () => {
                         error={errors.departureDate}
                       />
                       {errors.departureDate && (
-                        <Form.HelpText>{errors.departureDate}</Form.HelpText>
+                        <Form.HelpText className="text-danger">{errors.departureDate}</Form.HelpText>
                       )}
                     </Form.Group>
                   </FlexboxGrid.Item>
@@ -943,8 +943,7 @@ const AirQuote = () => {
               <ButtonToolbar>
                 <Button
                   onClick={(e) => handleSubmit(e)}
-                  appearance="ghost"
-                  style={{ width: "100px", marginBottom: "20px" }}
+                   style={{ width: "100px", marginBottom: "20px", color:"white", background:"#e33a32" }}
                 >
                   Submit
                 </Button>

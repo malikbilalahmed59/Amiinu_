@@ -99,7 +99,7 @@ const ContainerForm: React.FC<ContainerFormProps> = ({
             />
           </div>
           <Form.Group controlId="type">
-            <Form.ControlLabel>Container Type</Form.ControlLabel>
+            <Form.ControlLabel className="mt-2">Container Type</Form.ControlLabel>
             <RadioGroup
               value={containerState.container_type}
               onChange={(value) => {

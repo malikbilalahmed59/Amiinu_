@@ -17,6 +17,7 @@ import { RiEqualFill } from "react-icons/ri";
 import { FaFireAlt } from "react-icons/fa";
 import { divisionList } from "../data/data";
 import { FaTrashAlt } from "react-icons/fa";
+import { HiCircleStack } from "react-icons/hi2";
 
 const LclCargoForm: React.FC<CargoFormProps> = ({
   cargoState,
@@ -180,7 +181,7 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
           </div>
 
           <div className="row mt-2">
-            <div className="col-md-8">
+            <div className="col-md-12">
               <FormControl
                 label="HS CODE"
                 placeholder="6 characters"
@@ -203,7 +204,12 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                       handleChange("non_stackable", !cargoState.non_stackable);
                     }}
                   >
-                    Non Stackable
+                   
+
+                    <HiCircleStack  size={20}  color={cargoState.non_stackable ? '#1d73ff' : '#102951'} />
+                          <span style={{ color: cargoState.non_stackable? '#1d73ff' : '#171725', paddingLeft:"5px" }}>
+                          Non Stackable
+      </span>
                   </Checkbox>
                 </Form.Group>
                 <Accordion
@@ -240,9 +246,12 @@ const LclCargoForm: React.FC<CargoFormProps> = ({
                                 !cargoState.dangerous_good
                               );
                             }}
+                            
                           />
-                          <FaFireAlt size={20} />
-                          Dangerous Goods
+                          <FaFireAlt size={20}  color={cargoState.dangerous_good ? '#1d73ff' : '#102951'} />
+                          <span style={{ color: cargoState.dangerous_good ? '#1d73ff' : '#171725', paddingLeft:"5px" }}>
+        Dangerous Goods
+      </span>
                         </div>
                       </div>
                     }

@@ -634,9 +634,9 @@ const LCLQuote = () => {
               <ButtonToolbar>
                 <Button
                   onClick={(e) => handleSubmit(e)}
-                  appearance="ghost"
+                  
                   block
-                  style={{ width: "100px", marginBottom: "20px" }}
+                  style={{ width: "100px", marginBottom: "20px",  color:"white", background:"#e33a32"}}
                 >
                   Submit
                 </Button>

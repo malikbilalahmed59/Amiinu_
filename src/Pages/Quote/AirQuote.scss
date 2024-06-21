@@ -47,7 +47,18 @@ margin-top: 100px;
 
   
 }
+.top-section{
+  .leftTop{
+   
+    span{
+color: #171725;
+font-size: 18px;
+font-weight: 700;
+font-family: 'Roboto', sans-serif;
 
+    }
+  }
+}
 .top-header{
   border-radius: 0.313rem;
   box-shadow: rgba(4, 36, 106, 0.3) 0px 2px 4px 0px;
@@ -72,7 +83,9 @@ margin-top: 100px;
   
     .testtt {
       display: flex;
-      align-items: start;
+      align-items: end;
+      
+      // justify-content: center;
     }
   
     .secondCalculation {

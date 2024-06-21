@@ -494,7 +494,7 @@ const FCLQuote = () => {
                     }
                   />
                   {errors.departureDate && (
-                    <Form.HelpText>{errors.departureDate}</Form.HelpText>
+                    <Form.HelpText className="text-danger">{errors.departureDate}</Form.HelpText>
                   )}
                 </Form.Group>
               </FlexboxGrid.Item>
@@ -658,7 +658,7 @@ const FCLQuote = () => {
                           }
                         />
                       </FlexboxGrid.Item>
-                      <Button appearance="ghost" type="submit" className="mt-3">
+                      <Button  type="submit" className="mt-3" style={{ color:"white", background:"#e33a32"}}>
                         Submit
                       </Button>
                     </div>

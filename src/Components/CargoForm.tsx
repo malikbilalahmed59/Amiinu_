@@ -75,8 +75,10 @@ const CargoForm: React.FC<CargoFormProps> = ({
                   handleChange("packages", e);
                 }}
               />
+              
+              
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 d-flex justify-content-center align-items-end">
               <CgMathPlus size={"18px"} style={{ rotate: "45deg" }} />
             </div>
             <div className="col-md-2">
@@ -90,7 +92,7 @@ const CargoForm: React.FC<CargoFormProps> = ({
                 }}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 d-flex justify-content-center align-items-end">
               <RiEqualFill size={"18px"} />
             </div>
             <div className="col-md-3">
@@ -126,7 +128,7 @@ const CargoForm: React.FC<CargoFormProps> = ({
                 }}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 d-flex justify-content-center align-items-end">
               <CgMathPlus size={"18px"} style={{ rotate: "45deg" }} />
             </div>
             <div className="col-md-2">
@@ -140,7 +142,7 @@ const CargoForm: React.FC<CargoFormProps> = ({
                 }}
               />
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 d-flex justify-content-center align-items-end">
               <RiEqualFill size={"18px"} />
             </div>
             <div className="col-md-3">

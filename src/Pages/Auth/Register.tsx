@@ -82,7 +82,7 @@ const Register = () => {
         <Form model={model} fluid onSubmit={handleSubmit}>
           <FormControl
             name="firstName"
-            placeholder="John"
+            placeholder="firstName"
             value={firstName}
             onChange={(e) => {
               setFirstName(e);
@@ -90,7 +90,7 @@ const Register = () => {
           />
           <FormControl
             name="lastName"
-            placeholder="Carter"
+            placeholder="lastName"
             value={lastName}
             onChange={(e) => setLastName(e)}
           />
