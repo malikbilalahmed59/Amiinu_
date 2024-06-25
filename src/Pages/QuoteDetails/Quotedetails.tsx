@@ -1,4 +1,4 @@
-import React from "react";
+
 import "./Quotedetails.scss";
 import { Button } from "rsuite";
 import { IoArrowBack } from "react-icons/io5";
