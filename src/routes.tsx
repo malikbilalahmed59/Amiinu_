@@ -11,6 +11,7 @@ import RequstQuote from "./Pages/Quote/FCLQuote";
 import QuoteDashboard from "./Pages/Quote/Quotedashboard";
 import ServiceLevel from "./Pages/Quote/AirQuote";
 import Lcl from "./Pages/Quote/LCLQuote";
+import Quotedetails from "./Pages/QuoteDetails/Quotedetails";
 
 export interface Route {
   index?: boolean;
@@ -47,6 +48,13 @@ export const routes: Route[] = [
     element: <QuoteDashboard />,
     name: "Quote Dashboard",
   },
+  {
+    path: Routes.QUOTE_DETAILS,
+    element: <Quotedetails />,
+    name: "quote-details",
+  },
+
+
 ];
 const router = createBrowserRouter([
   {

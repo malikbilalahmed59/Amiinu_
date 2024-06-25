@@ -1,7 +1,6 @@
 export enum Routes {
   LOGIN = "/login",
   REGISTER = "/register",
-
   DASHBOARD = "dashboard",
   GET_QUOTE = "get-quote",
   REQ_QUOTE = "req-quote",
@@ -9,6 +8,7 @@ export enum Routes {
   QUOTE_DASHBOARD = "quote-dashboard",
   Servicelevel = "servicelevel",
   Lcl = "lcl",
+  QUOTE_DETAILS ="quote-details",
 }
 export enum APIEndpoint {
   REGISTER = "api/register/",
