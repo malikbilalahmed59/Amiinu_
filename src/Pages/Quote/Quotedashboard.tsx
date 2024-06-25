@@ -20,7 +20,7 @@ const QuoteDashboard = () => {
           <div className="topsection-main">
             <div className="top-section">
               <div className="left-section">
-                <div className="search-bar d-flex">
+              <div className="search-bar d-flex">
                   <span className="span">
                     My quotes ({data && data.length})
                   </span>
@@ -69,8 +69,8 @@ const QuoteDashboard = () => {
           </div>
           {isLoading && <Loader></Loader>}
           {!isLoading && data && data.length === 0 && <p>No Requests.</p>}
-          {[1,2,3,4,5]?.map((item) => (
-            <div className="bottom-cards mb-3" key={item}>
+          {(data || [])?.map((item) => (
+            <div className="bottom-cards mb-3" key={item.id}>
               <div className="quoteref-card">
                 <div className="ref-top">
                   <div className="top-left">
@@ -78,7 +78,7 @@ const QuoteDashboard = () => {
                       <LuShip color="blue" />
                       <div>
                         <span className="quote-ref">Quote ref.</span> <br />
-                        <span className="quote-id">QUO-00146332</span>
+                        <span className="quote-id">{item.customer_reference}</span>
                       </div>
                     </div>
                     <div className="topleft-rigt">
@@ -104,10 +104,10 @@ const QuoteDashboard = () => {
                     </div>
                     <div className="top-middlemiddle">
                       <div className="china">
-                        <span className="cargo-quote">To Be Booked Before</span>
+                        <span className="cargo-quote">Departure date</span>
                       </div>
                       <div className="musafa">
-                        <span className="cargo-date">2 Jun 2024</span>
+                        <span className="cargo-date">{item.departure_date}</span>
                       </div>
                     </div>
                   </div>
@@ -146,22 +146,31 @@ const QuoteDashboard = () => {
     </Dropdown>
       </div>
                     </div>
-                    <div className="topleft-left">
-                      <div>
-                        <span className="quote-ref">Service Level</span> <br />
-                        <span className="quote-id">standard</span>
-                      </div>
-                    </div>
+                    {item.service_level ? (
+              <div className="topleft-left">
+                <div>
+                  <span className="quote-ref">Service Level</span> <br />
+                  <span className="quote-id">{item.service_level}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="topleft-left">
+                <div>
+                  <span className="quote-ref">Service Level</span> <br />
+                  <span className="quote-id">standard</span>
+                </div>
+              </div>
+            )}
                     <div className="topleft-left">
                       <div>
                         <span className="quote-ref">My Reference</span> <br />
-                        <span className="quote-id">dcd</span>
+                        <span className="quote-id">{item.customer_reference}</span>
                       </div>
                     </div>
                     <div className="topleft-left">
                       <div>
                         <span className="quote-ref">Shipment Type</span> <br />
-                        <span className="quote-id">FCL</span>
+                        <span className="quote-id">{item.transport_mode}</span>
                       </div>
                     </div>
                   </div>
@@ -198,7 +207,7 @@ const QuoteDashboard = () => {
                         </li>
                       </ul>
                     </div> */}
-                      <Dropdown title="Other Actions" className="parent">
+                      {/* <Dropdown title="View Details" className="parent">
     <Dropdown.Item >
       Copy Request
     </Dropdown.Item>
@@ -206,7 +215,8 @@ const QuoteDashboard = () => {
       Contact Us
     </Dropdown.Item>
    
-  </Dropdown>
+  </Dropdown> */}
+  <button className="parent">View Details</button>
 
                     <button className="copy-request">
                       {" "}
