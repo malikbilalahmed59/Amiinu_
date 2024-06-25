@@ -9,10 +9,45 @@ import { Dropdown, Loader } from "rsuite";
 import { useRequestList } from "../../Hooks/useRequestList";
 import "./quotedashboard.css";
 import { Routes } from "../../constant";
+import { useMemo, useState } from "react";
 
 const QuoteDashboard = () => {
   const { data, isLoading } = useRequestList();
   const navigate = useNavigate();
+  const [filter, setFilter] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const filteredData = useMemo(() => {
+    let filtered = data || [];
+
+    // Apply filters
+    if (filter.length > 0) {
+      filtered = filtered.filter((item) =>
+        filter.includes(item.transport_mode)
+      );
+    }
+    // Apply search query
+    if (searchQuery) {
+      filtered = filtered.filter((item) =>
+        item.customer_reference
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())
+      );
+    }
+    return filtered;
+  }, [filter, data, searchQuery]);
+
+  const handleFilterClick = (filterType: string) => {
+    setFilter((prevFilter) => {
+      if (prevFilter.includes(filterType)) {
+        // Remove the filter if it already exists
+        return prevFilter.filter((f) => f !== filterType);
+      } else {
+        // Add the filter if it does not exist
+        return [...prevFilter, filterType];
+      }
+    });
+  };
   return (
     <>
       <div className="main">
@@ -20,9 +55,9 @@ const QuoteDashboard = () => {
           <div className="topsection-main">
             <div className="top-section">
               <div className="left-section">
-              <div className="search-bar d-flex">
+                <div className="search-bar d-flex">
                   <span className="span">
-                    My quotes ({data && data.length})
+                    My quotes {data && <>{`(${data.length})`}</>}
                   </span>
                   <form className="d-flex formlabel">
                     <input
@@ -30,6 +65,8 @@ const QuoteDashboard = () => {
                       type="search"
                       placeholder="Search"
                       aria-label="Search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     <CiSearch size={"25px"} />
                   </form>
@@ -48,28 +85,45 @@ const QuoteDashboard = () => {
           </div>
           <div className="filtercard-parent">
             <div className="filter-card">
-              <div className="first-card">
+              <div
+                className={`first-card ${
+                  filter.includes("Air") ? "active" : ""
+                }`}
+                onClick={() => handleFilterClick("Air")}
+              >
                 <SlPlane /> Air
               </div>
-              <div className="first-card">
+              <div
+                className={`first-card ${
+                  filter.includes("Sea Air") ? "active" : ""
+                }`}
+                onClick={() => handleFilterClick("Sea Air")}
+              >
                 <SlPlane /> Sea Air
               </div>
-              <div className="first-card">
+              <div
+                className={`first-card ${
+                  filter.includes("FCL") ? "active" : ""
+                }`}
+                onClick={() => handleFilterClick("FCL")}
+              >
                 <LuShip /> FCL
               </div>
-              <div className="first-card">
+              <div
+                className={`first-card ${
+                  filter.includes("LCL") ? "active" : ""
+                }`}
+                onClick={() => handleFilterClick("LCL")}
+              >
                 <LuShip /> LCL
               </div>
-
-              {/* <div className="firstfilter-card">
-                <IoFilterOutline />
-                Filter
-              </div> */}
             </div>
           </div>
           {isLoading && <Loader></Loader>}
-          {!isLoading && data && data.length === 0 && <p>No Requests.</p>}
-          {(data || [])?.map((item) => (
+          {!isLoading && data && filteredData.length === 0 && (
+            <p>No Requests.</p>
+          )}
+          {filteredData.map((item) => (
             <div className="bottom-cards mb-3" key={item.id}>
               <div className="quoteref-card">
                 <div className="ref-top">
@@ -78,7 +132,9 @@ const QuoteDashboard = () => {
                       <LuShip color="blue" />
                       <div>
                         <span className="quote-ref">Quote ref.</span> <br />
-                        <span className="quote-id">{item.customer_reference}</span>
+                        <span className="quote-id">
+                          {item.customer_reference}
+                        </span>
                       </div>
                     </div>
                     <div className="topleft-rigt">
@@ -96,7 +152,9 @@ const QuoteDashboard = () => {
                     </div>
                     <div className="top-middlemiddle">
                       <div className="china">
-                        <span className="china-cargo">CHINA, TEXAS (USZHO)</span>
+                        <span className="china-cargo">
+                          CHINA, TEXAS (USZHO)
+                        </span>
                       </div>
                       <div className="musafa">
                         <span className="cargo-date">MUSAFA (AEFMZ)</span>
@@ -107,7 +165,9 @@ const QuoteDashboard = () => {
                         <span className="cargo-quote">Departure date</span>
                       </div>
                       <div className="musafa">
-                        <span className="cargo-date">{item.departure_date}</span>
+                        <span className="cargo-date">
+                          {item.departure_date}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -133,38 +193,42 @@ const QuoteDashboard = () => {
                           Cargo details
                         </span>{" "}
                         {/* <FaRegEye color="#315CD6    " size={"15px"} /> */}
-                        <Dropdown 
-      title={<FaRegEye color="#315CD6" size="15px" />} 
-      className="custom-dropdown"
-    >
-      <Dropdown.Item>New File</Dropdown.Item>
-   
-      <Dropdown.Item>Export PDF</Dropdown.Item>
-      <Dropdown.Item>Export HTML</Dropdown.Item>
-      <Dropdown.Item>Settings</Dropdown.Item>
-      <Dropdown.Item>About</Dropdown.Item>
-    </Dropdown>
-      </div>
+                        <Dropdown
+                          title={<FaRegEye color="#315CD6" size="15px" />}
+                          className="custom-dropdown"
+                        >
+                          <Dropdown.Item>New File</Dropdown.Item>
+
+                          <Dropdown.Item>Export PDF</Dropdown.Item>
+                          <Dropdown.Item>Export HTML</Dropdown.Item>
+                          <Dropdown.Item>Settings</Dropdown.Item>
+                          <Dropdown.Item>About</Dropdown.Item>
+                        </Dropdown>
+                      </div>
                     </div>
                     {item.service_level ? (
-              <div className="topleft-left">
-                <div>
-                  <span className="quote-ref">Service Level</span> <br />
-                  <span className="quote-id">{item.service_level}</span>
-                </div>
-              </div>
-            ) : (
-              <div className="topleft-left">
-                <div>
-                  <span className="quote-ref">Service Level</span> <br />
-                  <span className="quote-id">standard</span>
-                </div>
-              </div>
-            )}
+                      <div className="topleft-left">
+                        <div>
+                          <span className="quote-ref">Service Level</span>{" "}
+                          <br />
+                          <span className="quote-id">{item.service_level}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="topleft-left">
+                        <div>
+                          <span className="quote-ref">Service Level</span>{" "}
+                          <br />
+                          <span className="quote-id">standard</span>
+                        </div>
+                      </div>
+                    )}
                     <div className="topleft-left">
                       <div>
                         <span className="quote-ref">My Reference</span> <br />
-                        <span className="quote-id">{item.customer_reference}</span>
+                        <span className="quote-id">
+                          {item.customer_reference}
+                        </span>
                       </div>
                     </div>
                     <div className="topleft-left">
@@ -207,7 +271,7 @@ const QuoteDashboard = () => {
                         </li>
                       </ul>
                     </div> */}
-                      {/* <Dropdown title="View Details" className="parent">
+                    {/* <Dropdown title="View Details" className="parent">
     <Dropdown.Item >
       Copy Request
     </Dropdown.Item>
@@ -216,7 +280,7 @@ const QuoteDashboard = () => {
     </Dropdown.Item>
    
   </Dropdown> */}
-  <button className="parent">View Details</button>
+                    <button className="parent">View Details</button>
 
                     <button className="copy-request">
                       {" "}
