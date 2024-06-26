@@ -9,6 +9,7 @@ export enum Routes {
   Servicelevel = "servicelevel",
   Lcl = "lcl",
   QUOTE_DETAILS ="quote-details",
+  LCL_PDF="lclpdf",
 }
 export enum APIEndpoint {
   REGISTER = "api/register/",
