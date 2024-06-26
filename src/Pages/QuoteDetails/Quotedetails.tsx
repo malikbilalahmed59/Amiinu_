@@ -1,4 +1,3 @@
-
 import "./Quotedetails.scss";
 import { Button } from "rsuite";
 import { IoArrowBack } from "react-icons/io5";
@@ -151,46 +150,87 @@ const Quotedetails = () => {
           </div>
           <div className="address-content">
             <div className="left-adress">
-                <div className="address-header">
-                    <span className="pickup-title">Pickup Address</span>
-                </div>
-                <div className="address-bottom"> <h6>Moradabad, Uttar Pradesh (244001 - India)</h6>
+              <div className="address-header">
+                <span className="pickup-title">Pickup Address</span>
+              </div>
+              <div className="address-bottom">
+                {" "}
+                <h6>Moradabad, Uttar Pradesh (244001 - India)</h6>
                 <h6>IN</h6>
-                <h6>India</h6></div>
-               
-
+                <h6>India</h6>
+              </div>
             </div>
             <div className="left-adress">
-                <div className="address-header">
-                    <span className="pickup-title">Delivery Address</span>
-                </div>
-                <div className="address-bottom"> <h6>Miami, Florida (33165 - United States)</h6>
+              <div className="address-header">
+                <span className="pickup-title">Delivery Address</span>
+              </div>
+              <div className="address-bottom">
+                {" "}
+                <h6>Miami, Florida (33165 - United States)</h6>
                 <h6>US</h6>
-                <h6>United States</h6></div>
-               
-
+                <h6>United States</h6>
+              </div>
             </div>
           </div>
           <div className="cargoinformation">
             <div className="left-adress">
-                <div className="address-header">
-                    <span className="pickup-title">Loose Cargo Information</span>
-                </div>
-                <div className="address-bottom"> <h6>134 66 x 56 x 36 cm  Copper water bottles   </h6>
-                </div>
-               
-
+              <div className="address-header">
+                <span className="pickup-title">Loose Cargo Information</span>
+              </div>
+              <div className="address-bottom">
+                {" "}
+                <h6>134 66 x 56 x 36 cm Copper water bottles </h6>
+              </div>
             </div>
-         
           </div>
           <div className="quotation-details">
             <div className="quotation-header">
-                <span>test</span>
+              <span>Quotation Details</span>
             </div>
+            <div className="quotation-middle">
+              <div className="middle-left">
+                <h6></h6> <br />
+                <h6>Pick Up and Origin Charges</h6>
+                <h6>Freight Charges Airport to Airport (5.94 USD/Kg)</h6>
+                <h6>Delivery and Destination Charges</h6>
+              </div>
+              <div className="middle-middle">
+                <h6></h6> <br />
+                <h6>775.00</h6>
+                <h6>17,646.00</h6>
+                <h6>1,933.00</h6>
+              </div>
+              <div className="middle-right">
+                <h6>Currency</h6>
+                <h6>USD</h6>
+                <h6>USD</h6>
+                <h6>USD</h6>
+              </div>
+            </div>
+            <div className="quotation-footer">
+              <div className="middle-left">
+                <h6>TOTAL CHARGES:</h6>
+              </div>
+              <div className="middle-middle">
+                <h6>20,354.00</h6>
+              </div>
+              <div className="middle-right">
+                <h6>USD</h6>
+              </div>
+            </div>
+          </div>
+          <div className="footer-quotation">
+            <p>
+              Please note that this Quotation is only applicable to the shipment
+              defined under "Shipment Information". This Quotation will be
+              deemed  invalid after this shipment has been processed. <br />
+              Any foreign currency conversions have been undertaken using
+              current exchange rates and thus local currency charges are subject
+              to change.
+            </p>
           </div>
         </div>
       </div>
-    
     </>
   );
 };

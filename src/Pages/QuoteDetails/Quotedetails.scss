@@ -1,5 +1,7 @@
+
 .Quotedetails {
   background-color: #ffffff;
+
   .details-header {
     width: 100%;
     height: 70px;
@@ -40,6 +42,7 @@
     margin-bottom: 50px;
     border-radius:  5px;
     padding: 30px;
+ 
     .pdf-header{
         display: flex;
         justify-content: space-between;
@@ -192,11 +195,106 @@
     }
 }
 .quotation-details{
-    margin-top: 5px solid white;
-    .quotation-details{
+    margin-top: 5px;
+    // border: 5px solid white;
+   
+    .quotation-header{
         width: 100%;
-        height: 30px;
+        height: 20px;
         background: #051039;
+        padding-left: 3px;
+        span{
+            color: white;
+            font-family: "Roboto", sans-serif;
+            font-size: 13px;
+        }
+    }
+    .quotation-middle{
+        border: 1px solid #051039;
+        height: 140px;
+       display: flex;
+       .middle-left{
+        width: 60%;
+      
+        h6{
+        font-size: 13px;
+        font-family: "Roboto", sans-serif;
+        color: black;
+        font-weight: 200;
+        }
+       }
+       .middle-middle{
+        width: 20%;
+      
+        h6{
+            font-size: 13px;
+            font-family: "Roboto", sans-serif;
+            color: black;
+            font-weight: 200;
+        }
+
+       }
+       .middle-right{
+        width: 20%;
+       
+        h6{
+            font-size: 13px;
+            font-family: "Roboto", sans-serif;
+            color: black;
+            font-weight: 600;
+        }
+
+       }
+    }
+    .quotation-footer{
+        display: flex;
+        align-items: center;
+
+        height: 20px;
+        background: #051039;
+        .middle-left{
+            width: 60%;
+            padding-left: 3px;
+            h6{
+                font-family: "Roboto", sans-serif;
+                font-size: 13px;
+                color: white;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+        }
+        .middle-middle{
+            width: 20%;
+            h6{
+                font-family: "Roboto", sans-serif;
+                font-size: 13px;
+                color: white;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+        }
+        .middle-right{
+            width: 20%;
+            h6{
+                font-family: "Roboto", sans-serif;
+                font-size: 13px;
+                color: white;
+                font-weight: 600;
+                letter-spacing: 1px;
+            }
+        }
+    }
+    .footer-quotation{
+        width: 100%;
+     
+      
+        p{
+            
+            font-family: "Roboto", sans-serif;
+            font-size: 13px;
+            color: black;
+            font-weight: 400;
+        }
     }
 }
 }
@@ -204,4 +302,318 @@
 
 
 
+}
+@media screen and (max-width: 600px) {
+    .Quotedetails {
+        background-color: #ffffff;
+      
+        .details-header {
+          width: 100%;
+          height: 70px;
+          background-color: #04246a;
+          border-top: 1px solid white;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-inline: 5px;
+          .leftside-top {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            .Quotation {
+              font-size: 14px !important;
+              font-family: "Roboto", sans-serif;
+              color: white;
+            }
+            .status {
+              border-radius: 30px !important;
+              background-color: white;
+              color: red;
+              font-size: 10px;
+            }
+          }
+      
+          .rightside-top {
+            .rightpdf {
+              background-color: white;
+              color: #0062ff;
+              border-radius: 30px;
+              font-size: 10px;
+            }
+          }
+        }
+      
+      .pdf-container{
+          border: 1px solid #171725;
+          margin-top: 50px;
+          margin-bottom: 50px;
+          border-radius:  5px;
+        //   margin: 5px;
+          padding: 5px;
+        //  width: 98%;
+          .pdf-header{
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              width: 100%;
+              background-color: #051039;
+              height: 40px;
+              padding-inline: 10px;
+              .pdfHeader-left{
+                  .air{
+                      color: white;
+                      font-size: 18px;
+                      font-family: "Roboto", sans-serif;
+                  }
+              }
+              .pdfHeader-right{
+                  .page{
+                      color: white;
+                      font-size: 16px;
+                      font-family: "Roboto", sans-serif;
+                  }
+              }
+          }
+          .comapny-address{
+              border-top: 5px solid white;
+              display: flex;
+              gap: 5px;
+              height: 140px;
+              .leftside{
+                  width: 25%;
+                  height: 100%;
+                  background-color: #051039;
+                  padding: 3px;
+                  .company-name{
+                      color: white;
+                      font-size: 13px;
+                      font-family: "Roboto", sans-serif;
+                  }
+              }
+              .rightside{
+                  border: 1px solid #051039;
+                  width: 76%;
+                  padding: 3px;
+                  .aminue-details{
+                      font-size: 13px;
+                      font-family: "Roboto", sans-serif;
+                      color: black;
+                  }
+                  
+              }
+          }
+          .companyService-detail{
+          border-top: 5px solid white;
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          gap: 5px;
+          .first-section{
+              width: 100%;
+              .header-service{
+              background-color: #051039;
+              span{
+                  color: white;
+                  font-family: "Roboto", sans-serif;
+                  padding-left: 2px;
+              }
+              }
+              .header-bottomservice{
+                  border: 1px solid #051039 ;
+                  span{
+                      color: black;
+                      font-family: "Roboto", sans-serif;
+                      padding-left: 2px;
+                  }
+              }
+          }
+      }
+      .shipment-information{
+          border: 1px solid #051039;
+          width: 100%;
+          margin-top: 5px;
+          padding-left: 3px;
+          span{
+              color: #051039;
+              font-size: 13px;
+              font-family: "Roboto", sans-serif;
+              font-weight: 700;
+          }
+      }
+      .Quotation{
+          width: 100%;
+          .Quotation-shipment{
+              font-size: 13px;
+              font-family: "Roboto", sans-serif;
+              color: black;
+          }
+      }
+      .address-content{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          border-top: 5px solid white;
+          .left-adress{
+              width: 100%;
+              .address-header{
+                  width: 100%;
+                  height: 20px;
+                  background-color: #051039;
+                  padding-left: 3px;
+                
+                  .pickup-title{
+                      color: white;
+                      
+                  }
+              }
+              .address-bottom{
+                  border: 1px solid #051039;
+                  padding-left: 3px;
+                  h6{
+                      font-family: "Roboto", sans-serif;
+                      font-size: 13px;
+                      color: black;
+                  }
+              }
+          }
+      }
+      .cargoinformation{
+          border-top: 5px solid white;
+          width: 100%;
+          .left-adress{
+              width: 100%;
+              .address-header{
+                  width: 100%;
+                  height: 20px;
+                  background-color: #051039;
+                  padding-left: 3px;
+                
+                  .pickup-title{
+                      color: white;
+                      
+                  }
+              }
+              .address-bottom{
+                  border: 1px solid #051039;
+                  padding-left: 3px;
+                  h6{
+                      font-family: "Roboto", sans-serif;
+                      font-size: 13px;
+                      color: black;
+                  }
+              }
+          }
+      }
+      .quotation-details{
+          margin-top: 5px;
+          // border: 5px solid white;
+         
+          .quotation-header{
+              width: 100%;
+              height: 20px;
+              background: #051039;
+              padding-left: 3px;
+              span{
+                  color: white;
+                  font-family: "Roboto", sans-serif;
+                  font-size: 13px;
+              }
+          }
+          .quotation-middle{
+              border: 1px solid #051039;
+              height: 140px;
+             display: flex;
+             gap: 5px;
+             .middle-left{
+              width: 60%;
+            
+              h6{
+              font-size: 13px;
+              font-family: "Roboto", sans-serif;
+              color: black;
+              font-weight: 200;
+              }
+             }
+             .middle-middle{
+              width: 20%;
+            
+              h6{
+                  font-size: 13px;
+                  font-family: "Roboto", sans-serif;
+                  color: black;
+                  font-weight: 200;
+                  text-align: center;
+              }
+      
+             }
+             .middle-right{
+              width: 20%;
+             
+              h6{
+                  font-size: 13px;
+                  font-family: "Roboto", sans-serif;
+                  color: black;
+                  font-weight: 600;
+                  text-align: center;
+              }
+      
+             }
+          }
+          .quotation-footer{
+              display: flex;
+              align-items: center;
+      
+              height: 20px;
+              background: #051039;
+              .middle-left{
+                  width: 60%;
+                  padding-left: 3px;
+                  h6{
+                      font-family: "Roboto", sans-serif;
+                      font-size: 13px;
+                      color: white;
+                      font-weight: 600;
+                      letter-spacing: 1px;
+                  }
+              }
+              .middle-middle{
+                  width: 20%;
+                  h6{
+                      font-family: "Roboto", sans-serif;
+                      font-size: 13px;
+                      color: white;
+                      font-weight: 600;
+                      letter-spacing: 1px;
+                      text-align: center;
+                  }
+              }
+              .middle-right{
+                  width: 20%;
+                  
+                  h6{
+                      font-family: "Roboto", sans-serif;
+                      font-size: 13px;
+                      color: white;
+                      font-weight: 600;
+                      letter-spacing: 1px;
+                      text-align: center;
+                  }
+              }
+          }
+          .footer-quotation{
+              width: 100%;
+           
+            
+              p{
+                  
+                  font-family: "Roboto", sans-serif;
+                  font-size: 13px;
+                  color: black;
+                  font-weight: 400;
+              }
+          }
+      }
+      }
+  }
 }

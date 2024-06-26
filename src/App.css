@@ -62,7 +62,7 @@ body {
 @media only screen and (max-width: 600px) {
   .bg-content {
     background-image: none;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    /* padding-top: 20px; */
+    /* padding-bottom: 20px; */
   }
 }

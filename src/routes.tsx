@@ -12,6 +12,7 @@ import QuoteDashboard from "./Pages/Quote/Quotedashboard";
 import ServiceLevel from "./Pages/Quote/AirQuote";
 import Lcl from "./Pages/Quote/LCLQuote";
 import Quotedetails from "./Pages/QuoteDetails/Quotedetails";
+import Lclpdf from "./Pages/QuoteDetails/Lclpdf";
 
 export interface Route {
   index?: boolean;
@@ -52,6 +53,11 @@ export const routes: Route[] = [
     path: Routes.QUOTE_DETAILS,
     element: <Quotedetails />,
     name: "quote-details",
+  },
+  {
+    path: Routes.LCL_PDF,
+    element: <Lclpdf />,
+    name: "lclpdf",
   },
 
 
