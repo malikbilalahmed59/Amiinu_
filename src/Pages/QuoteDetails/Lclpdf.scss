@@ -45,15 +45,254 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    h6{
+      font-family: 'Times Sans', sans-serif !important;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+    span{
+      font-family: 'Times Sans', sans-serif !important;
+      font-size: 13px;
+      color: black;
+     
+    }
    }
    .company-email{
     margin-top: 5px;
     width: 100%;
+    h6{
+      font-family: 'Times Sans', sans-serif !important;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+    span{
+      font-family: 'Times Sans', sans-serif !important;
+      font-size: 13px;
+      color: black;
+     
+    }
    }
+   .company-address{
+    display: flex;
+    margin-top: 30px;
+    gap: 100px;
+    h6{
+      font-family: 'Times Sans', sans-serif !important;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+    span{
+      font-family: 'Times Sans', sans-serif !important;
+      font-size: 13px;
+      color: black;
+     
+    }
+   }
+   .details-section{
+    margin-top: 30px;
+
+a {
+    text-decoration: underline;
+    cursor: pointer;
+ 
+      font-family: 'Times Sans', sans-serif !important;
+      font-size: 13px;
+      color: black;
+     
+    
+}
+    .details-middle{
+        margin-top: 20px;
+        display: flex;
+        gap: 80px;
+        .middle-left{
+            h6{
+            color: #171725;
+            font-size: 9px;
+            font-family: 'Times Sans', sans-serif !important;
+        }
+        .data{
+          color: #171725;
+          font-size: 13px;
+          font-family: 'Times Sans', sans-serif !important;
+        }
+    }}
+   }
+   .booking-confirmation{
+    margin-top: 20px;
+    margin-bottom: 40px;
+    h6{
+        font-family: "Roboto", sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: black;
+    }
+   }
+   .table{
+    border: 1px solid black;
+   }
+   .second-table{
+    padding-left: 100px;
+    padding-right: 100px;
+    margin-bottom: 30px;
+    .tablesecond{
+  
+ .Thead{
+  border: 2px solid black;
+ }
+ .lastrow{
+  height: 70px;
+ }
+
+    }
+ 
+ 
+   }
+   .sign-div{
+    p{
+      font-family: 'Times Sans', sans-serif;
+          font-size: 13px;                                                          
+    }
+    .best-regard{
+    margin-top: 20px;
+
+    }
+   }
+
  
   }
+
   
   
   
+  }
+  @media only screen and (max-width: 600px) {
+    .lclpdf {
+      background-color: #ffffff;
+    
+      .details-header {
+        width: 100%;
+        height: 70px;
+        background-color: #04246a;
+        border-top: 1px solid white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 5px;
+        .leftside-top {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          .Quotation {
+            font-size: 14px !important;
+            font-family: "Roboto", sans-serif;
+            color: white;
+          }
+          .status {
+            border-radius: 30px !important;
+            background-color: white;
+            color: red;
+            font-size: 10px;
+          }
+        }
+    
+        .rightside-top {
+          .rightpdf {
+            background-color: white;
+            color: #0062ff;
+            border-radius: 30px;
+            font-size: 10px;
+          }
+        }
+      }
+    
+    
+    .pdf-container{
+        border: 1px solid #171725;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        border-radius:  5px;
+        padding: 30px;
+     .comapmy-name{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+     }
+     .company-email{
+      margin-top: 5px;
+      width: 100%;
+     }
+     .company-address{
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+      gap: 10px;
+     }
+     .details-section{
+      margin-top: 30px;
   
+  a {
+      text-decoration: underline;
+      cursor: pointer;
+  }
+      .details-middle{
+          margin-top: 20px;
+          display: flex;
+          gap: 10px;
+          .middle-left{
+              h6{
+              color: #171725;
+              font-size: 9px;
+              font-family: "Roboto", sans-serif;
+          }
+      }}
+     }
+     .booking-confirmation{
+      margin-top: 20px;
+      margin-bottom: 40px;
+      h6{
+          font-family: "Roboto", sans-serif;
+          font-size: 13px;
+          font-weight: 400;
+          color: black;
+      }
+     }
+     .first-table{
+      max-width: 600px;
+      overflow-x: auto;
+     }
+     .table{
+      border: 1px solid black;
+     }
+     .second-table{
+      padding-left: 0px;
+      padding-right: 0px;
+      margin-bottom: 30px;
+      .tablesecond{
+    
+   .Thead{
+    border: 2px solid black;
+   }
+   .lastrow{
+    height: 70px;
+   }
+  
+      }
+   
+   
+     }
+     .sign-div{
+      .best-regard{
+      margin-top: 20px;
+  
+      }
+     }
+  
+   
+    }
+  
+    
+    
+    
+    }
   }
