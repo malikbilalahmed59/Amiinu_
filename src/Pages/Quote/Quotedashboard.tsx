@@ -48,17 +48,20 @@ const QuoteDashboard = () => {
       }
     });
   };
-  const handleViewDetailsClick = () => {
-    if (filter.includes("Air")) {
-      navigate(Routes.QUOTE_DETAILS);
-    } else if (filter.includes("LCL")) {
-      navigate(Routes.LCL_PDF);
-    } else {
-      // Default action or a message to select a filter
-      alert("Please select a category.");
+  const handleViewDetailsClick = (type: string) => {
+    switch (type) {
+      case "Air":
+        navigate(`${Routes.QUOTE_DETAILS}`);
+        break;
+      case "LCL":
+        navigate(`${Routes.LCL_PDF}`);
+        break;
+      default:
+        navigate(`${Routes.LCL_PDF}`);
+        break;
     }
   };
-  
+
   return (
     <>
       <div className="main">
@@ -251,47 +254,14 @@ const QuoteDashboard = () => {
                   </div>
 
                   <div className="bottom-right">
-                    {/* <div className="dropdown">
-                      <button
-                        className="btn btn-secondary dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Other Action
-                      </button>
-                      <ul
-                        className="dropdown-menu "
-                        aria-labelledby="dropdownMenuButton1"
-                      >
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            Send Order
-                          </a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            Copy Request
-                          </a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item" href="#">
-                            Contact Us
-                          </a>
-                        </li>
-                      </ul>
-                    </div> */}
-                    {/* <Dropdown title="View Details" className="parent">
-    <Dropdown.Item >
-      Copy Request
-    </Dropdown.Item>
-    <Dropdown.Item  >
-      Contact Us
-    </Dropdown.Item>
-   
-  </Dropdown> */}
-                    <button className="parent" onClick={handleViewDetailsClick}>View Details</button>
+                    <button
+                      className="parent"
+                      onClick={() =>
+                        handleViewDetailsClick(item.transport_mode)
+                      }
+                    >
+                      View Details
+                    </button>
 
                     <button className="copy-request">
                       {" "}
