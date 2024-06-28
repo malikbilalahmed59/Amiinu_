@@ -49,18 +49,6 @@ export const routes: Route[] = [
     element: <QuoteDashboard />,
     name: "Quote Dashboard",
   },
-  {
-    path: Routes.QUOTE_DETAILS,
-    element: <Quotedetails />,
-    name: "quote-details",
-  },
-  {
-    path: Routes.LCL_PDF,
-    element: <Lclpdf />,
-    name: "lclpdf",
-  },
-
-
 ];
 const router = createBrowserRouter([
   {
@@ -99,6 +87,19 @@ const router = createBrowserRouter([
         path: "/app",
         element: <Layout />,
         children: routes,
+      }
+    : {},
+
+  isToken()
+    ? {
+        path: Routes.QUOTE_DETAILS,
+        element: <Quotedetails />,
+      }
+    : {},
+  isToken()
+    ? {
+        path: Routes.LCL_PDF,
+        element: <Lclpdf />,
       }
     : {},
 ]);

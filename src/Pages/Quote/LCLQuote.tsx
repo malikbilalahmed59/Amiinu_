@@ -310,7 +310,7 @@ const LCLQuote = () => {
     try {
       const apiData = transformToApiData();
       console.log("apiData", apiData);
-      await axiosInstance.post("quote/shipments/", apiData);
+      await axiosInstance.post(APIEndpoint.SHIPMENT_LIST, apiData);
       queryClient.invalidateQueries({ queryKey: [APIEndpoint.SHIPMENT_LIST] });
       toast.success("Successfully Submitted");
     } catch (error) {
@@ -322,7 +322,7 @@ const LCLQuote = () => {
   const [showPickupAddress, setShowPickupAddress] = useState(false);
   const [showDeliveryAddress, setShowDeliveryAddress] = useState(false);
   const [delivery, setDelivery] = useState("");
-  const handleCheckboxChange2 = (value: any, checked2: any) => {
+  const handleCheckboxChange2 = (_value: any, checked2: any) => {
     setShowPickupAddress(checked2);
   };
   const handleCheckboxChange = (
