@@ -51,13 +51,13 @@ const QuoteDashboard = () => {
   const handleViewDetailsClick = (type: string) => {
     switch (type) {
       case "Air":
-        navigate(`${Routes.QUOTE_DETAILS}`);
+        navigate(`../${Routes.QUOTE_DETAILS}`);
         break;
       case "LCL":
-        navigate(`${Routes.LCL_PDF}`);
+        navigate(`../${Routes.LCL_PDF}`);
         break;
       default:
-        navigate(`${Routes.LCL_PDF}`);
+        navigate(`../${Routes.LCL_PDF}`);
         break;
     }
   };
