@@ -146,9 +146,7 @@ const QuoteDashboard = () => {
                       <LuShip color="blue" />
                       <div>
                         <span className="quote-ref">Quote ref.</span> <br />
-                        <span className="quote-id">
-                          {item.customer_reference}
-                        </span>
+                        <span className="quote-id">#Ref123</span>
                       </div>
                     </div>
                     <div className="topleft-rigt">
@@ -211,12 +209,12 @@ const QuoteDashboard = () => {
                           title={<FaRegEye color="#315CD6" size="15px" />}
                           className="custom-dropdown"
                         >
-                          <Dropdown.Item>New File</Dropdown.Item>
-
-                          <Dropdown.Item>Export PDF</Dropdown.Item>
                           <Dropdown.Item>Export HTML</Dropdown.Item>
+
+                          {/* <Dropdown.Item>New File</Dropdown.Item>
+                          <Dropdown.Item>Export PDF</Dropdown.Item>
                           <Dropdown.Item>Settings</Dropdown.Item>
-                          <Dropdown.Item>About</Dropdown.Item>
+                          <Dropdown.Item>About</Dropdown.Item> */}
                         </Dropdown>
                       </div>
                     </div>
@@ -233,7 +231,7 @@ const QuoteDashboard = () => {
                         <div>
                           <span className="quote-ref">Service Level</span>{" "}
                           <br />
-                          <span className="quote-id">standard</span>
+                          <span className="quote-id">{item.service_level}</span>
                         </div>
                       </div>
                     )}
