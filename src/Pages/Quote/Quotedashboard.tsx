@@ -50,7 +50,7 @@ const QuoteDashboard = () => {
   };
   const handleViewDetailsClick = (type: string) => {
     switch (type) {
-      case "Air":
+      case "AIR":
         navigate(`../${Routes.QUOTE_DETAILS}`);
         break;
       case "LCL":
