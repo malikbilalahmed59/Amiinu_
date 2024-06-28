@@ -1,46 +1,47 @@
 import { FcInfo } from "react-icons/fc";
-import { PiDiamondsFourLight, PiHandArrowDownLight } from "react-icons/pi";
+import { PiDiamondsFourLight } from "react-icons/pi";
 import { Button, Panel, Stack, Text } from "rsuite";
 import "./Dashboard.css";
+import { AtdistinationIcon, BookingConfirmation, BookingIcon, DeliveredIcon, DeliveryIcon, OriginHandIcon, TransitIcon, TransitShipperIcon } from "./Icons";
 const Dashboard = () => {
   const options = [
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <BookingIcon/>,
       count: 0,
       title: "Booking Created.",
     },
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <BookingConfirmation/>,
       count: 0,
       title: "Booking Confirmation.",
     },
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <TransitShipperIcon/>,
       count: 0,
       title: "In transit from shipper",
     },
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <OriginHandIcon/>,
       count: 0,
       title: "On Hand At Origin",
     },
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <TransitIcon/>,
       count: 0,
       title: "In transit",
     },
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <AtdistinationIcon/>,
       count: 0,
       title: "On Hand At Destination",
     },
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <DeliveryIcon/>,
       count: 0,
       title: "Out of Delivery",
     },
     {
-      Icon: PiHandArrowDownLight,
+      Icon: <DeliveredIcon/>,
       count: 0,
       title: "Delivered",
     },
@@ -103,7 +104,7 @@ const Dashboard = () => {
                       className="panelsm-card"
                     >
                       <div className="tracktop-card" >
-                        <div>  <o.Icon className="me-2" size={22} /></div>
+                        <div> {o.Icon}</div>
                       <div><span className="tractText" >
                           {o.title}
                         </span></div>
