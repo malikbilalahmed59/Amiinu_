@@ -48,6 +48,17 @@ const QuoteDashboard = () => {
       }
     });
   };
+  const handleViewDetailsClick = () => {
+    if (filter.includes("Air")) {
+      navigate(Routes.QUOTE_DETAILS);
+    } else if (filter.includes("LCL")) {
+      navigate(Routes.LCL_PDF);
+    } else {
+      // Default action or a message to select a filter
+      alert("Please select a category.");
+    }
+  };
+  
   return (
     <>
       <div className="main">
@@ -280,7 +291,7 @@ const QuoteDashboard = () => {
     </Dropdown.Item>
    
   </Dropdown> */}
-                    <button className="parent">View Details</button>
+                    <button className="parent" onClick={handleViewDetailsClick}>View Details</button>
 
                     <button className="copy-request">
                       {" "}
@@ -290,7 +301,7 @@ const QuoteDashboard = () => {
                     <button className="copy-request">
                       {" "}
                       <TiMessages />
-                      Contavt us
+                      Contact us
                     </button>
                   </div>
                 </div>
