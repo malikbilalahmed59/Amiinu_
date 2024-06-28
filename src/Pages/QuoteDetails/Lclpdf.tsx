@@ -4,8 +4,16 @@ import { Button } from "rsuite";
 import { IoArrowBack } from "react-icons/io5";
 import Table from "./Table";
 import Secondtable from "./Secondtable/Secondtable";
+import { useParams } from "react-router-dom";
+import { useRequestList } from "../../Hooks/useRequestList";
 
 const Lclpdf = () => {
+  const { id } = useParams();
+  const { data } = useRequestList();
+  if (!id) return null;
+
+  const quoteData = (data || []).filter((m) => m.id == parseInt(id));
+  console.log(quoteData);
   return (
     <>
       {" "}
@@ -79,20 +87,33 @@ const Lclpdf = () => {
                 <h6></h6>
               </div>
             </div>
-            <div className="booking-confirmation"><h6>Bookings must be made within 29 days from the quotation date for the quotation to remain valid</h6>
+            <div className="booking-confirmation">
+              <h6>
+                Bookings must be made within 29 days from the quotation date for
+                the quotation to remain valid
+              </h6>
             </div>
-            <div className="first-table"><Table/></div>
-            
+            <div className="first-table">
+              <Table />
+            </div>
+
             <div className="second-table">
-              <Secondtable/>
+              <Secondtable />
             </div>
             <div className="sign-div">
-              <p>VGM Admin fee do not include physical weighing, for more details see Pyramid Lines Singapore T&C. </p>
-            <p>REMARKS: We do not accept DDP conditions in Brazil, subject quote apply on DAP terms only subj to all local taxes, ad valoren based on cargo invoice value</p>
-           <div className="best-regard">
-           <span className="best-regard">Best regards</span> <br />
-           <span>AMINU</span>
-           </div>
+              <p>
+                VGM Admin fee do not include physical weighing, for more details
+                see Pyramid Lines Singapore T&C.{" "}
+              </p>
+              <p>
+                REMARKS: We do not accept DDP conditions in Brazil, subject
+                quote apply on DAP terms only subj to all local taxes, ad
+                valoren based on cargo invoice value
+              </p>
+              <div className="best-regard">
+                <span className="best-regard">Best regards</span> <br />
+                <span>AMINU</span>
+              </div>
             </div>
           </div>
         </div>

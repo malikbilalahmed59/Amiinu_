@@ -92,13 +92,13 @@ const router = createBrowserRouter([
 
   isToken()
     ? {
-        path: "app/" + Routes.QUOTE_DETAILS,
+        path: `app/${Routes.QUOTE_DETAILS}/:id`,
         element: <Quotedetails />,
       }
     : {},
   isToken()
     ? {
-        path: "app/" + Routes.LCL_PDF,
+        path: `app/${Routes.LCL_PDF}/:id`,
         element: <Lclpdf />,
       }
     : {},

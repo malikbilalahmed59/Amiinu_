@@ -9,6 +9,7 @@ import { Dropdown, Loader } from "rsuite";
 import { useRequestList } from "../../Hooks/useRequestList";
 import "./quotedashboard.css";
 import { Routes } from "../../constant";
+
 import { useMemo, useState } from "react";
 
 const QuoteDashboard = () => {
@@ -48,16 +49,16 @@ const QuoteDashboard = () => {
       }
     });
   };
-  const handleViewDetailsClick = (type: string) => {
+  const handleViewDetailsClick = (type: string, id: number) => {
     switch (type) {
       case "AIR":
-        navigate(`../${Routes.QUOTE_DETAILS}`);
+        navigate(`../${Routes.QUOTE_DETAILS}/${id}`);
         break;
       case "LCL":
-        navigate(`../${Routes.LCL_PDF}`);
+        navigate(`../${Routes.LCL_PDF}/${id}`);
         break;
       default:
-        navigate(`../${Routes.LCL_PDF}`);
+        navigate(`../${Routes.LCL_PDF}/${id}`);
         break;
     }
   };
@@ -255,7 +256,7 @@ const QuoteDashboard = () => {
                     <button
                       className="parent"
                       onClick={() =>
-                        handleViewDetailsClick(item.transport_mode)
+                        handleViewDetailsClick(item.transport_mode, item.id)
                       }
                     >
                       View Details

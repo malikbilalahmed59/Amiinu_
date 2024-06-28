@@ -1,8 +1,16 @@
 import "./Quotedetails.scss";
 import { Button } from "rsuite";
 import { IoArrowBack } from "react-icons/io5";
+import { useParams } from "react-router-dom";
+import { useRequestList } from "../../Hooks/useRequestList";
 
 const Quotedetails = () => {
+  const { id } = useParams();
+  const { data } = useRequestList();
+  if (!id) return null;
+
+  const quoteData = (data || []).filter((m) => m.id == parseInt(id));
+  console.log(quoteData);
   return (
     <>
       <div className="Quotedetails">
@@ -223,7 +231,7 @@ const Quotedetails = () => {
             <p>
               Please note that this Quotation is only applicable to the shipment
               defined under "Shipment Information". This Quotation will be
-              deemed  invalid after this shipment has been processed. <br />
+              deemed invalid after this shipment has been processed. <br />
               Any foreign currency conversions have been undertaken using
               current exchange rates and thus local currency charges are subject
               to change.
