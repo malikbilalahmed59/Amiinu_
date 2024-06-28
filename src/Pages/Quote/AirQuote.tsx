@@ -23,6 +23,8 @@ import { AirCargo } from "../../services/types";
 import "./AirQuote.scss";
 import FormControl from "./FormControl";
 import NavBar from "./NavBar";
+import { APIEndpoint } from "../../constant";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AirQuote = () => {
   const [formData, setFormData] = useState<any>({
@@ -100,27 +102,29 @@ const AirQuote = () => {
   };
 
   const handleCargoChange = (id: number, name: string, value: any) => {
-    const updatedCargos = formData.cargo.map((c: { [x: string]: any; id: number; }) => {
-      if (c.id === id) {
-        const [mainProperty, subProperty] = name.split(".");
+    const updatedCargos = formData.cargo.map(
+      (c: { [x: string]: any; id: number }) => {
+        if (c.id === id) {
+          const [mainProperty, subProperty] = name.split(".");
 
-        if (subProperty) {
-          return {
-            ...c,
-            [mainProperty]: {
-              ...c[mainProperty],
-              [subProperty]: value,
-            },
-          };
-        } else {
-          return {
-            ...c,
-            [mainProperty]: value,
-          };
+          if (subProperty) {
+            return {
+              ...c,
+              [mainProperty]: {
+                ...c[mainProperty],
+                [subProperty]: value,
+              },
+            };
+          } else {
+            return {
+              ...c,
+              [mainProperty]: value,
+            };
+          }
         }
+        return c;
       }
-      return c;
-    });
+    );
 
     setFormData((prevState: any) => ({
       ...prevState,
@@ -166,15 +170,17 @@ const AirQuote = () => {
         authorization: initialCargo.dangerous_good_details.authorization,
       },
     };
-    setFormData((prevState: { cargo: any; }) => ({
+    setFormData((prevState: { cargo: any }) => ({
       ...prevState,
       cargo: [...prevState.cargo, newCargo],
     }));
   };
 
   const handleCargoDelete = (id: number | string) => {
-    setFormData((prevState: { cargo: any[]; }) => {
-      const updatedList = prevState.cargo.filter((cargo: { id: string | number; }) => cargo.id !== id);
+    setFormData((prevState: { cargo: any[] }) => {
+      const updatedList = prevState.cargo.filter(
+        (cargo: { id: string | number }) => cargo.id !== id
+      );
       return {
         ...prevState,
         cargo: updatedList.map((cargo: any, index: number) => ({
@@ -232,64 +238,93 @@ const AirQuote = () => {
       newErrors.delivery = "Delivery address is required.";
     }
 
-    formData.cargo.forEach((cargo: { comiditydiscription: any; quantity: any; packages: any; weight: any; lcm: any; wcm: any; hcm: any; code_character: any; dangerous_good: any; dangerous_good_details: { un_number: any; proper_shipping_name: any; class_division: any; subdivision: any; packaging_group: any; packaging_instructions: any; DangeriousQuantity: any; total_net_quantity: any; type_of_packing: any; authorization: any; }; tempearture: any; temperature_details: { min: any; max: any; }; }, index: any) => {
-      if (!cargo.comiditydiscription)
-        newErrors[`cargo_${index}_comiditydiscription`] =
-          "Description is required.";
-      if (!cargo.quantity)
-        newErrors[`cargo_${index}_quantity`] = "Quantity is required.";
-      if (!cargo.packages)
-        newErrors[`cargo_${index}_packages`] = "Packages are required.";
-      if (!cargo.weight)
-        newErrors[`cargo_${index}_weight`] = "Weight is required.";
-      if (!cargo.lcm) newErrors[`cargo_${index}_lcm`] = "Length is required.";
-      if (!cargo.wcm) newErrors[`cargo_${index}_wcm`] = "Width is required.";
-      if (!cargo.hcm) newErrors[`cargo_${index}_hcm`] = "Height is required.";
-      if (!cargo.code_character)
-        newErrors[`cargo_${index}_code_character`] = "HS code is required.";
+    formData.cargo.forEach(
+      (
+        cargo: {
+          comiditydiscription: any;
+          quantity: any;
+          packages: any;
+          weight: any;
+          lcm: any;
+          wcm: any;
+          hcm: any;
+          code_character: any;
+          dangerous_good: any;
+          dangerous_good_details: {
+            un_number: any;
+            proper_shipping_name: any;
+            class_division: any;
+            subdivision: any;
+            packaging_group: any;
+            packaging_instructions: any;
+            DangeriousQuantity: any;
+            total_net_quantity: any;
+            type_of_packing: any;
+            authorization: any;
+          };
+          tempearture: any;
+          temperature_details: { min: any; max: any };
+        },
+        index: any
+      ) => {
+        if (!cargo.comiditydiscription)
+          newErrors[`cargo_${index}_comiditydiscription`] =
+            "Description is required.";
+        if (!cargo.quantity)
+          newErrors[`cargo_${index}_quantity`] = "Quantity is required.";
+        if (!cargo.packages)
+          newErrors[`cargo_${index}_packages`] = "Packages are required.";
+        if (!cargo.weight)
+          newErrors[`cargo_${index}_weight`] = "Weight is required.";
+        if (!cargo.lcm) newErrors[`cargo_${index}_lcm`] = "Length is required.";
+        if (!cargo.wcm) newErrors[`cargo_${index}_wcm`] = "Width is required.";
+        if (!cargo.hcm) newErrors[`cargo_${index}_hcm`] = "Height is required.";
+        if (!cargo.code_character)
+          newErrors[`cargo_${index}_code_character`] = "HS code is required.";
 
-      if (cargo.dangerous_good) {
-        if (!cargo.dangerous_good_details.un_number)
-          newErrors[`cargo_${index}_un_number`] =
-            "UN Number is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.proper_shipping_name)
-          newErrors[`cargo_${index}_proper_shipping_name`] =
-            "Proper shipping name is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.class_division)
-          newErrors[`cargo_${index}_class_division`] =
-            "Class/Division is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.subdivision)
-          newErrors[`cargo_${index}_subdivision`] =
-            "Subdivision is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.packaging_group)
-          newErrors[`cargo_${index}_packaging_group`] =
-            "Packaging group is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.packaging_instructions)
-          newErrors[`cargo_${index}_packaging_instructions`] =
-            "Packaging instructions are required for dangerous goods.";
-        if (!cargo.dangerous_good_details.DangeriousQuantity)
-          newErrors[`cargo_${index}_DangeriousQuantity`] =
-            "Quantity is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.total_net_quantity)
-          newErrors[`cargo_${index}_total_net_quantity`] =
-            "Total net quantity is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.type_of_packing)
-          newErrors[`cargo_${index}_type_of_packing`] =
-            "Type of packing is required for dangerous goods.";
-        if (!cargo.dangerous_good_details.authorization)
-          newErrors[`cargo_${index}_authorization`] =
-            "Authorization is required for dangerous goods.";
-      }
+        if (cargo.dangerous_good) {
+          if (!cargo.dangerous_good_details.un_number)
+            newErrors[`cargo_${index}_un_number`] =
+              "UN Number is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.proper_shipping_name)
+            newErrors[`cargo_${index}_proper_shipping_name`] =
+              "Proper shipping name is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.class_division)
+            newErrors[`cargo_${index}_class_division`] =
+              "Class/Division is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.subdivision)
+            newErrors[`cargo_${index}_subdivision`] =
+              "Subdivision is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.packaging_group)
+            newErrors[`cargo_${index}_packaging_group`] =
+              "Packaging group is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.packaging_instructions)
+            newErrors[`cargo_${index}_packaging_instructions`] =
+              "Packaging instructions are required for dangerous goods.";
+          if (!cargo.dangerous_good_details.DangeriousQuantity)
+            newErrors[`cargo_${index}_DangeriousQuantity`] =
+              "Quantity is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.total_net_quantity)
+            newErrors[`cargo_${index}_total_net_quantity`] =
+              "Total net quantity is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.type_of_packing)
+            newErrors[`cargo_${index}_type_of_packing`] =
+              "Type of packing is required for dangerous goods.";
+          if (!cargo.dangerous_good_details.authorization)
+            newErrors[`cargo_${index}_authorization`] =
+              "Authorization is required for dangerous goods.";
+        }
 
-      if (cargo.tempearture) {
-        if (!cargo.temperature_details.min)
-          newErrors[`cargo_${index}_temperature_min`] =
-            "Min temperature is required.";
-        if (!cargo.temperature_details.max)
-          newErrors[`cargo_${index}_temperature_max`] =
-            "Max temperature is required.";
+        if (cargo.tempearture) {
+          if (!cargo.temperature_details.min)
+            newErrors[`cargo_${index}_temperature_min`] =
+              "Min temperature is required.";
+          if (!cargo.temperature_details.max)
+            newErrors[`cargo_${index}_temperature_max`] =
+              "Max temperature is required.";
+        }
       }
-    });
+    );
 
     setErrors(newErrors);
     return newErrors;
@@ -309,54 +344,79 @@ const AirQuote = () => {
       delivery_service: formData.showDeliveryAddress,
       pickup_address: formData.showPickupAddress ? formData.pickup : null,
       delivery_address: formData.showDeliveryAddress ? formData.delivery : null,
-      cargo: formData.cargo.map((container: { comiditydiscription: any; quantity: any; weight: any; lcm: any; hcm: any; code_character: any; dangerous_good: any; dangerous_good_details: { un_number: any; proper_shipping_name: any; class_division: any; subdivision: any; packaging_group: any; packaging_instructions: any; DangeriousQuantity: any; total_net_quantity: any; type_of_packing: any; authorization: any; }; tempearture: any; temperature_details: { max: any; min: any; }; }) => ({
-        description: container.comiditydiscription || null,
-        container_type: "40ST",
-        item_type: null,
-        quantity: container.quantity || null,
-        weight: container.weight || null,
-        length: container.lcm || null,
-        width: container.weight || null,
-        height: container.hcm || null,
-        hs_code: container.code_character || null,
-        oversize: null,
-        non_stackable: null,
-        dangerous_goods: container.dangerous_good,
-        dangerous_good_details: container.dangerous_good
-          ? {
-              un_number: container.dangerous_good_details?.un_number || null,
-              proper_shipping_name:
-                container.dangerous_good_details?.proper_shipping_name || null,
-              class_division:
-                container.dangerous_good_details?.class_division || null,
-              subdivision:
-                container.dangerous_good_details?.subdivision || null,
-              packaging_group:
-                container.dangerous_good_details.packaging_group || null,
-              packaging_instructions:
-                container.dangerous_good_details?.packaging_instructions ||
-                null,
-              quantity:
-                container.dangerous_good_details.DangeriousQuantity || null,
-              total_net_quantity:
-                container.dangerous_good_details?.total_net_quantity || null,
-              type_of_packing:
-                container.dangerous_good_details?.type_of_packing || null,
-              authorization:
-                container.dangerous_good_details?.authorization || null,
-            }
-          : {},
-        reefer: container.tempearture,
-        reefer_details: container.temperature_details
-          ? {
-              temperature: null,
-              ventilation: null,
-              humidity: null,
-              temperature_max: container.temperature_details.max,
-              temperature_min: container.temperature_details.min,
-            }
-          : {},
-      })),
+      cargo: formData.cargo.map(
+        (container: {
+          comiditydiscription: any;
+          quantity: any;
+          weight: any;
+          lcm: any;
+          hcm: any;
+          code_character: any;
+          dangerous_good: any;
+          dangerous_good_details: {
+            un_number: any;
+            proper_shipping_name: any;
+            class_division: any;
+            subdivision: any;
+            packaging_group: any;
+            packaging_instructions: any;
+            DangeriousQuantity: any;
+            total_net_quantity: any;
+            type_of_packing: any;
+            authorization: any;
+          };
+          tempearture: any;
+          temperature_details: { max: any; min: any };
+        }) => ({
+          description: container.comiditydiscription || null,
+          container_type: "40ST",
+          item_type: null,
+          quantity: container.quantity || null,
+          weight: container.weight || null,
+          length: container.lcm || null,
+          width: container.weight || null,
+          height: container.hcm || null,
+          hs_code: container.code_character || null,
+          oversize: null,
+          non_stackable: null,
+          dangerous_goods: container.dangerous_good,
+          dangerous_good_details: container.dangerous_good
+            ? {
+                un_number: container.dangerous_good_details?.un_number || null,
+                proper_shipping_name:
+                  container.dangerous_good_details?.proper_shipping_name ||
+                  null,
+                class_division:
+                  container.dangerous_good_details?.class_division || null,
+                subdivision:
+                  container.dangerous_good_details?.subdivision || null,
+                packaging_group:
+                  container.dangerous_good_details.packaging_group || null,
+                packaging_instructions:
+                  container.dangerous_good_details?.packaging_instructions ||
+                  null,
+                quantity:
+                  container.dangerous_good_details.DangeriousQuantity || null,
+                total_net_quantity:
+                  container.dangerous_good_details?.total_net_quantity || null,
+                type_of_packing:
+                  container.dangerous_good_details?.type_of_packing || null,
+                authorization:
+                  container.dangerous_good_details?.authorization || null,
+              }
+            : {},
+          reefer: container.tempearture,
+          reefer_details: container.temperature_details
+            ? {
+                temperature: null,
+                ventilation: null,
+                humidity: null,
+                temperature_max: container.temperature_details.max,
+                temperature_min: container.temperature_details.min,
+              }
+            : {},
+        })
+      ),
       service_level:
         formData.serviceType === "air-value"
           ? 1
@@ -372,7 +432,7 @@ const AirQuote = () => {
       customer_reference: formData.customer_reference || null,
     };
   };
-
+  const queryClient = useQueryClient();
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const newErrors = validateForm();
@@ -385,11 +445,10 @@ const AirQuote = () => {
     try {
       const apiData = transformToApiData();
       console.log("apiData", apiData);
-      const response = await axiosInstance.post("quote/shipments/", apiData);
-      console.log("response", response);
+      await axiosInstance.post(APIEndpoint.SHIPMENT_LIST, apiData);
+      queryClient.invalidateQueries({ queryKey: [APIEndpoint.SHIPMENT_LIST] });
       toast.success("Successfully Submitted");
     } catch (error) {
-      console.error("Error submitting form:", error);
       toast.error("Unable to submit");
     }
   };
@@ -529,10 +588,12 @@ const AirQuote = () => {
                             ...prevState,
                             departureDate: value,
                           }))
-                        } 
+                        }
                       />
                       {errors.departureDate && (
-                        <Form.HelpText className="text-danger">{errors.departureDate}</Form.HelpText>
+                        <Form.HelpText className="text-danger">
+                          {errors.departureDate}
+                        </Form.HelpText>
                       )}
                     </Form.Group>
                   </FlexboxGrid.Item>
@@ -846,7 +907,7 @@ const AirQuote = () => {
                                       ...prevState,
                                       amount: e.target.value,
                                     }));
-                                  }} 
+                                  }}
                                 />
                               </div>
                             </div>
@@ -900,12 +961,11 @@ const AirQuote = () => {
                       </div>
                       <div className="col-md-4 comment">
                         <div className="comment-div">
-                          {formData.fileList &&
-                            formData.fileList.length === 0 && (
-                              <>
-                                <span className="">No attached files</span>
-                              </>
-                            )}
+                          {formData.fileList && formData.fileList.length === 0 && (
+                            <>
+                              <span className="">No attached files</span>
+                            </>
+                          )}
                           <span className="">Files</span> <br />
                           <Uploader
                             action=""
@@ -941,7 +1001,12 @@ const AirQuote = () => {
               <ButtonToolbar>
                 <Button
                   onClick={(e) => handleSubmit(e)}
-                   style={{ width: "100px", marginBottom: "20px", color:"white", background:"#e33a32" }}
+                  style={{
+                    width: "100px",
+                    marginBottom: "20px",
+                    color: "white",
+                    background: "#e33a32",
+                  }}
                 >
                   Submit
                 </Button>

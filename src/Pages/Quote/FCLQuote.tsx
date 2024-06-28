@@ -24,6 +24,8 @@ import CustomSelectPicker from "../../Components/SelectPicker";
 import { incotermList } from "../../data/data";
 import { axiosInstance } from "../../services/api-client";
 import { container_details } from "../../services/types";
+import { useQueryClient } from "@tanstack/react-query";
+import { APIEndpoint } from "../../constant";
 
 const FCLQuote = () => {
   const [formData, setFormData] = useState<Cargo>({
@@ -254,7 +256,16 @@ const FCLQuote = () => {
     setErrors(newErrors);
     return newErrors;
   };
+  // useEffect(() => {
+  //   const newErrors = validateForm();
+  //   if (Object.keys(newErrors).length > 0) {
+  //     setErrors(newErrors);
+  //     return;
+  //   }
+  //   setErrors({});
+  // }, [formData]);
   const [errors, setErrors] = useState<any>({});
+  const queryClient = useQueryClient();
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newErrors = validateForm();
@@ -335,12 +346,10 @@ const FCLQuote = () => {
         };
       };
       const apiData = transformToApiData(formData);
-      console.log("apiData", apiData);
-
       await axiosInstance.post("quote/shipments/", apiData);
       toast.success("Successfully Submitted");
+      queryClient.invalidateQueries({ queryKey: [APIEndpoint.SHIPMENT_LIST] });
     } catch (error) {
-      console.log(error);
       toast.success("Something went wrong!");
     }
   };
@@ -494,7 +503,9 @@ const FCLQuote = () => {
                     }
                   />
                   {errors.departureDate && (
-                    <Form.HelpText className="text-danger">{errors.departureDate}</Form.HelpText>
+                    <Form.HelpText className="text-danger">
+                      {errors.departureDate}
+                    </Form.HelpText>
                   )}
                 </Form.Group>
               </FlexboxGrid.Item>
@@ -658,7 +669,11 @@ const FCLQuote = () => {
                           }
                         />
                       </FlexboxGrid.Item>
-                      <Button  type="submit" className="mt-3" style={{ color:"white", background:"#e33a32"}}>
+                      <Button
+                        type="submit"
+                        className="mt-3"
+                        style={{ color: "white", background: "#e33a32" }}
+                      >
                         Submit
                       </Button>
                     </div>

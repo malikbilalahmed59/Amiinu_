@@ -1,3 +1,4 @@
+import { APIEndpoint } from "../constant";
 import APIClient from "../services/api-client";
 
 interface Cargo {
@@ -48,4 +49,4 @@ interface Shipment {
 const apiClient = new APIClient();
 
 export const useRequestList = () =>
-  apiClient.getAll<Shipment[]>(`quote/shipments/`, true);
+  apiClient.getAll<Shipment[]>(APIEndpoint.SHIPMENT_LIST, true);

@@ -24,6 +24,8 @@ import { AirCargo } from "../../services/types";
 import FormControl from "./FormControl";
 import "./LCLQuote.scss";
 import NavBar from "./NavBar";
+import { useQueryClient } from "@tanstack/react-query";
+import { APIEndpoint } from "../../constant";
 
 const LCLQuote = () => {
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
@@ -295,7 +297,7 @@ const LCLQuote = () => {
     setErrors(newErrors);
     return newErrors;
   };
-
+  const queryClient = useQueryClient();
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const newErrors = validateForm();
@@ -308,8 +310,8 @@ const LCLQuote = () => {
     try {
       const apiData = transformToApiData();
       console.log("apiData", apiData);
-      const response = await axiosInstance.post("quote/shipments/", apiData);
-      console.log("response", response);
+      await axiosInstance.post("quote/shipments/", apiData);
+      queryClient.invalidateQueries({ queryKey: [APIEndpoint.SHIPMENT_LIST] });
       toast.success("Successfully Submitted");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -321,7 +323,6 @@ const LCLQuote = () => {
   const [showDeliveryAddress, setShowDeliveryAddress] = useState(false);
   const [delivery, setDelivery] = useState("");
   const handleCheckboxChange2 = (value: any, checked2: any) => {
-    console.log(value);
     setShowPickupAddress(checked2);
   };
   const handleCheckboxChange = (
@@ -634,9 +635,13 @@ const LCLQuote = () => {
               <ButtonToolbar>
                 <Button
                   onClick={(e) => handleSubmit(e)}
-                  
                   block
-                  style={{ width: "100px", marginBottom: "20px",  color:"white", background:"#e33a32"}}
+                  style={{
+                    width: "100px",
+                    marginBottom: "20px",
+                    color: "white",
+                    background: "#e33a32",
+                  }}
                 >
                   Submit
                 </Button>
