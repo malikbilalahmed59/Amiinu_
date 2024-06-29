@@ -4,8 +4,9 @@ import { Button } from "rsuite";
 import { IoArrowBack } from "react-icons/io5";
 import Table from "./Table";
 import Secondtable from "./Secondtable/Secondtable";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useRequestList } from "../../Hooks/useRequestList";
+import { Routes } from "../../constant";
 
 const Lclpdf = () => {
   const { id } = useParams();
@@ -20,7 +21,9 @@ const Lclpdf = () => {
       <div className="lclpdf">
         <div className="details-header">
           <div className="leftside-top">
-            <IoArrowBack size={25} color="white" />
+            <Link to={`../app/${Routes.QUOTE_DASHBOARD}`}>
+              <IoArrowBack size={25} color="white" />
+            </Link>
             <span className="Quotation">Quotation QUO-00143716</span>
             <Button className="status">Expired</Button>
           </div>

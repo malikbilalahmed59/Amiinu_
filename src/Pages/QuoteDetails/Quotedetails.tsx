@@ -1,8 +1,9 @@
 import "./Quotedetails.scss";
 import { Button } from "rsuite";
 import { IoArrowBack } from "react-icons/io5";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useRequestList } from "../../Hooks/useRequestList";
+import { Routes } from "../../constant";
 
 const Quotedetails = () => {
   const { id } = useParams();
@@ -16,7 +17,9 @@ const Quotedetails = () => {
       <div className="Quotedetails">
         <div className="details-header">
           <div className="leftside-top">
-            <IoArrowBack size={25} color="white" />
+            <Link to={`../app/${Routes.QUOTE_DASHBOARD}`}>
+              <IoArrowBack size={25} color="white" />
+            </Link>
             <span className="Quotation">Quotation QUO-00143716</span>
             <Button className="status">Expired</Button>
           </div>
