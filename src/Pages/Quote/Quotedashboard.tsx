@@ -5,7 +5,7 @@ import { LuShip } from "react-icons/lu";
 import { SlPlane } from "react-icons/sl";
 import { TiMessages } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
-import { Dropdown, Loader } from "rsuite";
+import { Dropdown, Loader, Tag } from "rsuite";
 import { useRequestList } from "../../Hooks/useRequestList";
 import "./quotedashboard.css";
 import { Routes } from "../../constant";
@@ -132,6 +132,13 @@ const QuoteDashboard = () => {
               >
                 <LuShip /> LCL
               </div>
+            </div>
+            <div className="m-2">
+              {filter.map((f, i) => (
+                <Tag onClose={() => handleFilterClick(f)} closable key={i}>
+                  {f}
+                </Tag>
+              ))}
             </div>
           </div>
           {isLoading && <Loader></Loader>}
